@@ -11,6 +11,11 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Masak Simpel">
 <title>Masak Simpel</title>
+<meta property="og:title" content="Masak Simpel – resep rumahan gampang">
+<meta property="og:description" content="80+ resep simpel dengan bahan dapur biasa, lengkap dengan video dan mode masak.">
+<meta property="og:image" content="https://amonkshark.github.io/masak-simpel/icon-512.png">
+<meta property="og:url" content="https://amonkshark.github.io/masak-simpel/">
+<meta property="og:type" content="website">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 /* Layout: app HP — 4 tampilan (Beranda, Mingguan, Belanja, Koleksi) dengan nav bawah; resep & mode masak sebagai lembar layar penuh */
@@ -305,7 +310,16 @@ input,select,textarea{font-size:16px}
 .vbox iframe{width:100%;height:100%;border:0;display:block}
 .vplay{width:100%;height:100%;border:0;background:#123 center/cover;display:grid;place-items:center;cursor:pointer}
 .vplay span{width:68px;height:68px;border-radius:50%;background:#e5484d;color:#fff;font-size:26px;display:grid;place-items:center;box-shadow:0 8px 24px rgba(0,0,0,.4)}
-.btn.tt{background:#111;color:#fff;border:0;font:inherit;font-weight:800;cursor:pointer}
+.shbg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;display:none;align-items:flex-end;justify-content:center}
+.shbg.on{display:flex}
+.shp{background:var(--surface);color:var(--fg);width:100%;max-width:560px;border-radius:26px 26px 0 0;padding:18px 18px calc(22px + env(safe-area-inset-bottom))}
+.shh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:1.1rem}
+.shh .x{border:0;background:var(--bg);color:var(--fg);width:38px;height:38px;border-radius:50%;font-size:1rem}
+.shg{display:grid;grid-template-columns:repeat(4,1fr);gap:14px 6px}
+.shg a,.shg button{display:grid;justify-items:center;gap:6px;border:0;background:none;color:var(--fg);font:600 .75rem inherit;text-decoration:none;cursor:pointer;padding:0}
+.shg i{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;color:#fff;font-style:normal;font-weight:800;font-size:1.25rem}
+.speak{border:0;background:rgba(255,255,255,.14);color:inherit;border-radius:999px;padding:10px 16px;font:700 .9rem inherit;margin-top:14px;cursor:pointer}
+@media print{body>*:not(#sheet){display:none!important}#sheet{position:static!important;transform:none!important;overflow:visible!important;height:auto!important}#sheet .sbtn,#sheet .btn,#sheet .row,#sheet .vbox,#sheet .ytbtn,#sheet textarea{display:none!important}body.lock{overflow:visible!important}}
 .ytbtn small{color:var(--muted);font-size:.8rem}
 .tsbox{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translateX(-50%);z-index:70}
 .credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
@@ -705,10 +719,10 @@ function openR(r){
     <section class="sec"><h4>Cara memasak</h4><div class="steps">${r.s.map((x,i)=>{const m=mins(x);return `<div class="st"><div class="n">${i+1}</div><div class="tx">${x}${m?`<span class="tm">⏱ Timer ${m} menit tersedia di mode masak</span>`:""}</div></div>`}).join("")}</div></section>
     ${r.tip?`<div class="tip"><b>TIPS</b><div>${r.tip}</div></div>`:""}
     <section class="sec"><h4>Catatanku</h4><textarea class="note" id="note" placeholder="Mis. garamnya kurangi sedikit, cabai tambah 2…">${esc(notes[r.n]||"")}</textarea></section>
-    ${r.v?`<section class="sec"><h4>Tonton videonya</h4><div class="vbox"><button class="vplay" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.youtube-nocookie.com/embed/${r.v}?autoplay=1&amp;rel=0&amp;playsinline=1&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture; fullscreen&quot; allowfullscreen></iframe>'" style="background-image:url(${img(r)||""})" aria-label="Putar video"><span>▶</span></button></div><a class="ytbtn" style="margin-top:10px" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener"><span class="yplay"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span><span><b>Video tidak bisa diputar?</b><small>Buka di aplikasi YouTube</small></span><span aria-hidden="true">↗</span></a></section>`:""}
+    ${r.v?`<section class="sec"><h4>Tonton videonya</h4><div class="vbox"><button class="vplay" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.youtube-nocookie.com/embed/${r.v}?autoplay=1&amp;rel=0&amp;playsinline=1&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture; fullscreen&quot; allowfullscreen></iframe>'" style="background-image:url(${img(r)||""})" aria-label="Putar video"><span>▶</span></button></div><a class="ytbtn" style="margin-top:10px" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener"><span class="yplay"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span><span><b>Video tidak bisa diputar?</b><small>Buka di aplikasi YouTube</small></span><span aria-hidden="true">↗</span></a><a class="ytbtn" style="margin-top:10px" target="_blank" rel="noopener" href="https://www.tiktok.com/search?q=${encodeURIComponent("resep "+r.n)}"><span class="yplay" style="background:#111">♪</span><span><b>Video versi TikTok</b><small>Cari video resep ini di TikTok</small></span><span aria-hidden="true">↗</span></a></section>`:""}
     <div class="row"><button class="btn ${done[r.n]?"sec":"pri"}" id="mark">${done[r.n]?"✓ Sudah pernah dimasak":"Tandai sudah dimasak"}</button>
-      <a class="btn wa" id="share" target="_blank" rel="noopener" href="${waLink(recipeText(r))}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>Bagikan ke WhatsApp</a></div>
-    <div class="row"><a class="btn tt" target="_blank" rel="noopener" href="https://www.tiktok.com/search?q=${encodeURIComponent("resep "+r.n)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 2h-3.3v13.2a2.9 2.9 0 1 1-2.1-2.8V9a6.3 6.3 0 1 0 5.4 6.2V8.6a7.7 7.7 0 0 0 4.4 1.4V6.7A4.4 4.4 0 0 1 16.6 2z"/></svg>Video di TikTok</a><button class="btn tt" onclick="shareTT(${JSON.stringify(r.n).replace(/"/g,"&quot;")})"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 2h-3.3v13.2a2.9 2.9 0 1 1-2.1-2.8V9a6.3 6.3 0 1 0 5.4 6.2V8.6a7.7 7.7 0 0 0 4.4 1.4V6.7A4.4 4.4 0 0 1 16.6 2z"/></svg>Bagikan ke TikTok</button></div>
+      <button class="btn wa" id="share"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Bagikan</button></div>
+    <div class="row"><button class="btn sec" id="prR">🖨 Cetak / simpan PDF</button></div>
     ${r.own?`<div class="row"><button class="btn org" id="upR">${(mine.find(m=>m.id===r.id)||{}).cid?"Perbarui di Komunitas":"Bagikan ke Komunitas"}</button></div><div class="tip" id="needLogin" hidden><b>LOGIN</b><div>Untuk membagikan resep ke Komunitas, masuk dulu dengan akun Google. Resepmu akan langsung diunggah setelah masuk.<div style="margin-top:12px"><button class="btn gbtn" id="gBtn">${GICON}Masuk dengan Google</button></div></div></div><form class="addrow" id="upBox" hidden><input id="upName" maxlength="40" placeholder="Nama tampilanmu, mis. Bunda Rina" autocomplete="off" aria-label="Nama tampilan"><button class="btn org" type="submit">Unggah</button></form><div class="row"><button class="btn sec" id="edR">Edit resep</button><button class="btn sec" id="delR" style="color:var(--red)">Hapus resep</button></div>`:""}
   </div></div>`;
   drawIngs();
@@ -719,6 +733,7 @@ function openR(r){
   $("note").oninput=e=>{notes[r.n]=e.target.value;store.set("notes",notes)};
   $("mark").onclick=()=>{if(done[r.n]){delete done[r.n];toast("Tanda dihapus")}else{done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});toast("Mantap! Tercatat di Koleksi")}store.set("done",done);drawGrid();drawSaved();const y=$("sheet").scrollTop;openR(r);$("sheet").scrollTop=y};
   $("back").onclick=closeR;
+  $("share").onclick=()=>openShare(r);$("prR").onclick=()=>window.print();
   if(r.own){$("edR").onclick=()=>editor(r);let dz=0;$("delR").onclick=()=>{if(Date.now()-dz>3000){dz=Date.now();$("delR").textContent="Ketuk lagi untuk menghapus";return}delMine(r)}}
   if(r.comm){$("likeB").onclick=()=>toggleLike(r);
     if($("cRep")){let rz=0;$("cRep").onclick=async()=>{if(Date.now()-rz>3000){rz=Date.now();$("cRep").textContent="Ketuk lagi untuk melaporkan";return}$("cRep").disabled=true;try{await api("reports",{method:"POST",body:JSON.stringify({recipe_id:r.comm.id,reason:"tidak pantas"})});toast("Terima kasih, laporan sudah dikirim")}catch(e){toast(/duplicate|409/.test(e.message)?"Kamu sudah melaporkan resep ini":"Gagal mengirim laporan. Cek koneksi internet.")}$("cRep").textContent="Laporkan";$("cRep").disabled=false}}
@@ -736,19 +751,53 @@ function closeR(fromPop){
   if(fromPop!==true){skipPop=true;history.back()};
 }
 function recipeText(r){return `*${r.n}* (${r.t} menit)\n\n*Bahan:*\n${r.b.map(x=>"• "+x).join("\n")}\n\n*Cara:*\n${r.s.map((x,i)=>(i+1)+". "+x).join("\n")}${r.v?"\n\nVideo: https://youtu.be/"+r.v:""}\n\nResep lain: ${SITE}`}
-async function shareTT(n){const r=R.find(x=>x.n===n)||{n};const url="https://amonkshark.github.io/masak-simpel/",text="Resep "+n+" 🍳 gampang banget! Lihat di Masak Simpel: "+url;
-try{if(navigator.share){await navigator.share({title:"Resep "+n,text});return}}catch(e){if(e.name==="AbortError")return}
-try{await navigator.clipboard.writeText(text)}catch(e){}
-if(typeof toast==="function")toast("Teks resep disalin. Tempel di caption TikTok-mu");window.open("https://www.tiktok.com/upload","_blank")}
+const rLink=r=>SITE+"?r="+encodeURIComponent(r.n);
+function shareMsg(r){return `Resep ${r.n} 🍳 cuma ${r.t} menit, bahannya gampang! Lihat resep lengkap & videonya di Masak Simpel:`}
+function openShare(r){let d=$("shareBox");if(!d){d=document.createElement("div");d.id="shareBox";d.className="shbg";document.body.appendChild(d)}
+  const L=rLink(r),M=shareMsg(r),e=encodeURIComponent;
+  const it=[["WhatsApp","#25D366","wa",waLink(recipeText(r)+"\n\n"+L)],["Facebook","#1877F2","fb","https://www.facebook.com/sharer/sharer.php?u="+e(L)],["Instagram","linear-gradient(45deg,#f9a825,#e1306c,#833ab4)","ig",""],["TikTok","#111","tt",""],["X","#000","x","https://twitter.com/intent/tweet?text="+e(M)+"&url="+e(L)],["Telegram","#229ED9","tg","https://t.me/share/url?url="+e(L)+"&text="+e(M)],["Threads","#000","th","https://www.threads.net/intent/post?text="+e(M+" "+L)],["Pinterest","#E60023","pin","https://pinterest.com/pin/create/button/?url="+e(L)+"&description="+e(M)+(img(r)?"&media="+e(img(r)):"")],["Email","#5f6f64","em","mailto:?subject="+e("Resep "+r.n)+"&body="+e(recipeText(r)+"\n\n"+L)],["Salin link","#0f3b26","cp",""],["Lainnya","#ff7a1a","more",""]];
+  d.innerHTML=`<div class="shp"><div class="shh"><b>Bagikan resep</b><button class="x" id="shX">✕</button></div>
+   <div class="shg">${it.map(([n,c,k,u])=>u?`<a href="${u}" target="_blank" rel="noopener" data-k="${k}"><i style="background:${c}">${n[0]}</i>${n}</a>`:`<button data-k="${k}"><i style="background:${c}">${k==="cp"?"🔗":k==="more"?"⋯":n[0]}</i>${n}</button>`).join("")}</div>
+   <button class="btn org" id="shImg" style="margin-top:14px">🖼 Simpan gambar resep (untuk Story / Reels)</button>
+   <small style="display:block;color:var(--muted);margin-top:8px;text-align:center">Instagram & TikTok: gambar resep disimpan dan teksnya disalin, lalu tinggal tempel.</small></div>`;
+  d.classList.add("on");
+  d.onclick=ev=>{if(ev.target===d)d.classList.remove("on")};$("shX").onclick=()=>d.classList.remove("on");
+  d.querySelectorAll("button[data-k]").forEach(b=>b.onclick=async()=>{const k=b.dataset.k,txt=M+" "+L;
+    if(k==="cp"){await copyT(L);toast("Link resep disalin")}
+    else if(k==="more"){await nativeShare(r,true)}
+    else{const ok=await nativeShare(r,false);if(!ok){await saveCard(r);await copyT(txt);toast("Gambar disimpan & caption disalin. Buka "+(k==="ig"?"Instagram":"TikTok")+" lalu tempel");setTimeout(()=>location.href=k==="ig"?"https://www.instagram.com/":"https://www.tiktok.com/upload",900)}}});
+  $("shImg").onclick=()=>saveCard(r).then(()=>toast("Gambar resep tersimpan"));
+}
+async function copyT(t){try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(_){}a.remove()}}
+async function nativeShare(r,textOnly){const L=rLink(r),text=shareMsg(r)+" "+L;
+  try{if(!textOnly&&navigator.canShare){const f=new File([await makeCard(r)],"resep-"+r.n.replace(/\W+/g,"-").toLowerCase()+".png",{type:"image/png"});
+      if(navigator.canShare({files:[f]})){await copyT(text);await navigator.share({files:[f],text});return true}}
+    if(textOnly&&navigator.share){await navigator.share({title:"Resep "+r.n,text,url:L});return true}}catch(e){if(e.name==="AbortError")return true}
+  if(textOnly){await copyT(text);toast("Link resep disalin")}return false}
+function loadImg(u){return new Promise(res=>{if(!u)return res(null);const im=new Image();im.crossOrigin="anonymous";im.onload=()=>res(im);im.onerror=()=>res(null);im.src=u})}
+async function makeCard(r){const W=1080,H=1920,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+  x.fillStyle="#0f3b26";x.fillRect(0,0,W,H);const im=await loadImg(img(r));
+  if(im){const s=Math.max(W/im.width,1100/im.height);x.drawImage(im,(W-im.width*s)/2,(1100-im.height*s)/2,im.width*s,im.height*s)}else{x.fillStyle=r.c||"#ffc53d";x.fillRect(0,0,W,1100);x.font="420px serif";x.textAlign="center";x.fillText(r.e||"🍳",W/2,760)}
+  const g=x.createLinearGradient(0,800,0,1150);g.addColorStop(0,"rgba(15,59,38,0)");g.addColorStop(1,"#0f3b26");x.fillStyle=g;x.fillRect(0,800,W,350);
+  x.textAlign="left";x.fillStyle="#ff7a1a";x.font="800 40px 'Plus Jakarta Sans',sans-serif";x.fillText((r.k||"RESEP").toUpperCase()+"  ·  "+r.t+" MENIT",80,1180);
+  x.fillStyle="#fff";x.font="800 92px 'Bricolage Grotesque','Plus Jakarta Sans',sans-serif";let y=1290;wrap(x,r.n,80,y,920,100).forEach((l,i)=>{x.fillText(l,80,y+i*100);y2=y+i*100});
+  let yy=y2+90;x.font="600 40px 'Plus Jakarta Sans',sans-serif";x.fillStyle="#cfe3d6";
+  for(const b of r.b.slice(0,6)){if(yy>1700)break;x.fillText("•  "+(b.length>40?b.slice(0,39)+"…":b),80,yy);yy+=58}
+  if(r.b.length>6&&yy<1720){x.fillText("…dan "+(r.b.length-6)+" bahan lain",80,yy)}
+  x.fillStyle="#ffc53d";x.font="800 44px 'Plus Jakarta Sans',sans-serif";x.fillText("Masak Simpel",80,1820);x.fillStyle="#cfe3d6";x.font="600 32px 'Plus Jakarta Sans',sans-serif";x.fillText("amonkshark.github.io/masak-simpel",80,1868);
+  return new Promise(res=>c.toBlob(b=>res(b),"image/png"))}
+let y2=0;function wrap(x,t,_,__,w){const ws=t.split(" "),out=[];let l="";for(const q of ws){const tt=l?l+" "+q:q;if(x.measureText(tt).width>w&&l){out.push(l);l=q}else l=tt}out.push(l);return out.slice(0,3)}
+async function saveCard(r){const b=await makeCard(r),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="resep-"+r.n.replace(/\W+/g,"-").toLowerCase()+".png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
 const waLink=t=>"https://wa.me/?text="+encodeURIComponent(t);
 
 /* ---------- Mode masak ---------- */
 const mins=s=>{const m=s.match(/(\d+)\s*menit/);return m?+m[1]:0};
+let tts=false;try{tts=!!JSON.parse(localStorage.getItem("ms-tts"))}catch(e){}
 let ck={r:null,i:0},timer={end:0,left:0,run:false,tick:null},wl=null;
 async function wake(){try{if("wakeLock" in navigator){wl=await navigator.wakeLock.request("screen")}}catch(e){wl=null}}
 document.addEventListener("visibilitychange",()=>{if(!$("cook").hidden&&document.visibilityState==="visible")wake()});
 function cook(r){ck={r,i:0};$("cook").hidden=false;wake();history.pushState({c:1},"");drawCook()}
-function closeCook(fromPop){if($("cook").hidden)return;$("cook").hidden=true;stopTimer();try{wl&&wl.release()}catch(e){}wl=null;if(fromPop!==true){skipPop=true;history.back()}}
+function closeCook(fromPop){if($("cook").hidden)return;try{speechSynthesis.cancel()}catch(e){}$("cook").hidden=true;stopTimer();try{wl&&wl.release()}catch(e){}wl=null;if(fromPop!==true){skipPop=true;history.back()}}
 function drawCook(){
   const {r,i}=ck,n=r.s.length,fin=i>=n,m=fin?0:mins(r.s[i]);
   $("cook").innerHTML=`<div class="ctop"><button class="x" id="cx" aria-label="Keluar">✕</button><div class="nm">${r.n}</div></div>
@@ -758,8 +807,10 @@ function drawCook(){
    :`<div class="cnum">LANGKAH ${i+1} DARI ${n}</div><div class="ctext">${r.s[i]}</div>
      ${m||timer.run||timer.left?`<div class="timer" id="tbox"><div class="clock" id="clock">${clk(timer.run||timer.left?timer.left:m*60)}</div>
        <button class="btn org" id="tgo">${timer.run?"Jeda":timer.left?"Lanjut":"Mulai timer "+m+" menit"}</button>${timer.run||timer.left?`<button class="btn sec" id="treset">Ulang</button>`:""}</div>`:""}`}
-   <div class="wake">${wl?"Layar tetap menyala selama mode masak":"Ketuk layar sesekali agar HP tidak terkunci"}</div></div>
+   ${fin?"":`<button class="speak" id="spk">${tts?"🔊 Bacakan otomatis: AKTIF":"🔈 Bacakan langkah"}</button>`}<div class="wake">${wl?"Layar tetap menyala selama mode masak":"Ketuk layar sesekali agar HP tidak terkunci"}</div></div>
   <div class="cnav"><button class="prev" id="cp" ${i===0?"disabled":""}>← Sebelumnya</button>${fin?`<button class="next" id="cend">Tutup</button>`:`<button class="next" id="cn">${i===n-1?"Selesai ✓":"Berikutnya →"}</button>`}</div>`;
+  if($("spk"))$("spk").onclick=()=>{tts=!tts;store.set("tts",tts);if(!tts)speechSynthesis.cancel();drawCook()};
+  if(tts&&!fin&&"speechSynthesis" in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance("Langkah "+(i+1)+". "+r.s[i]);u.lang="id-ID";u.rate=.95;speechSynthesis.speak(u)}
   $("cx").onclick=closeCook;
   $("cp").onclick=()=>{ck.i--;drawCook()};
   if($("cn"))$("cn").onclick=()=>{ck.i++;drawCook()};
@@ -1012,6 +1063,7 @@ $("install").onclick=async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice
 if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
 
 loadMine();drawCats();saveShop();handleAuthReturn();
+try{const q=new URLSearchParams(location.search).get("r");const rr=q&&R.find(x=>x.n===q);if(rr){history.replaceState(null,"",location.pathname);setTimeout(()=>openR(rr),250)}}catch(e){}
 ["gesturestart","gesturechange"].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 </script>
 </body>
