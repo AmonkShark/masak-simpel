@@ -795,12 +795,13 @@ const waLink=t=>"https://wa.me/?text="+encodeURIComponent(t);
 
 /* ---------- Mode masak ---------- */
 const mins=s=>{const m=s.match(/(\d+)\s*menit/);return m?+m[1]:0};
+let jeda=5,spoken="",autoT=null,held=false;try{jeda=+JSON.parse(localStorage.getItem("ms-jeda"))||5}catch(e){}
 let tts=false;try{tts=!!JSON.parse(localStorage.getItem("ms-tts"))}catch(e){}
 let ck={r:null,i:0},timer={end:0,left:0,run:false,tick:null},wl=null;
 async function wake(){try{if("wakeLock" in navigator){wl=await navigator.wakeLock.request("screen")}}catch(e){wl=null}}
 document.addEventListener("visibilitychange",()=>{if(!$("cook").hidden&&document.visibilityState==="visible")wake()});
 function cook(r){ck={r,i:0};$("cook").hidden=false;wake();history.pushState({c:1},"");drawCook()}
-function closeCook(fromPop){if($("cook").hidden)return;try{speechSynthesis.cancel()}catch(e){}$("cook").hidden=true;stopTimer();try{wl&&wl.release()}catch(e){}wl=null;if(fromPop!==true){skipPop=true;history.back()}}
+function closeCook(fromPop){if($("cook").hidden)return;try{speechSynthesis.cancel()}catch(e){}clearInterval(autoT);spoken="";$("cook").hidden=true;stopTimer();try{wl&&wl.release()}catch(e){}wl=null;if(fromPop!==true){skipPop=true;history.back()}}
 function drawCook(){
   const {r,i}=ck,n=r.s.length,fin=i>=n,m=fin?0:mins(r.s[i]);
   $("cook").innerHTML=`<div class="ctop"><button class="x" id="cx" aria-label="Keluar">✕</button><div class="nm">${r.n}</div></div>
@@ -810,13 +811,24 @@ function drawCook(){
    :`<div class="cnum">LANGKAH ${i+1} DARI ${n}</div><div class="ctext">${r.s[i]}</div>
      ${m||timer.run||timer.left?`<div class="timer" id="tbox"><div class="clock" id="clock">${clk(timer.run||timer.left?timer.left:m*60)}</div>
        <button class="btn org" id="tgo">${timer.run?"Jeda":timer.left?"Lanjut":"Mulai timer "+m+" menit"}</button>${timer.run||timer.left?`<button class="btn sec" id="treset">Ulang</button>`:""}</div>`:""}`}
-   ${fin?"":`<button class="speak" id="spk">${tts?"🔊 Bacakan otomatis: AKTIF":"🔈 Bacakan langkah"}</button>`}<div class="wake">${wl?"Layar tetap menyala selama mode masak":"Ketuk layar sesekali agar HP tidak terkunci"}</div></div>
+   ${fin?"":`<div><button class="speak" id="spk">${tts?"🔊 Bacakan otomatis: AKTIF":"🔈 Bacakan langkah"}</button>${tts?` <button class="speak" id="jd">Jeda ${jeda} dtk</button> <button class="speak" id="hold">⏸ Tahan</button><div id="auto" style="margin-top:10px;font-weight:700;opacity:.85">${m?"Timer jalan otomatis setelah dibacakan":"Dibacakan…"}</div>`:""}</div>`}<div class="wake">${wl?"Layar tetap menyala selama mode masak":"Ketuk layar sesekali agar HP tidak terkunci"}</div></div>
   <div class="cnav"><button class="prev" id="cp" ${i===0?"disabled":""}>← Sebelumnya</button>${fin?`<button class="next" id="cend">Tutup</button>`:`<button class="next" id="cn">${i===n-1?"Selesai ✓":"Berikutnya →"}</button>`}</div>`;
-  if($("spk"))$("spk").onclick=()=>{tts=!tts;store.set("tts",tts);if(!tts)speechSynthesis.cancel();drawCook()};
-  if(tts&&!fin&&"speechSynthesis" in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance("Langkah "+(i+1)+". "+r.s[i]);u.lang="id-ID";u.rate=.95;speechSynthesis.speak(u)}
+  if($("spk"))$("spk").onclick=()=>{tts=!tts;spoken="";store.set("tts",tts);if(!tts)speechSynthesis.cancel();drawCook()};
+  if($("jd"))$("jd").onclick=()=>{const o=[3,5,10,15];jeda=o[(o.indexOf(jeda)+1)%o.length];store.set("jeda",jeda);$("jd").textContent="Jeda "+jeda+" dtk"};
+  if($("hold"))$("hold").onclick=()=>{clearInterval(autoT);autoT=null;held=true;$("auto").textContent="Lanjut otomatis dijeda. Ketuk Berikutnya untuk lanjut."};
+  const key=r.n+"|"+i+"|"+fin;
+  if(tts&&!fin&&"speechSynthesis" in window&&spoken!==key){spoken=key;held=false;clearInterval(autoT);autoT=null;speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance("Langkah "+(i+1)+". "+r.s[i]+(m?". Timer "+m+" menit dimulai.":""));u.lang="id-ID";u.rate=.95;
+    u.onend=()=>{if(spoken!==key||$("cook").hidden||held)return;
+      if(m){if(!timer.run&&!timer.left){startTimer(m*60);drawCook()}return}
+      let left=jeda;const a=$("auto");if(a)a.textContent="Lanjut otomatis dalam "+left+" detik…";
+      autoT=setInterval(()=>{if(spoken!==key||$("cook").hidden||held){clearInterval(autoT);return}left--;const a=$("auto");if(a)a.textContent="Lanjut otomatis dalam "+left+" detik…";
+        if(left<=0){clearInterval(autoT);autoT=null;ck.i++;drawCook()}},1000)};
+    speechSynthesis.speak(u)}
+  if(fin&&tts&&spoken!==key&&"speechSynthesis" in window){spoken=key;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance("Selesai! Selamat makan.");u.lang="id-ID";speechSynthesis.speak(u)}
   $("cx").onclick=closeCook;
-  $("cp").onclick=()=>{ck.i--;drawCook()};
-  if($("cn"))$("cn").onclick=()=>{ck.i++;drawCook()};
+  $("cp").onclick=()=>{clearInterval(autoT);ck.i--;drawCook()};
+  if($("cn"))$("cn").onclick=()=>{clearInterval(autoT);ck.i++;drawCook()};
   if($("cend"))$("cend").onclick=closeCook;
   if($("cdone"))$("cdone").onclick=()=>{if(!done[r.n]){done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});store.set("done",done);drawGrid();drawSaved();toast("Tercatat di Koleksi")}drawCook()};
   if($("tgo"))$("tgo").onclick=()=>{if(timer.run){pauseTimer()}else{startTimer(timer.left||m*60)}drawCook()};
@@ -827,7 +839,7 @@ function startTimer(sec){timer.end=Date.now()+sec*1000;timer.run=true;timer.left
 function pauseTimer(){timer.run=false;clearInterval(timer.tick)}
 function stopTimer(){timer={end:0,left:0,run:false,tick:clearInterval(timer.tick)}}
 function tickT(){timer.left=Math.max(0,Math.ceil((timer.end-Date.now())/1000));const c=$("clock");if(c)c.textContent=clk(timer.left);
-  if(timer.left<=0){clearInterval(timer.tick);timer.run=false;timer.left=0;beep();try{navigator.vibrate&&navigator.vibrate([400,200,400,200,400])}catch(e){}toast("⏰ Waktunya habis! Lanjut ke langkah berikutnya");const b=$("tbox");if(b)b.classList.add("ring");setTimeout(()=>{if(!$("cook").hidden){stopTimer();drawCook()}},6000)}}
+  if(timer.left<=0){clearInterval(timer.tick);timer.run=false;timer.left=0;beep();try{navigator.vibrate&&navigator.vibrate([400,200,400,200,400])}catch(e){}toast("⏰ Waktunya habis! Lanjut ke langkah berikutnya");const b=$("tbox");if(b)b.classList.add("ring");setTimeout(()=>{if(!$("cook").hidden){stopTimer();if(tts&&!held&&ck.i<ck.r.s.length)ck.i++;drawCook()}},tts?jeda*1000+3000:6000)}}
 let actx=null;function unlockAudio(){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();actx.resume()}catch(e){}}
 function beep(){try{unlockAudio();[0,.45,.9].forEach(t=>{const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=880;o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.001,actx.currentTime+t);g.gain.exponentialRampToValueAtTime(.4,actx.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+t+.35);o.start(actx.currentTime+t);o.stop(actx.currentTime+t+.4)})}catch(e){}}
 
