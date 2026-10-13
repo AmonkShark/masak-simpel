@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
+<script>try{var _t=JSON.parse(localStorage.getItem("ms-theme"));if(_t==="light"||_t==="dark")document.documentElement.dataset.theme=_t}catch(e){}</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0f3b26">
 <meta name="description" content="Resep masakan rumahan simpel dengan bahan dapur biasa, lengkap dengan video.">
@@ -26,10 +27,16 @@
   --body:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;
   --sh:0 2px 4px rgba(15,59,38,.05),0 12px 28px rgba(15,59,38,.10);
 }
-@media (prefers-color-scheme:dark){:root{
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
   --bg:#0b130e;--surface:#152119;--fg:#ecf3ee;--muted:#9db1a3;--line:#23342a;
   --deep:#0a2a1a;--deep2:#103a25;--accent:#5fd393;--accent-soft:#183324;--tang:#ff9447;--tang-soft:#3a2414;
   --sh:0 2px 4px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.4);color-scheme:dark}}
+:root[data-theme=dark]{
+  --bg:#0b130e;--surface:#152119;--fg:#ecf3ee;--muted:#9db1a3;--line:#23342a;
+  --deep:#0a2a1a;--deep2:#103a25;--accent:#5fd393;--accent-soft:#183324;--tang:#ff9447;--tang-soft:#3a2414;
+  --sh:0 2px 4px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.4);color-scheme:dark}
+:root[data-theme=light]{color-scheme:light}
+
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation;scrollbar-gutter:stable;overflow-y:scroll}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;overscroll-behavior-y:none;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
@@ -54,8 +61,11 @@ button{border:0;background:none;padding:0;cursor:pointer}
 .dice{display:inline-flex;align-items:center;gap:10px;background:var(--sun);color:#12241a;font-weight:800;padding:13px 18px;border-radius:16px;box-shadow:0 10px 24px rgba(0,0,0,.25);transition:transform .2s}
 .dice:active{transform:scale(.96)}
 .hero{position:relative}
-.fbtop{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:5;display:inline-flex;align-items:center;gap:7px;background:#ffc53d;color:#0f3b26;border:0;font:800 .85rem inherit;padding:10px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.25);cursor:pointer}
-@media(max-width:420px){.fbtop{padding:9px 12px;font-size:.8rem}}
+.topbtns{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:5;display:flex;gap:8px}
+.thm{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.16);color:#fff;font-size:1.05rem;cursor:pointer}
+.fbtop{display:inline-flex;align-items:center;gap:7px;background:#ffc53d;color:#0f3b26;border:0;font:800 .85rem inherit;padding:10px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.25);cursor:pointer}
+.fbs{display:none}
+@media(max-width:480px){.fbtop{padding:9px 12px;font-size:.8rem}.fbl{display:none}.fbs{display:inline}.thm{width:36px;height:36px}}
 .ghost{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);color:#fff;font-weight:700;padding:13px 16px;border-radius:16px}
 .collage{position:relative;height:170px}
 @media (min-width:760px){.collage{height:270px}}
@@ -323,6 +333,40 @@ input,select,textarea{font-size:16px}
 .shg i{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;color:#fff;font-style:normal;font-weight:800;font-size:1.25rem}
 .speak{border:0;background:rgba(255,255,255,.14);color:inherit;border-radius:999px;padding:10px 16px;font:700 .9rem inherit;margin-top:14px;cursor:pointer}
 @media print{body>*:not(#sheet){display:none!important}#sheet{position:static!important;transform:none!important;overflow:visible!important;height:auto!important}#sheet .sbtn,#sheet .btn,#sheet .row,#sheet .vbox,#sheet .ytbtn,#sheet textarea{display:none!important}body.lock{overflow:visible!important}}
+.est{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.est span{background:var(--tang-soft);color:var(--fg);border-radius:12px;padding:8px 12px;font-weight:800;font-size:.9rem}
+.est small{font-weight:600;color:var(--muted)}
+.estn{font-size:.75rem;color:var(--muted);margin-top:6px}
+.subs{display:grid;gap:8px}
+.subs div{background:var(--surface);border-radius:14px;padding:10px 14px;box-shadow:var(--sh);display:grid}
+.subs span{color:var(--muted);font-size:.92rem}
+.ravg{font-family:var(--body);font-size:.85rem;color:var(--tang);font-weight:800;margin-left:6px}
+.snaps{display:flex;gap:8px;overflow-x:auto;margin-bottom:10px}
+.snaps img{width:96px;height:96px;object-fit:cover;border-radius:14px;flex:none}
+.revs{display:grid;gap:10px;margin-top:12px}
+.rev{background:var(--surface);border-radius:16px;padding:12px 14px;box-shadow:var(--sh)}
+.rev header{display:flex;justify-content:space-between;gap:8px;font-size:.9rem}
+.rev .st5{color:#f5a524;letter-spacing:1px}
+.rev p{margin:6px 0 0;font-size:.95rem}
+.rev img{width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin-top:8px}
+.rev button{border:0;background:none;color:var(--red);font:700 .8rem var(--body);cursor:pointer;padding:0;margin-top:6px}
+.rform{background:var(--surface);border-radius:18px;padding:14px;box-shadow:var(--sh);display:grid;gap:10px}
+.rform textarea{width:100%;min-height:80px;border:1.5px solid var(--line);border-radius:12px;padding:10px;font:16px var(--body);background:var(--bg);color:var(--fg);box-sizing:border-box}
+.starpick{display:flex;gap:4px}
+.starpick button{border:0;background:none;font-size:2rem;line-height:1;cursor:pointer;color:var(--line);padding:0}
+.starpick button.on{color:#f5a524}
+.rph{display:flex;align-items:center;gap:10px;font-size:.9rem;color:var(--muted)}
+.rph img{width:56px;height:56px;object-fit:cover;border-radius:10px}
+.chal{background:linear-gradient(135deg,var(--deep),var(--deep2));color:#fff;border-radius:22px;padding:16px 18px;display:grid;gap:10px;box-shadow:var(--sh)}
+.chal small{opacity:.8;font-weight:700;letter-spacing:.06em;font-size:.72rem}
+.chal b{font-size:1.1rem}
+.chal .bar{height:10px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}
+.chal .bar i{display:block;height:100%;background:var(--sun);border-radius:99px}
+.chal .meta{display:flex;justify-content:space-between;font-size:.85rem;opacity:.9}
+.remind{background:var(--surface);border-radius:18px;padding:14px;box-shadow:var(--sh);display:grid;gap:10px}
+.remind>div:first-child{display:grid}
+.remind span{color:var(--muted);font-size:.9rem}
+.remind input{height:52px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);font:700 16px var(--body);padding:0 12px}
 .ytbtn small{color:var(--muted);font-size:.8rem}
 .tsbox{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translateX(-50%);z-index:70}
 .credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
@@ -333,7 +377,7 @@ input,select,textarea{font-size:16px}
 
 <!-- ===== BERANDA ===== -->
 <div id="vHome">
-<header class="hero"><button class="fbtop" data-fb="Saran" aria-label="Saran dan masukan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>Saran & Masukan</button><div class="in hgrid">
+<header class="hero"><div class="topbtns"><button class="thm" id="thm" aria-label="Ganti tema">🌓</button><button class="fbtop" data-fb="Saran" aria-label="Saran dan masukan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg><span class="fbl">Saran & Masukan</span><span class="fbs">Saran</span></button></div><div class="in hgrid">
   <div>
     <span class="brand"><svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="10" fill="#ffc53d"/><path d="M7 16h18a9 9 0 0 1-18 0z" fill="#0f3b26"/><path d="M5 16h22" stroke="#0f3b26" stroke-width="2.4" stroke-linecap="round"/><path d="M12 7c-1 1.5 1 2.5 0 4M16 6c-1 1.5 1 2.5 0 4M20 7c-1 1.5 1 2.5 0 4" stroke="#0f3b26" stroke-width="1.8" stroke-linecap="round"/></svg>Masak Simpel</span>
     <span class="greet" id="greet">Halo!</span>
@@ -358,6 +402,8 @@ input,select,textarea{font-size:16px}
 </div></div></div>
 
 <div class="in">
+  <section class="blk" id="chBlk"></section>
+  <section class="blk"><h2 class="h">Koleksi spesial</h2><div class="lchips" id="spec"></div></section>
   <section class="blk"><h2 class="h">Kategori</h2><div class="cats" id="cats"></div><div class="lchips" id="lchips"></div></section>
   <section class="blk" id="fastBlk"><h2 class="h">Paling cepat <small>≤ 10 menit</small></h2><div class="rail" id="rail"></div></section>
   <section class="blk"><h2 class="h"><span id="ttl">Semua menu</span><small id="count"></small></h2><div class="grid" id="grid"></div></section>
@@ -370,6 +416,7 @@ input,select,textarea{font-size:16px}
   <header class="phead"><div class="in"><h1>Menu Seminggu</h1><p>Satu sayur dan satu lauk untuk setiap hari. Tidak suka? Acak ulang per hari.</p></div></header>
   <div class="in">
     <section class="blk"><div class="row"><button class="btn sec" id="pShuffle">Acak ulang semua</button><button class="btn org" id="pShop">Masukkan ke daftar belanja</button></div></section>
+    <section class="blk"><div class="remind"><div><b>⏰ Pengingat masak</b><span>Masukkan menu minggu ini ke kalender HP-mu, lengkap dengan alarm.</span></div><div class="row"><input type="time" id="remT" value="16:30" aria-label="Jam pengingat"><button class="btn org" id="remB">Pasang di Kalender</button></div></div></section>
     <section class="blk"><div class="days" id="days"></div></section>
   </div>
 </div>
@@ -613,7 +660,7 @@ const R=[
 ];
 const store={get(k,d){try{const v=localStorage.getItem("ms-"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("ms-"+k,JSON.stringify(v))}catch(e){}}};
 let favs=new Set(store.get("fav",[])),have=new Set(store.get("have",[])),labels=new Set(store.get("labels",[])),done=store.get("done",{}),notes=store.get("notes",{}),shop=store.get("shop",[]),plan=store.get("plan",null);
-let cat="Semua",seg="fav",cur=null,por=2;
+let cat="Semua",seg="fav",cur=null,por=2,spec="";
 const SITE="https://amonkshark.github.io/masak-simpel/";
 const ANAK=new Set(["Telur Dadar Daun Bawang","Sop Telur Sosis","Nasi Goreng Kecap","Perkedel Kentang","Ayam Kecap","Tahu Goreng Crispy","Sop Jagung Telur","Mie Goreng Sederhana","Ayam Goreng Bawang","Sop Bakso","Bakwan Sayur","Telur Ceplok Kecap","Tumis Telur Tomat","Sop Ayam Sederhana","Mie Rebus Telur Sawi","Sop Sayur Bening","Tempe Goreng","Orek Tempe","Sup Makaroni","Telur Gulung","Udang Goreng Tepung","Martabak Mie","Nasi Uduk Rice Cooker","Nasi Kuning Rice Cooker","Semur Telur","Semur Ayam","Ayam Saus Tiram","Ayam Goreng Kuning","Bihun Goreng","Kwetiau Goreng","Sop Tahu Bakso","Sup Tomat Telur","Tahu Isi Sayur","Tahu Tempe Bacem"]);
 const LABELS=["Pedas","Tanpa daging","Hemat","Anak suka"];
@@ -654,6 +701,7 @@ function drawRail(){
 function filtered(){
   const words=$("q").value.toLowerCase().split(/[,\s]+/).filter(Boolean);
   let l=R.filter(r=>(cat==="Semua"||r.k===cat)&&words.every(w=>(r.n+" "+r.b.join(" ")).toLowerCase().includes(w))&&[...labels].every(x=>r.L.includes(x)));
+  if(spec&&SPEC[spec])l=l.filter(SPEC[spec].f);
   if(have.size)l=l.filter(r=>r.i.some(x=>have.has(x))).sort((a,b)=>miss(a).length-miss(b).length);
   return l;
 }
@@ -672,9 +720,9 @@ function toggleFav(n){favs.has(n)?favs.delete(n):favs.add(n);store.set("fav",[..
 function drawGrid(){
   const searching=$("q").value.trim().length>0,byIng=have.size>0,nf=have.size+labels.size;
   $("clr").hidden=!searching;$("fDot").hidden=!nf;$("fDot").textContent=nf;
-  $("fastBlk").hidden=searching||byIng||labels.size>0;
+  $("fastBlk").hidden=searching||byIng||labels.size>0||!!spec;
   const list=filtered();
-  $("ttl").textContent=byIng?"Cocok dengan bahanmu":searching?"Hasil pencarian":cat==="Semua"?"Semua menu":"Menu "+cat;
+  $("ttl").textContent=byIng?"Cocok dengan bahanmu":searching?"Hasil pencarian":spec?SPEC[spec].t:cat==="Semua"?"Semua menu":"Menu "+cat;
   $("count").textContent=list.length+" menu";
   $("grid").innerHTML=list.length?list.map(r=>card(r,byIng)).join(""):`<div class="empty"><b>Belum ada yang cocok</b>Coba kata lain, kurangi filter, atau tambah bahan.</div>`;
   bindCards($("grid"));
@@ -713,14 +761,16 @@ function openR(r){
     <div><span style="font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--tang)">${r.k}</span>
       <h2>${r.n}</h2>${r.comm?`<div class="by">Resep dari <b>${r.comm.author}</b></div>`:""}
       <div class="tags">${r.L.map(l=>`<span>${l}</span>`).join("")}${done[r.n]?`<span style="background:var(--accent);color:#fff">✓ Dimasak ${done[r.n]}</span>`:""}</div>
-      <div class="stats"><div><b>${r.t}</b><span>menit</span></div><div><b>${r.b.length}</b><span>bahan</span></div><div><b>${r.s.length}</b><span>langkah</span></div></div></div>
+      <div class="stats"><div><b>${r.t}</b><span>menit</span></div><div><b>${r.b.length}</b><span>bahan</span></div><div><b>${r.s.length}</b><span>langkah</span></div></div>${(()=>{const e=est(r);return `<div class="est"><span>💸 ± ${rp(e.rp/2)} <small>/ porsi</small></span><span>🔥 ± ${e.kk/2|0} kkal <small>/ porsi</small></span></div><div class="estn">Perkiraan kasar harga pasar & kalori, bisa beda di tempatmu.</div>`})()}</div>
     <div class="row"><button class="btn org" id="go"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.9l12-7.5a1 1 0 0 0 0-1.8l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>Mulai masak</button></div>
     ${r.comm?`<div class="row"><button class="btn sec ${liked.has(r.comm.id)?"on":""}" id="likeB">♥ <span id="likeN">${r.comm.likes}</span> suka</button>${r.comm.mine?`<button class="btn sec" id="cDel" style="color:var(--red)">Hapus dari Komunitas</button>`:`<button class="btn sec" id="cRep">Laporkan</button>`}</div>`:""}
     <section class="sec"><h4>Bahan <span class="porsi" id="porsi">${[1,2,4].map(p=>`<button data-p="${p}" aria-pressed="${p===por}">${p} porsi</button>`).join("")}</span></h4>
       <div class="ings" id="ings"></div>
       <div class="row" style="margin-top:12px"><button class="btn sec" id="toShop"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Tambah ke daftar belanja</button></div></section>
+    ${(()=>{const L=subsOf(r);return L.length?`<section class="sec"><h4>Tidak punya bahannya?</h4><div class="subs">${L.map(([a,b])=>`<div><b>${a}</b><span>→ ${b}</span></div>`).join("")}</div></section>`:""})()}
     <section class="sec"><h4>Cara memasak</h4><div class="steps">${r.s.map((x,i)=>{const m=mins(x);return `<div class="st"><div class="n">${i+1}</div><div class="tx">${x}${m?`<span class="tm">⏱ Timer ${m} menit tersedia di mode masak</span>`:""}</div></div>`}).join("")}</div></section>
     ${r.tip?`<div class="tip"><b>TIPS</b><div>${r.tip}</div></div>`:""}
+    ${rkey(r)?`<section class="sec" id="revSec"><h4>Ulasan & hasil masakan <span id="revAvg" class="ravg"></span></h4><div id="revSnap" class="snaps"></div><div id="revForm"></div><div id="revList" class="revs"><div class="skel">Memuat ulasan…</div></div></section>`:""}
     <section class="sec"><h4>Catatanku</h4><textarea class="note" id="note" placeholder="Mis. garamnya kurangi sedikit, cabai tambah 2…">${esc(notes[r.n]||"")}</textarea></section>
     ${r.v?`<section class="sec"><h4>Tonton videonya</h4><div class="vbox"><button class="vplay" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.youtube-nocookie.com/embed/${r.v}?autoplay=1&amp;rel=0&amp;playsinline=1&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture; fullscreen&quot; allowfullscreen></iframe>'" style="background-image:url(${img(r)||""})" aria-label="Putar video"><span>▶</span></button></div><a class="ytbtn" style="margin-top:10px" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener"><span class="yplay"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span><span><b>Video tidak bisa diputar?</b><small>Buka di aplikasi YouTube</small></span><span aria-hidden="true">↗</span></a><a class="ytbtn" style="margin-top:10px" target="_blank" rel="noopener" href="https://www.tiktok.com/search?q=${encodeURIComponent("resep "+r.n)}"><span class="yplay" style="background:#111">♪</span><span><b>Video versi TikTok</b><small>Cari video resep ini di TikTok</small></span><span aria-hidden="true">↗</span></a></section>`:""}
     <div class="row"><button class="btn ${done[r.n]?"sec":"pri"}" id="mark">${done[r.n]?"✓ Sudah pernah dimasak":"Tandai sudah dimasak"}</button>
@@ -734,9 +784,9 @@ function openR(r){
   $("toShop").onclick=()=>addShop(r,por);
   $("go").onclick=()=>cook(r);
   $("note").oninput=e=>{notes[r.n]=e.target.value;store.set("notes",notes)};
-  $("mark").onclick=()=>{if(done[r.n]){delete done[r.n];toast("Tanda dihapus")}else{done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});toast("Mantap! Tercatat di Koleksi")}store.set("done",done);drawGrid();drawSaved();const y=$("sheet").scrollTop;openR(r);$("sheet").scrollTop=y};
+  $("mark").onclick=()=>{if(done[r.n]){delete done[r.n];toast("Tanda dihapus")}else{done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});logDone(r);toast("Mantap! Tercatat di Koleksi")}store.set("done",done);drawGrid();drawSaved();const y=$("sheet").scrollTop;openR(r);$("sheet").scrollTop=y};
   $("back").onclick=closeR;
-  $("share").onclick=()=>openShare(r);$("prR").onclick=()=>window.print();
+  $("share").onclick=()=>openShare(r);if(rkey(r))loadReviews(r);$("prR").onclick=()=>window.print();
   if(r.own){$("edR").onclick=()=>editor(r);let dz=0;$("delR").onclick=()=>{if(Date.now()-dz>3000){dz=Date.now();$("delR").textContent="Ketuk lagi untuk menghapus";return}delMine(r)}}
   if(r.comm){$("likeB").onclick=()=>toggleLike(r);
     if($("cRep")){let rz=0;$("cRep").onclick=async()=>{if(Date.now()-rz>3000){rz=Date.now();$("cRep").textContent="Ketuk lagi untuk melaporkan";return}$("cRep").disabled=true;try{await api("reports",{method:"POST",body:JSON.stringify({recipe_id:r.comm.id,reason:"tidak pantas"})});toast("Terima kasih, laporan sudah dikirim")}catch(e){toast(/duplicate|409/.test(e.message)?"Kamu sudah melaporkan resep ini":"Gagal mengirim laporan. Cek koneksi internet.")}$("cRep").textContent="Laporkan";$("cRep").disabled=false}}
@@ -801,7 +851,7 @@ let ck={r:null,i:0},timer={end:0,left:0,run:false,tick:null},wl=null;
 async function wake(){try{if("wakeLock" in navigator){wl=await navigator.wakeLock.request("screen")}}catch(e){wl=null}}
 document.addEventListener("visibilitychange",()=>{if(!$("cook").hidden&&document.visibilityState==="visible")wake()});
 function cook(r){ck={r,i:0};$("cook").hidden=false;wake();history.pushState({c:1},"");drawCook()}
-function closeCook(fromPop){if($("cook").hidden)return;try{speechSynthesis.cancel()}catch(e){}clearInterval(autoT);spoken="";$("cook").hidden=true;stopTimer();try{wl&&wl.release()}catch(e){}wl=null;if(fromPop!==true){skipPop=true;history.back()}}
+function closeCook(fromPop){if($("cook").hidden)return;try{speechSynthesis.cancel()}catch(e){}clearInterval(autoT);spoken="";stopMic();$("cook").hidden=true;stopTimer();try{wl&&wl.release()}catch(e){}wl=null;if(fromPop!==true){skipPop=true;history.back()}}
 function drawCook(){
   const {r,i}=ck,n=r.s.length,fin=i>=n,m=fin?0:mins(r.s[i]);
   $("cook").innerHTML=`<div class="ctop"><button class="x" id="cx" aria-label="Keluar">✕</button><div class="nm">${r.n}</div></div>
@@ -811,9 +861,10 @@ function drawCook(){
    :`<div class="cnum">LANGKAH ${i+1} DARI ${n}</div><div class="ctext">${r.s[i]}</div>
      ${m||timer.run||timer.left?`<div class="timer" id="tbox"><div class="clock" id="clock">${clk(timer.run||timer.left?timer.left:m*60)}</div>
        <button class="btn org" id="tgo">${timer.run?"Jeda":timer.left?"Lanjut":"Mulai timer "+m+" menit"}</button>${timer.run||timer.left?`<button class="btn sec" id="treset">Ulang</button>`:""}</div>`:""}`}
-   ${fin?"":`<div><button class="speak" id="spk">${tts?"🔊 Bacakan otomatis: AKTIF":"🔈 Bacakan langkah"}</button>${tts?` <button class="speak" id="jd">Jeda ${jeda} dtk</button> <button class="speak" id="hold">⏸ Tahan</button><div id="auto" style="margin-top:10px;font-weight:700;opacity:.85">${m?"Timer jalan otomatis setelah dibacakan":"Dibacakan…"}</div>`:""}</div>`}<div class="wake">${wl?"Layar tetap menyala selama mode masak":"Ketuk layar sesekali agar HP tidak terkunci"}</div></div>
+   ${fin?"":`<div>${SR?`<button class="speak" id="mic">${listening?"🎙 Mendengarkan… (ketuk untuk berhenti)":"🎙 Perintah suara"}</button> `:""}<button class="speak" id="spk">${tts?"🔊 Bacakan otomatis: AKTIF":"🔈 Bacakan langkah"}</button>${tts?` <button class="speak" id="jd">Jeda ${jeda} dtk</button> <button class="speak" id="hold">⏸ Tahan</button><div id="auto" style="margin-top:10px;font-weight:700;opacity:.85">${m?"Timer jalan otomatis setelah dibacakan":"Dibacakan…"}</div>`:""}</div>`}<div class="wake">${wl?"Layar tetap menyala selama mode masak":"Ketuk layar sesekali agar HP tidak terkunci"}</div></div>
   <div class="cnav"><button class="prev" id="cp" ${i===0?"disabled":""}>← Sebelumnya</button>${fin?`<button class="next" id="cend">Tutup</button>`:`<button class="next" id="cn">${i===n-1?"Selesai ✓":"Berikutnya →"}</button>`}</div>`;
   if($("spk"))$("spk").onclick=()=>{tts=!tts;spoken="";store.set("tts",tts);if(!tts)speechSynthesis.cancel();drawCook()};
+  if($("mic"))$("mic").onclick=()=>{listening?stopMic():startMic();drawCook()};
   if($("jd"))$("jd").onclick=()=>{const o=[3,5,10,15];jeda=o[(o.indexOf(jeda)+1)%o.length];store.set("jeda",jeda);$("jd").textContent="Jeda "+jeda+" dtk"};
   if($("hold"))$("hold").onclick=()=>{clearInterval(autoT);autoT=null;held=true;$("auto").textContent="Lanjut otomatis dijeda. Ketuk Berikutnya untuk lanjut."};
   const key=r.n+"|"+i+"|"+fin;
@@ -830,7 +881,7 @@ function drawCook(){
   $("cp").onclick=()=>{clearInterval(autoT);ck.i--;drawCook()};
   if($("cn"))$("cn").onclick=()=>{clearInterval(autoT);ck.i++;drawCook()};
   if($("cend"))$("cend").onclick=closeCook;
-  if($("cdone"))$("cdone").onclick=()=>{if(!done[r.n]){done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});store.set("done",done);drawGrid();drawSaved();toast("Tercatat di Koleksi")}drawCook()};
+  if($("cdone"))$("cdone").onclick=()=>{if(!done[r.n]){done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});logDone(r);store.set("done",done);drawGrid();drawSaved();toast("Tercatat di Koleksi")}drawCook()};
   if($("tgo"))$("tgo").onclick=()=>{if(timer.run){pauseTimer()}else{startTimer(timer.left||m*60)}drawCook()};
   if($("treset"))$("treset").onclick=()=>{stopTimer();drawCook()};
 }
@@ -1076,6 +1127,104 @@ window.addEventListener("popstate",()=>{if(skipPop){skipPop=false;return}if(!$("
 let dp=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;$("install").hidden=false});
 $("install").onclick=async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice}catch(e){}dp=null;$("install").hidden=true};
 if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
+
+
+/* ---------- Tema ---------- */
+function applyTheme(){const t=store.get("theme","auto");if(t==="auto")delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=t;const b=$("thm");if(b)b.textContent=t==="dark"?"🌙":t==="light"?"☀️":"🌓"}
+if($("thm"))$("thm").onclick=()=>{const o=["auto","light","dark"],t=o[(o.indexOf(store.get("theme","auto"))+1)%3];store.set("theme",t);applyTheme();toast(t==="auto"?"Tema: ikuti HP":t==="dark"?"Tema gelap":"Tema terang")};
+applyTheme();
+
+/* ---------- Harga & kalori (perkiraan) ---------- */
+const EST=[["ayam fillet",15000,450],["ayam",20000,700],["udang",20000,200],["ikan teri",6000,150],["ikan",15000,350],["bakso",8000,300],["sosis",6000,300],["telur",2000,75,1],["tahu pong",4000,250],["tahu",4000,300],["tempe",5000,400],
+["kangkung",4000,40],["bayam",3000,25],["sawi putih",4000,30],["sawi",3000,20],["kol",3000,40],["brokoli",8000,60],["buncis",3000,30],["kacang panjang",3000,40],["wortel",2000,40],["labu siam",2000,30],["oyong",3000,30],["pare",3000,20],["terong",4000,50],["toge",2000,30],["tauge",2000,30],["jamur",5000,40],["jagung",4000,180],["kentang",5000,300],
+["mie instan",3000,380,1],["mie telur",4000,400],["bihun",3000,350],["kwetiau",6000,400],["makaroni",4000,350],["piring nasi",2000,200,1],["gelas beras",3000,550,1],["tepung terigu",2000,350],["tepung beras",1500,300],["maizena",300,30],["santan",3000,250],
+["minyak untuk menggoreng",3000,250],["minyak",600,120],["bawang merah",1500,10],["bawang putih",1000,10],["bawang bombay",2000,30],["bawang goreng",1000,50],["daun bawang",1000,5],["cabai rawit",1500,5],["cabai",2000,10],["tomat",1500,20],
+["kecap",1000,30],["saus tiram",1500,20],["saus sambal",1000,20],["gula merah",1000,40],["gula",300,20],["garam",100,0],["merica",200,0],["terasi",500,10],["asam jawa",500,10],["jeruk nipis",500,5],["serai",500,0],["daun salam",300,0],["kunyit",500,5],["ketumbar",300,0],["daun pisang",1000,0]];
+function est(r){if(r._e)return r._e;let rp=0,kk=0;for(const line of r.b){const l=line.toLowerCase();const e=EST.find(x=>l.includes(x[0]));if(!e)continue;let q=1;if(e[3]){const m=l.match(/^(\d+(?:[.,]\d+)?|½|¼)/);if(m)q=m[1]==="½"?.5:m[1]==="¼"?.25:parseFloat(m[1].replace(",","."))||1}rp+=e[1]*q;kk+=e[2]*q}
+  rp=Math.max(rp,3000);return r._e={rp,kk}}
+const rp=n=>"Rp"+(Math.round(n/500)*500).toLocaleString("id-ID");
+
+/* ---------- Ganti bahan ---------- */
+const SUBS=[["kecap manis","kecap asin + 1 sdt gula merah/pasir"],["saus tiram","kecap asin + sedikit gula"],["gula merah","gula pasir + sedikit kecap manis"],["terasi","boleh dilewati, tambah sejumput garam"],["asam jawa","perasan jeruk nipis atau tomat hijau"],["santan","susu cair + 1 sdm minyak"],["jeruk nipis","sedikit cuka atau tomat"],["maizena","tepung tapioka atau terigu"],["tepung beras","tepung terigu"],["daun salam","boleh dilewati"],["serai","boleh dilewati, atau daun jeruk"],["bawang bombay","bawang merah lebih banyak"],["ayam fillet","paha ayam tanpa tulang, atau tahu"],["udang","bakso, sosis, atau tahu"],["mie telur","mie instan (bumbunya disimpan)"],["ketumbar","merica sedikit"],["kunyit","kunyit bubuk ½ sdt"],["daun bawang","bawang goreng"],["cabai merah","cabai bubuk atau saus sambal"],["tomat","1 sdm saus tomat"],["daun pisang","aluminium foil"],["kwetiau","bihun atau mie telur"]];
+function subsOf(r){const out=[],seen=new Set();for(const line of r.b){const l=line.toLowerCase();for(const [a,b] of SUBS)if(l.includes(a)&&!seen.has(a)){seen.add(a);out.push([a.replace(/^./,c=>c.toUpperCase()),b])}}return out.slice(0,6)}
+
+/* ---------- Koleksi spesial ---------- */
+const nm=a=>r=>a.includes(r.n);
+const SPEC={sahur:{t:"🌙 Sahur cepat",f:r=>r.t<=15&&["Lauk","Nasi & Mie","Tumis","Sop"].includes(r.k)},
+ bekal:{t:"🍱 Bekal sekolah",f:nm(["Telur Gulung","Perkedel Kentang","Nasi Goreng Kecap","Ayam Goreng Bawang","Tumis Buncis Wortel","Martabak Mie","Tahu Isi Sayur","Ayam Saus Tiram","Mie Goreng Sederhana","Orek Tempe","Telur Dadar Daun Bawang","Bihun Goreng","Nasi Kuning Rice Cooker","Udang Goreng Tepung","Tempe Goreng"])},
+ lebaran:{t:"🕌 Lebaran & kumpul keluarga",f:nm(["Semur Ayam","Sambal Goreng Kentang","Ayam Goreng Kuning","Nasi Kuning Rice Cooker","Sayur Lodeh","Soto Ayam Sederhana","Nasi Uduk Rice Cooker","Tahu Tempe Bacem","Perkedel Kentang","Semur Telur","Ayam Kecap","Nasi Liwet Rice Cooker","Sambal Bajak"])},
+ hemat:{t:"💸 Hemat akhir bulan",f:r=>est(r).rp/2<=5000},
+ hujan:{t:"🌧 Hangat saat hujan",f:r=>r.k==="Sop"||["Mie Rebus Telur Sawi","Mie Nyemek","Bakwan Sayur","Tempe Mendoan","Tahu Goreng Crispy"].includes(r.n)}};
+
+function drawSpec(){const b=$("spec");if(!b)return;b.innerHTML=Object.entries(SPEC).map(([k,v])=>`<button class="lchip" aria-pressed="${spec===k}" data-s="${k}">${v.t}</button>`).join("");
+  b.querySelectorAll("[data-s]").forEach(x=>x.onclick=()=>{spec=spec===x.dataset.s?"":x.dataset.s;drawSpec();drawGrid();if(spec)$("grid").scrollIntoView({behavior:"smooth",block:"start"})})}
+drawSpec();
+
+/* ---------- Tantangan mingguan ---------- */
+let doneLog=store.get("dlog",[]);
+function logDone(r){doneLog.push({n:r.n,ts:Date.now()});doneLog=doneLog.slice(-300);store.set("dlog",doneLog);setTimeout(drawChal,50)}
+const CHAL=[{t:"Masak 3 menu tanpa daging",n:3,f:r=>r.L.includes("Tanpa daging")},{t:"Coba 2 sambal berbeda",n:2,f:r=>r.k==="Sambal"},{t:"Masak 3 menu kilat (≤ 15 menit)",n:3,f:r=>r.t<=15},{t:"Masak 2 sayur berkuah",n:2,f:r=>r.k==="Sop"},{t:"Masak 4 menu berbeda minggu ini",n:4,f:()=>true},{t:"Masak 2 menu hemat",n:2,f:r=>r.L.includes("Hemat")},{t:"Coba 1 resep dari Komunitas",n:1,f:r=>!!r.comm},{t:"Masak 2 gorengan atau lauk",n:2,f:r=>r.k==="Gorengan"||r.k==="Lauk"}];
+function weekNo(d){const t=new Date(d);t.setHours(0,0,0,0);const day=(t.getDay()+6)%7;t.setDate(t.getDate()-day);return Math.floor(t.getTime()/6048e5)}
+function drawChal(){const box=$("chBlk");if(!box)return;const w=weekNo(Date.now()),c=CHAL[w%CHAL.length];
+  const names=[...new Set(doneLog.filter(x=>weekNo(x.ts)===w).map(x=>x.n))].map(n=>byName(n)||{n,L:[],k:""}).filter(c.f);
+  const got=Math.min(names.length,c.n),ok=got>=c.n;let badges=store.get("badges",[]);
+  if(ok&&!badges.includes(w)){badges.push(w);store.set("badges",badges);toast("🏅 Tantangan minggu ini selesai! Lencana baru didapat")}
+  const left=7-((new Date().getDay()+6)%7);
+  box.innerHTML=`<div class="chal"><small>TANTANGAN MINGGU INI · 🏅 ${badges.length} LENCANA</small><b>${ok?"✅ ":""}${c.t}</b><div class="bar"><i style="width:${got/c.n*100}%"></i></div><div class="meta"><span>${got} dari ${c.n} ${ok?"· Selesai!":""}</span><span>${left} hari lagi</span></div>${!ok?`<span style="font-size:.82rem;opacity:.85">Tandai “sudah dimasak” di resep untuk menambah progres.</span>`:""}</div>`}
+drawChal();
+
+/* ---------- Pengingat (kalender) ---------- */
+if($("remB"))$("remB").onclick=()=>{const [hh,mm]=($("remT").value||"16:30").split(":").map(Number);const now=new Date(),mon=new Date(now);mon.setHours(0,0,0,0);mon.setDate(mon.getDate()-((mon.getDay()+6)%7));
+  const pad=n=>String(n).padStart(2,"0"),fmt=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+"T"+pad(d.getHours())+pad(d.getMinutes())+"00";
+  let ev="";plan.forEach((p,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);d.setHours(hh,mm,0,0);if(d<now)d.setDate(d.getDate()+7);const e=new Date(d.getTime()+3600e3);
+    ev+=`BEGIN:VEVENT\r\nUID:ms-${d.getTime()}-${i}@masaksimpel\r\nDTSTAMP:${fmt(now)}\r\nDTSTART:${fmt(d)}\r\nDTEND:${fmt(e)}\r\nSUMMARY:Masak: ${p.a} + ${p.b}\r\nDESCRIPTION:Buka resepnya di Masak Simpel: ${SITE}?r=${encodeURIComponent(p.a)}\r\nBEGIN:VALARM\r\nACTION:DISPLAY\r\nDESCRIPTION:Waktunya masak ${p.a}!\r\nTRIGGER:-PT0M\r\nEND:VALARM\r\nEND:VEVENT\r\n`});
+  const ics=`BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Masak Simpel//ID\r\nCALSCALE:GREGORIAN\r\n${ev}END:VCALENDAR\r\n`;
+  const u=URL.createObjectURL(new Blob([ics],{type:"text/calendar"})),a=document.createElement("a");a.href=u;a.download="pengingat-masak.ics";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);
+  toast("File pengingat diunduh. Buka file itu untuk menambah ke Kalender")};
+
+/* ---------- Perintah suara ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;let rec=null,listening=false;
+function startMic(){if(!SR)return;try{rec=new SR();rec.lang="id-ID";rec.continuous=true;rec.interimResults=false;
+  rec.onresult=e=>{if(window.speechSynthesis&&speechSynthesis.speaking)return;const t=e.results[e.results.length-1][0].transcript.toLowerCase();voiceCmd(t)};
+  rec.onerror=e=>{if(e.error==="not-allowed"||e.error==="service-not-allowed"){listening=false;toast("Izin mikrofon ditolak");if(!$("cook").hidden)drawCook()}};
+  rec.onend=()=>{if(listening&&!$("cook").hidden){try{rec.start()}catch(e){}}};
+  rec.start();listening=true;toast("Ucapkan: lanjut, kembali, ulang, timer, atau tahan")}catch(e){listening=false;toast("Perintah suara tidak didukung di HP ini")}}
+function stopMic(){listening=false;try{rec&&rec.stop()}catch(e){}rec=null}
+function voiceCmd(t){if($("cook").hidden||!ck.r)return;const n=ck.r.s.length;
+  if(/lanjut|berikut|next|terus/.test(t)){if(ck.i<n){clearInterval(autoT);ck.i++;drawCook()}}
+  else if(/kembali|sebelum|mundur/.test(t)){if(ck.i>0){clearInterval(autoT);ck.i--;drawCook()}}
+  else if(/ulang|baca|lagi/.test(t)){spoken="";if(!tts){const u=new SpeechSynthesisUtterance(ck.r.s[Math.min(ck.i,n-1)]);u.lang="id-ID";speechSynthesis.speak(u)}else drawCook()}
+  else if(/timer|mulai/.test(t)){const b=$("tgo");if(b)b.click()}
+  else if(/tahan|stop|berhenti|jeda/.test(t)){const b=$("hold");if(b)b.click();else if(timer.run){pauseTimer();drawCook()}}
+  else if(/selesai|tutup|keluar/.test(t)){closeCook()}}
+
+/* ---------- Ulasan, rating & foto hasil masakan ---------- */
+const rkey=r=>r.comm?"c:"+r.comm.id:(r.own?null:r.n);
+const stars=n=>"★★★★★".slice(0,n)+"☆☆☆☆☆".slice(0,5-n);
+let revPhoto=null;
+async function loadReviews(r){const k=rkey(r);try{const res=await fetch(SB.u+"/rest/v1/reviews?recipe_key=eq."+encodeURIComponent(k)+"&select=id,user_id,author,stars,body,photo,created_at&order=created_at.desc&limit=40",{headers:{apikey:SB.k}});
+  if(!res.ok)throw 0;const L=await res.json();if(cur!==r)return;drawReviews(r,L)}catch(e){const l=$("revList");if(l)l.innerHTML=`<div class="skel">Ulasan belum bisa dimuat.</div>`}}
+function drawReviews(r,L){const okP=x=>/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(x||"");
+  const avg=L.length?(L.reduce((a,x)=>a+x.stars,0)/L.length):0;$("revAvg").textContent=L.length?`★ ${avg.toFixed(1)} (${L.length})`:"";
+  const ph=L.filter(x=>okP(x.photo));$("revSnap").innerHTML=ph.length?ph.map(x=>`<img src="${x.photo}" alt="Hasil masakan ${clean(x.author)}" loading="lazy">`).join(""):"";
+  const mineR=sess&&L.find(x=>x.user_id===sess.uid),admin=sess&&sess.email===ADMIN;
+  $("revList").innerHTML=L.length?L.map(x=>`<div class="rev"><header><b>${clean(x.author)}</b><span class="st5">${stars(x.stars)}</span></header>${x.body?`<p>${esc(x.body)}</p>`:""}${okP(x.photo)?`<img src="${x.photo}" alt="" loading="lazy">`:""}<div style="font-size:.75rem;color:var(--muted);margin-top:6px">${new Date(x.created_at).toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"})}</div>${sess&&(x.user_id===sess.uid||admin)?`<button data-rd="${x.id}">Hapus ulasan</button>`:""}</div>`).join(""):`<div class="skel">Belum ada ulasan. Jadilah yang pertama!</div>`;
+  $("revList").querySelectorAll("[data-rd]").forEach(b=>{let z=0;b.onclick=async()=>{if(Date.now()-z>3000){z=Date.now();b.textContent="Ketuk lagi untuk menghapus";return}try{await api("reviews?id=eq."+b.dataset.rd,{method:"DELETE"});toast("Ulasan dihapus");loadReviews(r)}catch(e){toast("Gagal menghapus")}}});
+  const f=$("revForm");revPhoto=null;
+  if(!isGoogle()){f.innerHTML=`<div class="rform"><b>Sudah coba masak resep ini?</b><span style="color:var(--muted);font-size:.9rem">Masuk dengan Google untuk memberi bintang, komentar, dan foto hasil masakanmu.</span><button class="btn gbtn" id="revLogin">${GICON}Masuk dengan Google</button></div>`;$("revLogin").onclick=()=>login();return}
+  let st=mineR?mineR.stars:0;
+  f.innerHTML=`<form class="rform" id="rf"><b>${mineR?"Ubah ulasanmu":"Beri ulasan"}</b><div class="starpick" id="sp">${[1,2,3,4,5].map(i=>`<button type="button" data-v="${i}" aria-label="${i} bintang">★</button>`).join("")}</div>
+    <textarea id="rb" maxlength="500" placeholder="Gimana rasanya? Ada tips? (opsional)">${mineR&&mineR.body?esc(mineR.body):""}</textarea>
+    <label class="rph"><input type="file" id="rp" accept="image/*" hidden><span class="btn sec" style="height:44px;padding:0 14px">📷 Foto hasil masakan</span><span id="rpv">${mineR&&okP(mineR.photo)?"Foto lama tetap dipakai":"Opsional"}</span></label>
+    <button class="btn org" type="submit" id="rs">Kirim ulasan</button></form>`;
+  const paint=()=>$("sp").querySelectorAll("button").forEach(b=>b.classList.toggle("on",+b.dataset.v<=st));paint();
+  $("sp").querySelectorAll("button").forEach(b=>b.onclick=()=>{st=+b.dataset.v;paint()});
+  $("rp").onchange=e=>{const fl=e.target.files[0];if(!fl)return;const u=URL.createObjectURL(fl),im=new Image();im.onload=()=>{const sc=Math.min(1,720/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext("2d").drawImage(im,0,0,c.width,c.height);let q=.8,d=c.toDataURL("image/jpeg",q);while(d.length>290000&&q>.35){q-=.1;d=c.toDataURL("image/jpeg",q)}revPhoto=d;URL.revokeObjectURL(u);$("rpv").innerHTML=`<img src="${d}" alt="">`};im.src=u};
+  $("rf").onsubmit=async e=>{e.preventDefault();if(!st){toast("Pilih jumlah bintang dulu");return}const b=$("rs");b.disabled=true;b.textContent="Mengirim…";
+    const body={recipe_key:rkey(r),author:(store.get("author","")||sess.name||"Koki").slice(0,40),stars:st,body:$("rb").value.trim().slice(0,500)||null};if(revPhoto)body.photo=revPhoto;
+    try{if(mineR)await api("reviews?id=eq."+mineR.id,{method:"PATCH",body:JSON.stringify({author:body.author,stars:st,body:body.body,...(revPhoto?{photo:revPhoto}:{})})});else await api("reviews",{method:"POST",body:JSON.stringify(body)});
+      toast("Terima kasih! Ulasanmu sudah tampil");if(!done[r.n]){done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});logDone(r);store.set("done",done);drawGrid();drawSaved()}loadReviews(r)}
+    catch(err){toast(/batas/i.test(err.message)?err.message:"Gagal mengirim ulasan. Coba lagi.");b.disabled=false;b.textContent="Kirim ulasan"}}}
 
 loadMine();drawCats();saveShop();handleAuthReturn();
 try{const q=new URLSearchParams(location.search).get("r");const rr=q&&R.find(x=>x.n===q);if(rr){history.replaceState(null,"",location.pathname);setTimeout(()=>openR(rr),250)}}catch(e){}
