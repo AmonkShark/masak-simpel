@@ -27,7 +27,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .emo{filter:drop-shadow(0 8px 10px rgba(0,0,0,.18));display:inline-block}
 
 /* Header */
-.hero{background:radial-gradient(120% 90% at 100% 0%,var(--deep2) 0%,var(--deep) 60%);color:#fff;padding-top:calc(env(safe-area-inset-top,0px) + 22px);padding-bottom:84px;border-radius:0 0 32px 32px;position:relative;overflow:hidden}
+.hero{padding-bottom:84px!important;background:radial-gradient(120% 90% at 100% 0%,var(--deep2) 0%,var(--deep) 60%);color:#fff;padding-top:calc(env(safe-area-inset-top,0px) + 22px);padding-bottom:84px;border-radius:0 0 32px 32px;position:relative;overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1.2px,transparent 1.2px);background-size:18px 18px;pointer-events:none}
 .top{display:flex;justify-content:space-between;align-items:center;position:relative}
 .greet{font-size:.85rem;opacity:.8;font-weight:600}
@@ -37,6 +37,21 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .float{position:absolute;right:14px;bottom:62px;font-size:4.6rem;transform:rotate(-12deg);animation:bob 4s ease-in-out infinite}
 @keyframes bob{50%{transform:rotate(-6deg) translateY(-6px)}}
 
+.hgrid{display:grid;gap:22px;position:relative}
+@media (min-width:760px){.hgrid{grid-template-columns:1.1fr .9fr;align-items:center}}
+.brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-.01em}
+.htext .greet{display:block;margin-top:22px}
+.lead{margin:14px 0 0;max-width:38ch;opacity:.82;font-size:1rem}
+.collage{position:relative;height:170px}
+@media (min-width:760px){.collage{height:270px}}
+.pc{position:absolute;border-radius:22px;overflow:hidden;border:4px solid rgba(255,255,255,.92);box-shadow:0 18px 40px rgba(0,0,0,.35);background:#1b3a29}
+.pc img{width:100%;height:100%;object-fit:cover;transform:scale(1.36);display:block}
+.pc span{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.95);color:#12241a;font-size:.72rem;font-weight:800;padding:4px 10px;border-radius:999px;z-index:1}
+.pc1{width:46%;height:82%;left:0;top:8%;transform:rotate(-6deg);z-index:2}
+.pc2{width:46%;height:82%;left:27%;top:0;transform:rotate(3deg);z-index:3}
+.pc3{width:46%;height:82%;right:0;top:12%;transform:rotate(-2deg);z-index:1}
+@media (min-width:760px){.pc1{width:52%;height:62%;left:0;top:4%}.pc2{width:54%;height:66%;left:40%;top:18%}.pc3{width:46%;height:54%;left:14%;top:56%;right:auto}}
+@media (prefers-reduced-motion:no-preference){.pc{transition:transform .4s}.collage:hover .pc1{transform:rotate(-9deg) translateY(-4px)}.collage:hover .pc2{transform:rotate(5deg) translateY(-6px)}}
 /* Search */
 .bar{position:sticky;top:0;z-index:5;margin-top:-34px}
 .search{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:20px;padding:0 8px 0 18px;height:60px;box-shadow:var(--sh)}
@@ -55,7 +70,9 @@ section.blk{margin-top:26px;display:grid;gap:14px}
 .cat{display:grid;justify-items:center;gap:7px;font-size:.78rem;font-weight:700;color:var(--muted)}
 .cat .ic{width:100%;max-width:64px;aspect-ratio:1;border-radius:22px;background:var(--surface);box-shadow:var(--sh);display:grid;place-items:center;font-size:1.7rem;transition:transform .2s,background .2s}
 .cat[aria-pressed="true"]{color:var(--fg)}
-.cat[aria-pressed="true"] .ic{background:var(--tang);transform:translateY(-3px)}
+.cat .ic{overflow:hidden;border-radius:50%;max-width:72px;padding:0;background:var(--line)}
+.cat .ic img{width:100%;height:100%;object-fit:cover;transform:scale(1.36);display:block}
+.cat[aria-pressed="true"] .ic{box-shadow:0 0 0 3px var(--bg),0 0 0 6px var(--tang);transform:translateY(-3px)}
 
 /* Carousel */
 .rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px;padding:4px 16px 14px}
@@ -119,11 +136,11 @@ section.blk{margin-top:26px;display:grid;gap:14px}
 .st::before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:var(--line)}
 .st:last-child::before{display:none}
 .st .n{width:44px;height:44px;border-radius:15px;background:var(--deep);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.05rem}
-.st .box{background:var(--surface);border-radius:20px;box-shadow:var(--sh);overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 88px}
+.st .box{background:var(--surface);border-radius:20px;box-shadow:var(--sh);overflow:hidden;display:grid;min-height:56px}
 .st .tx{padding:14px 14px 14px 16px;font-weight:500;align-self:center}
 .st .pic{display:grid;place-items:center;font-size:2.4rem}
 .tip{background:var(--tang-soft);border-radius:20px;padding:16px 18px;font-size:.93rem;display:flex;gap:12px;align-items:flex-start}
-.tip b{font-size:1.4rem;line-height:1}
+.tip b{font-size:.7rem;letter-spacing:.1em;background:var(--tang);color:#fff;padding:4px 9px;border-radius:999px;flex:none;margin-top:2px}
 .video{position:relative;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#000;box-shadow:var(--sh)}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .ytlink{display:inline-block;margin-top:10px;color:var(--tang);font-weight:700;font-size:.88rem;text-decoration:none}
@@ -167,10 +184,14 @@ body.lock{overflow:hidden}
 </head>
 <body>
 
-<header class="hero"><div class="in">
-  <div class="top"><span class="greet" id="greet">Halo!</span><span class="logo">🍳</span></div>
-  <h1>Masak enak, <em>tanpa ribet.</em></h1>
-  <span class="float emo">🥘</span>
+<header class="hero"><div class="in hgrid">
+  <div class="htext">
+    <span class="brand"><svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="10" fill="#ffc53d"/><path d="M7 16h18a9 9 0 0 1-18 0z" fill="#0f3b26"/><path d="M5 16h22" stroke="#0f3b26" stroke-width="2.4" stroke-linecap="round"/><path d="M12 7c-1 1.5 1 2.5 0 4M16 6c-1 1.5 1 2.5 0 4M20 7c-1 1.5 1 2.5 0 4" stroke="#0f3b26" stroke-width="1.8" stroke-linecap="round"/></svg>Masak Simpel</span>
+    <span class="greet" id="greet">Halo!</span>
+    <h1>Masak enak, <em>tanpa ribet.</em></h1>
+    <p class="lead">40 resep rumahan dari bahan dapur biasa. Ikuti langkahnya, tonton videonya, langsung jadi.</p>
+  </div>
+  <div class="collage" id="collage" aria-hidden="true"></div>
 </div></header>
 
 <div class="bar"><div class="in">
@@ -189,8 +210,8 @@ body.lock{overflow:hidden}
 </div>
 
 <nav class="nav">
-  <button id="nHome" aria-pressed="true">🏠 Beranda</button>
-  <button id="nFav" aria-pressed="false">♥ Favorit</button>
+  <button id="nHome" aria-pressed="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Beranda</button>
+  <button id="nFav" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20.5s-7.6-4.6-9.4-9.3C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.4 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>Favorit</button>
 </nav>
 
 <p class="credit in">Foto & video dari YouTube milik masing-masing kreator.</p>
@@ -305,7 +326,8 @@ const fClose=()=>{$("fs").classList.remove("on");document.body.classList.remove(
 $("fClose").onclick=fClose;$("fs").onclick=e=>{if(e.target.id==="fs")fClose()};
 $("fReset").onclick=()=>{draft.clear();drawF()};
 $("fApply").onclick=()=>{have=new Set(draft);saveHave();fClose();drawGrid();window.scrollTo({top:0,behavior:"smooth"})};
-const CATS=[["Semua","🍽️"],["Tumis","🥬"],["Sop","🍲"],["Sambal","🌶️"],["Lauk","🍳"]];
+const HEART=f=>`<svg width="18" height="18" viewBox="0 0 24 24" fill="${f?"#e5484d":"none"}" stroke="${f?"#e5484d":"#12241a"}" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20.5s-7.6-4.6-9.4-9.3C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.4 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>`;
+const CATS=[["Semua","Nasi Goreng Kecap"],["Tumis","Tumis Kangkung"],["Sop","Sop Ayam Sederhana"],["Sambal","Sambal Tomat"],["Lauk","Ayam Goreng Bawang"]];
 let cat="Semua",view="home",favs=new Set();
 try{favs=new Set(JSON.parse(localStorage.getItem("ds-fav")||"[]"))}catch(e){}
 const saveFav=()=>{try{localStorage.setItem("ds-fav",JSON.stringify([...favs]))}catch(e){}};
@@ -313,7 +335,7 @@ const h=new Date().getHours();
 $("greet").textContent=h<11?"Selamat pagi 👋":h<15?"Selamat siang 👋":h<18?"Selamat sore 👋":"Selamat malam 👋";
 
 function drawCats(){
-  $("cats").innerHTML=CATS.map(([c,e])=>`<button class="cat" aria-pressed="${c===cat}" data-c="${c}"><span class="ic">${e}</span>${c}</button>`).join("");
+  $("cats").innerHTML=CATS.map(([c,n])=>`<button class="cat" aria-pressed="${c===cat}" data-c="${c}"><span class="ic"><img src="${img(R.find(r=>r.n===n))}" alt="" loading="lazy"></span>${c}</button>`).join("");
   $("cats").querySelectorAll(".cat").forEach(b=>b.onclick=()=>{cat=b.dataset.c;drawCats();drawGrid()});
 }
 function drawRail(){
@@ -334,7 +356,7 @@ function drawGrid(){
   $("ttl").textContent=view==="fav"?"Favoritku":byIng?"Cocok dengan bahanmu":searching?"Hasil pencarian":cat==="Semua"?"Semua menu":"Menu "+cat;
   $("count").textContent=list.length+" menu";
   $("grid").innerHTML=list.length?list.map(r=>`<div class="card" tabindex="0" role="button" data-i="${R.indexOf(r)}">
-      <button class="fav" data-f="${r.n}" aria-label="Favorit">${favs.has(r.n)?"❤️":"🤍"}</button>
+      <button class="fav" data-f="${r.n}" aria-label="Favorit">${HEART(favs.has(r.n))}</button>
       <div class="art has" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}<span class="time">⏱ ${r.t} mnt</span></div>
       <div class="cbody"><span class="k">${r.k}</span><h3>${r.n}</h3><span class="sub">${r.b.length} bahan · ▶ video</span>${byIng?(miss(r).length?`<span class="match no">Kurang: ${miss(r).join(", ")}</span>`:`<span class="match ok">✓ Bahan lengkap</span>`):""}</div></div>`).join("")
     :`<div class="empty"><b>${view==="fav"?"🤍":"🥄"}</b>${view==="fav"?"Belum ada favorit. Ketuk 🤍 di menu yang kamu suka.":"Belum ada menu yang cocok.<br>Coba kata lain, misalnya “telur” atau “sop”."}</div>`;
@@ -348,7 +370,7 @@ function openR(r){
   const isF=favs.has(r.n);
   $("sheet").innerHTML=`<div class="shero has" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}
     <button class="sbtn" id="back" style="left:16px" aria-label="Kembali">←</button>
-    <button class="sbtn" id="sfav" style="right:16px" aria-label="Favorit">${isF?"❤️":"🤍"}</button></div>
+    <button class="sbtn" id="sfav" style="right:16px" aria-label="Favorit">${HEART(isF)}</button></div>
   <div class="sbody"><div class="in">
     <div><span style="font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--tang)">${r.k}</span>
       <h2>${r.n}</h2>
@@ -356,15 +378,15 @@ function openR(r){
     <section class="sec"><h4>Bahan <small id="ready">0/${r.b.length} siap</small></h4>
       <div class="ings">${r.b.map((x,i)=>`<label><input type="checkbox" id="b${i}"><span>${x}</span></label>`).join("")}</div></section>
     <section class="sec"><h4>Cara memasak</h4><div class="steps">${r.s.map((x,i)=>{const p=pic(x);
-      return `<div class="st"><div class="n">${i+1}</div><div class="box"><div class="tx">${x}</div><div class="pic" style="background:${p[2]}"><span class="emo">${p[1]}</span></div></div></div>`}).join("")}</div></section>
-    ${r.tip?`<div class="tip"><b>💡</b><div><strong>Tips</strong><br>${r.tip}</div></div>`:""}
+      return `<div class="st"><div class="n">${i+1}</div><div class="box"><div class="tx">${x}</div></div></div>`}).join("")}</div></section>
+    ${r.tip?`<div class="tip"><b>TIPS</b><div>${r.tip}</div></div>`:""}
     <section class="sec"><h4>Tonton videonya</h4>
       <div class="video"><iframe src="https://www.youtube.com/embed/${r.v}" title="Video ${r.n}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
       <a class="ytlink" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener">Video tidak muncul? Buka di YouTube ↗</a></section>
   </div></div>`;
   const upd=()=>$("ready").textContent=$("sheet").querySelectorAll(".ings input:checked").length+"/"+r.b.length+" siap";
   $("sheet").querySelectorAll(".ings input").forEach(i=>i.onchange=upd);
-  $("sfav").onclick=()=>{favs.has(r.n)?favs.delete(r.n):favs.add(r.n);saveFav();$("sfav").textContent=favs.has(r.n)?"❤️":"🤍";drawGrid()};
+  $("sfav").onclick=()=>{favs.has(r.n)?favs.delete(r.n):favs.add(r.n);saveFav();$("sfav").innerHTML=HEART(favs.has(r.n));drawGrid()};
   $("sheet").scrollTop=0;
   $("sheet").classList.add("on");document.body.classList.add("lock");
   $("back").onclick=closeR;
@@ -379,6 +401,7 @@ function closeR(fromPop){
 window.addEventListener("popstate",()=>closeR(true));
 $("q").addEventListener("input",drawGrid);
 $("clr").onclick=e=>{e.preventDefault();$("q").value="";drawGrid();$("q").focus()};
+$("collage").innerHTML=[["Nasi Goreng Kecap","pc1"],["Tumis Kangkung","pc2"],["Telur Balado","pc3"]].map(([n,c])=>{const r=R.find(x=>x.n===n);return `<div class="pc ${c}"><img src="${img(r)}" alt=""><span>${r.t} menit</span></div>`}).join("");
 drawCats();drawRail();drawGrid();
 </script>
 </body>
