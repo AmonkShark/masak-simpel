@@ -298,6 +298,11 @@ body.lock{overflow:hidden}
 .fbi select{justify-self:start;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);border-radius:10px;padding:6px 10px;font:inherit;font-size:16px}
 input,select,textarea{font-size:16px}
 .fbi.selesai{opacity:.6}
+.ytbtn{display:flex;align-items:center;gap:14px;background:var(--surface);border-radius:20px;padding:14px 16px;box-shadow:var(--sh);text-decoration:none;color:var(--fg)}
+.ytbtn .yplay{width:48px;height:48px;border-radius:14px;background:#e5484d;color:#fff;display:grid;place-items:center;flex:none}
+.ytbtn span:nth-child(2){flex:1;display:grid}
+.ytbtn small{color:var(--muted);font-size:.8rem}
+.tsbox{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translateX(-50%);z-index:70}
 .credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -370,6 +375,9 @@ input,select,textarea{font-size:16px}
   <div class="in">
     <section class="blk"><div id="acct2"></div><button class="btn org" id="newR2" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Buat resep sendiri</button><div class="seg"><button id="segF" aria-pressed="true">Favorit</button><button id="segD" aria-pressed="false">Pernah dimasak</button><button id="segM" aria-pressed="false">Resepku</button></div></section>
     <section class="blk"><div class="grid" id="sgrid"></div></section>
+    <section class="blk"><h2 class="h">Cadangkan data</h2>
+      <p style="margin:0;color:var(--muted)">Favorit, catatan, riwayat, daftar belanja, menu mingguan, dan resep buatanmu tersimpan di HP ini. Simpan cadangannya supaya tidak hilang saat ganti HP atau menghapus data.</p>
+      <div class="help"><button class="btn sec" id="expBtn">⬇ Simpan cadangan</button><label class="btn sec" for="impIn" style="cursor:pointer">⬆ Pulihkan dari file</label><input type="file" id="impIn" accept=".json,application/json" hidden></div></section>
     <section class="blk"><h2 class="h">Bantuan &amp; Masukan</h2>
       <p style="margin:0;color:var(--muted)">Ada yang tidak berfungsi atau punya ide fitur dan resep baru? Kirim ke kami. Semua masukan kami baca.</p>
       <div class="help"><button class="btn sec" data-fb="Masalah">🐞 Laporkan masalah</button><button class="btn sec" data-fb="Saran">💡 Kirim saran</button><button class="btn sec" data-fb="Pertanyaan">❓ Tanya</button></div>
@@ -692,9 +700,7 @@ function openR(r){
     <section class="sec"><h4>Cara memasak</h4><div class="steps">${r.s.map((x,i)=>{const m=mins(x);return `<div class="st"><div class="n">${i+1}</div><div class="tx">${x}${m?`<span class="tm">⏱ Timer ${m} menit tersedia di mode masak</span>`:""}</div></div>`}).join("")}</div></section>
     ${r.tip?`<div class="tip"><b>TIPS</b><div>${r.tip}</div></div>`:""}
     <section class="sec"><h4>Catatanku</h4><textarea class="note" id="note" placeholder="Mis. garamnya kurangi sedikit, cabai tambah 2…">${esc(notes[r.n]||"")}</textarea></section>
-    ${r.v?`<section class="sec"><h4>Tonton videonya</h4>
-      <div class="video"><iframe src="https://www.youtube.com/embed/${r.v}" title="Video ${esc(r.n)}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-      <a class="ytlink" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener">Video tidak muncul? Buka di YouTube ↗</a></section>`:""}
+    ${r.v?`<section class="sec"><h4>Tonton videonya</h4><a class="ytbtn" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener"><span class="yplay"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span><span><b>Tonton video cara memasak</b><small>Dibuka di aplikasi YouTube</small></span><span aria-hidden="true">↗</span></a></section>`:""}
     <div class="row"><button class="btn ${done[r.n]?"sec":"pri"}" id="mark">${done[r.n]?"✓ Sudah pernah dimasak":"Tandai sudah dimasak"}</button>
       <a class="btn wa" id="share" target="_blank" rel="noopener" href="${waLink(recipeText(r))}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>Bagikan ke WhatsApp</a></div>
     ${r.own?`<div class="row"><button class="btn org" id="upR">${(mine.find(m=>m.id===r.id)||{}).cid?"Perbarui di Komunitas":"Bagikan ke Komunitas"}</button></div><div class="tip" id="needLogin" hidden><b>LOGIN</b><div>Untuk membagikan resep ke Komunitas, masuk dulu dengan akun Google. Resepmu akan langsung diunggah setelah masuk.<div style="margin-top:12px"><button class="btn gbtn" id="gBtn">${GICON}Masuk dengan Google</button></div></div></div><form class="addrow" id="upBox" hidden><input id="upName" maxlength="40" placeholder="Nama tampilanmu, mis. Bunda Rina" autocomplete="off" aria-label="Nama tampilan"><button class="btn org" type="submit">Unggah</button></form><div class="row"><button class="btn sec" id="edR">Edit resep</button><button class="btn sec" id="delR" style="color:var(--red)">Hapus resep</button></div>`:""}
@@ -874,11 +880,17 @@ function drawAcct(){const a=$("acct");if(!a)return;drawAcct2();
   a.innerHTML=isGoogle()?`<div class="acct">${sess.pic?`<img src="${clean(sess.pic)}" alt="" referrerpolicy="no-referrer">`:`<span class="av">${(sess.name||"?")[0]}</span>`}<div class="who"><b>${sess.name||"Pengguna"}</b><span>${clean(sess.email)}</span></div><button class="btn sec" id="lgOut">Keluar</button></div>`
    :`<div class="acct"><div class="who"><b>Ingin membagikan resep?</b><span>Masuk dengan akun Google dulu. Memberi like tetap bisa tanpa masuk.</span></div><button class="btn gbtn" id="lgIn">${GICON}Masuk dengan Google</button></div>`;
   drawAdminBtn();if($("lgOut"))$("lgOut").onclick=logout;if($("lgIn"))$("lgIn").onclick=()=>login()}
+const TS_KEY="0x4AAAAAAFVTSWnQji77BZrP";let tsP=null;
+function captcha(){if(tsP)return tsP;tsP=new Promise(res=>{let box=null;const done=t=>{res(t);setTimeout(()=>{box&&box.remove();tsP=null},400)};
+  const go=()=>{try{box=document.createElement("div");box.className="tsbox";document.body.appendChild(box);
+    window.turnstile.render(box,{sitekey:TS_KEY,appearance:"interaction-only",callback:t=>done(t),"error-callback":()=>done(null),"timeout-callback":()=>done(null)})}catch(e){done(null)}};
+  if(window.turnstile)go();else{const sc=document.createElement("script");sc.src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";sc.async=true;sc.onload=go;sc.onerror=()=>done(null);document.head.appendChild(sc)}
+  setTimeout(()=>done(null),25000)});return tsP}
 async function token(){
   if(sess&&sess.uid&&sess.exp>Date.now()/1000+60)return sess.at;
   const H={apikey:SB.k,"Content-Type":"application/json"};
   if(sess&&sess.rt){try{const r=await fetch(SB.u+"/auth/v1/token?grant_type=refresh_token",{method:"POST",headers:H,body:JSON.stringify({refresh_token:sess.rt})});if(r.ok){setSess(await r.json());return sess.at}}catch(e){}}
-  const r=await fetch(SB.u+"/auth/v1/signup",{method:"POST",headers:H,body:"{}"});if(!r.ok)throw new Error("Tidak bisa masuk ke Komunitas");setSess(await r.json());return sess.at}
+  const ct=await captcha();const r=await fetch(SB.u+"/auth/v1/signup",{method:"POST",headers:H,body:JSON.stringify(ct?{gotrue_meta_security:{captcha_token:ct}}:{})});if(!r.ok)throw new Error("Tidak bisa masuk ke Komunitas");setSess(await r.json());return sess.at}
 async function api(path,opt={}){const t=await token();const r=await fetch(SB.u+"/rest/v1/"+path,{...opt,headers:{apikey:SB.k,Authorization:"Bearer "+t,"Content-Type":"application/json",Prefer:"return=representation",...(opt.headers||{})}});
   const txt=await r.text();if(!r.ok){let m="";try{m=JSON.parse(txt).message||""}catch(e){}throw new Error(r.status===409?"409 duplicate":m||"HTTP "+r.status)}return txt?JSON.parse(txt):null}
 const clean=x=>String(x==null?"":x).replace(/[<>"]/g,"");
@@ -959,6 +971,23 @@ async function openAdmin(){$("adm").classList.add("on");document.body.classList.
 $("adminBtn").onclick=openAdmin;
 const closeAdm=()=>{$("adm").classList.remove("on");document.body.classList.remove("lock")};
 $("admClose").onclick=closeAdm;$("adm").onclick=e=>{if(e.target.id==="adm")closeAdm()};
+
+/* ---------- Cadangan ---------- */
+const BK=["fav","have","labels","done","notes","shop","plan","mine","author"];
+$("expBtn").onclick=()=>{const data={app:"masak-simpel",v:1,at:new Date().toISOString()};BK.forEach(k=>{const v=store.get(k,null);if(v!==null)data[k]=v});
+  const blob=new Blob([JSON.stringify(data)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="masak-simpel-cadangan-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
+  toast("Cadangan disimpan. Simpan file-nya di Google Drive atau WhatsApp pribadi.")};
+$("impIn").onchange=async e=>{const f=e.target.files[0];e.target.value="";if(!f)return;
+  try{const d=JSON.parse(await f.text());if(d.app!=="masak-simpel")throw 0;
+    if(Array.isArray(d.mine)){const ids=new Set(mine.map(m=>m.id));d.mine.forEach(m=>{if(m&&m.id&&!ids.has(m.id))mine.push(m)});d.mine=mine}
+    if(Array.isArray(d.fav))d.fav=[...new Set([...favs,...d.fav])];
+    if(d.done&&typeof d.done==="object")d.done={...done,...d.done};
+    if(d.notes&&typeof d.notes==="object")d.notes={...notes,...d.notes};
+    if(Array.isArray(d.shop))d.shop=[...shop,...d.shop.filter(x=>!shop.some(y=>y.t===x.t&&y.f===x.f))];
+    BK.forEach(k=>{if(k in d)store.set(k,d[k])});
+    toast("Data berhasil dipulihkan. Memuat ulang…");setTimeout(()=>location.reload(),1200)}
+  catch(err){toast("File cadangan tidak dikenali. Pilih file masak-simpel-cadangan-….json")}};
 
 /* ---------- Navigasi ---------- */
 function show(v){["vHome","vPlan","vShop","vComm","vSaved"].forEach(x=>$(x).hidden=x!==v);$("nav").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===v));
