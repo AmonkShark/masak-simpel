@@ -288,6 +288,15 @@ body.lock{overflow:hidden}
 .acct .who{flex:1;min-width:180px;display:grid}
 .acct .who span{font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
 .btn.gbtn{background:#fff;color:#1f1f1f;border:1.5px solid #dadce0}
+.help{display:flex;flex-wrap:wrap;gap:10px}
+.help .btn{flex:1 1 150px}
+.fbi{background:var(--surface);border-radius:18px;padding:14px;display:grid;gap:6px;box-shadow:var(--sh)}
+.fbi p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+.fbi small{color:var(--muted);overflow-wrap:anywhere}
+.fbh{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.tagk{font-size:.72rem;font-weight:800;color:var(--tang);text-transform:uppercase;letter-spacing:.06em}
+.fbi select{justify-self:start;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);border-radius:10px;padding:6px 10px;font:inherit;font-size:.85rem}
+.fbi.selesai{opacity:.6}
 .credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -324,7 +333,7 @@ body.lock{overflow:hidden}
   <section class="blk"><h2 class="h">Kategori</h2><div class="cats" id="cats"></div><div class="lchips" id="lchips"></div></section>
   <section class="blk" id="fastBlk"><h2 class="h">Paling cepat <small>≤ 10 menit</small></h2><div class="rail" id="rail"></div></section>
   <section class="blk"><h2 class="h"><span id="ttl">Semua menu</span><small id="count"></small></h2><div class="grid" id="grid"></div></section>
-  <p class="credit">Foto &amp; video dari YouTube milik masing-masing kreator. · <a href="privacy.html" style="color:inherit">Kebijakan Privasi</a></p>
+  <p class="credit">Foto &amp; video dari YouTube milik masing-masing kreator. · <a href="privacy.html" style="color:inherit">Kebijakan Privasi</a> · <a href="#" id="fbLink" style="color:inherit">Kirim masukan</a></p>
 </div>
 </div>
 
@@ -358,8 +367,12 @@ body.lock{overflow:hidden}
 <div id="vSaved" hidden>
   <header class="phead"><div class="in"><h1>Koleksiku</h1><p>Resep favorit dan riwayat masakan yang sudah pernah kamu buat.</p></div></header>
   <div class="in">
-    <section class="blk"><button class="btn org" id="newR2" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Buat resep sendiri</button><div class="seg"><button id="segF" aria-pressed="true">Favorit</button><button id="segD" aria-pressed="false">Pernah dimasak</button><button id="segM" aria-pressed="false">Resepku</button></div></section>
+    <section class="blk"><div id="acct2"></div><button class="btn org" id="newR2" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Buat resep sendiri</button><div class="seg"><button id="segF" aria-pressed="true">Favorit</button><button id="segD" aria-pressed="false">Pernah dimasak</button><button id="segM" aria-pressed="false">Resepku</button></div></section>
     <section class="blk"><div class="grid" id="sgrid"></div></section>
+    <section class="blk"><h2 class="h">Bantuan &amp; Masukan</h2>
+      <p style="margin:0;color:var(--muted)">Ada yang tidak berfungsi atau punya ide fitur dan resep baru? Kirim ke kami. Semua masukan kami baca.</p>
+      <div class="help"><button class="btn sec" data-fb="Masalah">🐞 Laporkan masalah</button><button class="btn sec" data-fb="Saran">💡 Kirim saran</button><button class="btn sec" data-fb="Pertanyaan">❓ Tanya</button></div>
+      <button class="btn pri" id="adminBtn" hidden>📥 Kotak Masukan (admin)</button></section>
   </div>
 </div>
 
@@ -389,6 +402,18 @@ body.lock{overflow:hidden}
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
 <div class="sheet" id="ed" role="dialog" aria-modal="true" style="z-index:25"></div>
 <div class="cook" id="cook" role="dialog" aria-modal="true" hidden></div>
+<div class="fs" id="fb"><div class="fpanel">
+  <div class="fhead"><div><h3>Kirim masukan</h3><p>Ceritakan masalah, saran, atau pertanyaanmu.</p></div><button class="fx" id="fbClose" aria-label="Tutup">✕</button></div>
+  <form class="fbody" id="fbForm" novalidate>
+    <div class="seg" id="fbKind"><button type="button" data-k="Masalah">Masalah</button><button type="button" data-k="Saran">Saran</button><button type="button" data-k="Pertanyaan">Pertanyaan</button></div>
+    <div class="fld"><label for="fbMsg">Pesan</label><textarea id="fbMsg" rows="5" maxlength="2000"></textarea></div>
+    <div class="fld"><label for="fbContact">Email atau nomor WhatsApp <small>opsional, agar bisa kami balas</small></label><input id="fbContact" maxlength="100" autocomplete="off"></div>
+    <p class="err" id="fbErr" hidden></p>
+    <button class="btn pri" type="submit" id="fbSend">Kirim</button>
+  </form></div></div>
+<div class="fs" id="adm"><div class="fpanel">
+  <div class="fhead"><div><h3>Kotak Masukan</h3><p>Hanya terlihat oleh admin.</p></div><button class="fx" id="admClose" aria-label="Tutup">✕</button></div>
+  <div class="fbody" id="admList"></div></div></div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -842,10 +867,10 @@ async function handleAuthReturn(){const h=new URLSearchParams(location.hash.slic
     const pid=store.get("pendUp",null);if(pid){store.set("pendUp",null);const rr=R.find(x=>x.id===pid);if(rr){openR(rr);setTimeout(()=>{if($("upR"))uploadR(rr,store.get("author",sess.name||"Koki"))},500)}}
   }catch(e){toast("Login gagal. Coba lagi.")}}
 const GICON=`<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2c-2 1.5-4.5 2.4-7.2 2.4-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>`;
-function drawAcct(){const a=$("acct");if(!a)return;
+function drawAcct(){const a=$("acct");if(!a)return;drawAcct2();
   a.innerHTML=isGoogle()?`<div class="acct">${sess.pic?`<img src="${clean(sess.pic)}" alt="" referrerpolicy="no-referrer">`:`<span class="av">${(sess.name||"?")[0]}</span>`}<div class="who"><b>${sess.name||"Pengguna"}</b><span>${clean(sess.email)}</span></div><button class="btn sec" id="lgOut">Keluar</button></div>`
    :`<div class="acct"><div class="who"><b>Ingin membagikan resep?</b><span>Masuk dengan akun Google dulu. Memberi like tetap bisa tanpa masuk.</span></div><button class="btn gbtn" id="lgIn">${GICON}Masuk dengan Google</button></div>`;
-  if($("lgOut"))$("lgOut").onclick=logout;if($("lgIn"))$("lgIn").onclick=()=>login()}
+  drawAdminBtn();if($("lgOut"))$("lgOut").onclick=logout;if($("lgIn"))$("lgIn").onclick=()=>login()}
 async function token(){
   if(sess&&sess.uid&&sess.exp>Date.now()/1000+60)return sess.at;
   const H={apikey:SB.k,"Content-Type":"application/json"};
@@ -901,9 +926,40 @@ async function uploadR(r,author){const m=mine.find(x=>x.id===r.id);if(!m)return;
   catch(e){toast(/Batas/.test(e.message)?e.message:"Gagal mengunggah. Cek koneksi internet.");b.textContent=m.cid?"Perbarui di Komunitas":"Bagikan ke Komunitas"}
   b.disabled=false}
 
+/* ---------- Masukan & admin ---------- */
+function drawAcct2(){const a=$("acct2");if(!a)return;a.innerHTML=isGoogle()?"":`<div class="acct"><div class="who"><b>Masuk dengan Google</b><span>Untuk membagikan resep ke Komunitas.</span></div><button class="btn gbtn" id="lgIn2">${GICON}Masuk</button></div>`;if($("lgIn2"))$("lgIn2").onclick=()=>login()}
+const ADMIN="amonkpubg@gmail.com",APPV="1.2";
+let fbKind="Masalah";
+function drawKind(){$("fbKind").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===fbKind));
+  $("fbMsg").placeholder=fbKind==="Masalah"?"Mis. video di resep Sop Ayam tidak bisa diputar di HP Samsung saya.":fbKind==="Saran"?"Mis. tambahkan kategori minuman dan resep es teh manis.":"Tulis pertanyaanmu di sini."}
+function openFb(k){fbKind=k||"Masalah";drawKind();$("fbErr").hidden=true;$("fb").classList.add("on");document.body.classList.add("lock");setTimeout(()=>{try{$("fbMsg").focus({preventScroll:true})}catch(e){}},300)}
+const closeFb=()=>{$("fb").classList.remove("on");if(!$("sheet").classList.contains("on"))document.body.classList.remove("lock")};
+$("fbKind").querySelectorAll("button").forEach(b=>b.onclick=()=>{fbKind=b.dataset.k;drawKind()});
+$("fbClose").onclick=closeFb;$("fb").onclick=e=>{if(e.target.id==="fb")closeFb()};
+document.querySelectorAll("[data-fb]").forEach(b=>b.onclick=()=>openFb(b.dataset.fb));
+$("fbLink").onclick=e=>{e.preventDefault();openFb("Saran")};
+$("fbForm").onsubmit=async e=>{e.preventDefault();const m=$("fbMsg").value.trim();
+  if(m.length<5){$("fbErr").textContent="Tulis pesan minimal 5 huruf.";$("fbErr").hidden=false;return}
+  const b=$("fbSend");b.disabled=true;b.textContent="Mengirim…";
+  const where=$("sheet").classList.contains("on")&&cur?"Resep: "+cur.n:($("nav").querySelector('[aria-pressed="true"]')||{}).textContent||"";
+  try{await api("feedback",{method:"POST",headers:{Prefer:"return=minimal"},body:JSON.stringify({kind:fbKind,message:m.slice(0,2000),contact:$("fbContact").value.trim().slice(0,100)||null,page:where.slice(0,100),device:(navigator.userAgent+" | v"+APPV).slice(0,300)})});
+    $("fbMsg").value="";closeFb();toast("Terima kasih! Masukanmu sudah terkirim 🙏")}
+  catch(err){$("fbErr").textContent=/Batas/.test(err.message)?err.message:"Gagal mengirim. Periksa koneksi internet lalu coba lagi.";$("fbErr").hidden=false}
+  b.disabled=false;b.textContent="Kirim"};
+function drawAdminBtn(){$("adminBtn").hidden=!(isGoogle()&&sess.email===ADMIN)}
+async function openAdmin(){$("adm").classList.add("on");document.body.classList.add("lock");$("admList").innerHTML=`<div class="skel">Memuat masukan…</div>`;
+  try{const rows=await api("feedback?select=*&order=created_at.desc&limit=200");
+    $("admList").innerHTML=rows.length?rows.map(r=>`<div class="fbi ${r.status==="selesai"?"selesai":""}"><div class="fbh"><span class="tagk">${clean(r.kind)}</span><small>${new Date(r.created_at).toLocaleString("id-ID",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><p>${clean(r.message)}</p>${r.contact?`<small>Kontak: ${clean(r.contact)}</small>`:""}${r.page?`<small>Dari: ${clean(r.page)}</small>`:""}<select data-id="${r.id}" aria-label="Status">${["baru","diproses","selesai"].map(x=>`<option ${x===r.status?"selected":""}>${x}</option>`).join("")}</select></div>`).join("")
+      :`<div class="empty"><b>Belum ada masukan</b>Masukan dari pengguna akan tampil di sini.</div>`;
+    $("admList").querySelectorAll("select").forEach(sl=>sl.onchange=async()=>{try{await api("feedback?id=eq."+sl.dataset.id,{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({status:sl.value})});sl.closest(".fbi").classList.toggle("selesai",sl.value==="selesai");toast("Status diubah: "+sl.value)}catch(e){toast("Gagal mengubah status")}})}
+  catch(e){$("admList").innerHTML=`<div class="empty"><b>Tidak bisa memuat</b>Pastikan kamu masuk dengan akun admin dan terhubung ke internet.</div>`}}
+$("adminBtn").onclick=openAdmin;
+const closeAdm=()=>{$("adm").classList.remove("on");document.body.classList.remove("lock")};
+$("admClose").onclick=closeAdm;$("adm").onclick=e=>{if(e.target.id==="adm")closeAdm()};
+
 /* ---------- Navigasi ---------- */
 function show(v){["vHome","vPlan","vShop","vComm","vSaved"].forEach(x=>$(x).hidden=x!==v);$("nav").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===v));
-  if(v==="vPlan")drawPlan();if(v==="vShop")drawShop();if(v==="vSaved")drawSaved();if(v==="vComm"){drawAcct();if(!C.loaded)loadComm(true);else drawComm()}window.scrollTo({top:0})}
+  if(v==="vPlan")drawPlan();if(v==="vShop")drawShop();if(v==="vSaved"){drawSaved();drawAcct2();drawAdminBtn()}if(v==="vComm"){drawAcct();if(!C.loaded)loadComm(true);else drawComm()}window.scrollTo({top:0})}
 $("nav").querySelectorAll("button").forEach(b=>b.onclick=()=>show(b.dataset.v));
 let skipPop=false;
 window.addEventListener("popstate",()=>{if(skipPop){skipPop=false;return}if(!$("cook").hidden)closeCook(true);else if($("ed").classList.contains("on"))closeEd(true);else closeR(true)});
