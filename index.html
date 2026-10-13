@@ -81,7 +81,8 @@ h2.h small{font-family:var(--body);font-size:.8rem;font-weight:700;color:var(--m
 section.blk{margin-top:26px;display:grid;gap:14px}
 
 /* Categories */
-.cats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.cats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.cat{text-align:center;line-height:1.2}
 .cat{display:grid;justify-items:center;gap:7px;font-size:.78rem;font-weight:700;color:var(--muted)}
 .cat .ic{width:100%;max-width:72px;aspect-ratio:1;border-radius:50%;overflow:hidden;background:var(--line);box-shadow:var(--sh);transition:transform .2s}
 .cat .ic img{width:100%;height:100%;object-fit:cover;transform:scale(1.36);display:block}
@@ -259,6 +260,20 @@ body.lock{overflow:hidden}
 /* Toast */
 .toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 100px);transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:700;font-size:.9rem;z-index:60;opacity:0;transition:.25s;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
 .toast.on{opacity:1;transform:translate(-50%,0)}
+.photo.own{transform:none}
+.form{display:grid;gap:16px;padding-block:22px 40px;max-width:660px}
+.fld{display:grid;gap:6px;min-width:0}
+.fld label{font-weight:800;font-size:.85rem}
+.fld label small{font-weight:600;color:var(--muted);margin-left:6px}
+.fld input,.fld select,.fld textarea{width:100%;border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px 14px;font-size:16px;color:var(--fg)}
+.fld textarea{resize:vertical;line-height:1.5}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.photoIn{display:grid;place-items:center;aspect-ratio:16/9;border-radius:20px;border:2px dashed var(--line);background:var(--surface);cursor:pointer;overflow:hidden;color:var(--muted);font-weight:700;text-align:center;padding:10px}
+.photoIn:has(img){padding:0;border-style:solid}
+.photoIn img{width:100%;height:100%;object-fit:cover}
+.err{margin:0;color:var(--red);font-weight:700}
+.edhead{display:flex;align-items:center;gap:12px}
+.edhead .sbtn{position:static;flex:none}
 .credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -272,9 +287,10 @@ body.lock{overflow:hidden}
     <span class="brand"><svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="10" fill="#ffc53d"/><path d="M7 16h18a9 9 0 0 1-18 0z" fill="#0f3b26"/><path d="M5 16h22" stroke="#0f3b26" stroke-width="2.4" stroke-linecap="round"/><path d="M12 7c-1 1.5 1 2.5 0 4M16 6c-1 1.5 1 2.5 0 4M20 7c-1 1.5 1 2.5 0 4" stroke="#0f3b26" stroke-width="1.8" stroke-linecap="round"/></svg>Masak Simpel</span>
     <span class="greet" id="greet">Halo!</span>
     <h1>Masak enak, <em>tanpa ribet.</em></h1>
-    <p class="lead">40 resep rumahan dari bahan dapur biasa. Ikuti langkahnya, tonton videonya, langsung jadi.</p>
+    <p class="lead"><span id="nres">80</span> resep rumahan dari bahan dapur biasa. Ikuti langkahnya, tonton videonya, langsung jadi.</p>
     <div class="hbtns">
       <button class="dice" id="dice"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>Masak apa hari ini?</button>
+      <button class="ghost" id="newR"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Buat resep sendiri</button>
       <button class="ghost" id="install" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Pasang aplikasi</button>
     </div>
   </div>
@@ -328,7 +344,7 @@ body.lock{overflow:hidden}
 <div id="vSaved" hidden>
   <header class="phead"><div class="in"><h1>Koleksiku</h1><p>Resep favorit dan riwayat masakan yang sudah pernah kamu buat.</p></div></header>
   <div class="in">
-    <section class="blk"><div class="seg"><button id="segF" aria-pressed="true">Favorit</button><button id="segD" aria-pressed="false">Pernah dimasak</button></div></section>
+    <section class="blk"><button class="btn org" id="newR2" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Buat resep sendiri</button><div class="seg"><button id="segF" aria-pressed="true">Favorit</button><button id="segD" aria-pressed="false">Pernah dimasak</button><button id="segM" aria-pressed="false">Resepku</button></div></section>
     <section class="blk"><div class="grid" id="sgrid"></div></section>
   </div>
 </div>
@@ -347,6 +363,7 @@ body.lock{overflow:hidden}
 </div></div>
 
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+<div class="sheet" id="ed" role="dialog" aria-modal="true" style="z-index:25"></div>
 <div class="cook" id="cook" role="dialog" aria-modal="true" hidden></div>
 <div class="toast" id="toast" role="status"></div>
 
@@ -411,11 +428,11 @@ const R=[
   s:["Iris daun bawang dan bawang merah.","Kocok telur dengan irisan dan garam.","Goreng di minyak panas, balik sekali, angkat."]},
  {n:"Telur Ceplok Kecap",k:"Lauk",t:10,e:"🍳",c:"#f6e2bd",v:"aqiyzMC4a4c",i:["telur","kecap manis","cabai"],b:["4 butir telur","3 siung bawang merah","2 siung bawang putih","2 buah cabai","3 sdm kecap manis","garam secukupnya","minyak untuk menggoreng"],
   s:["Goreng telur ceplok, sisihkan.","Iris bawang dan cabai.","Tumis bumbu sampai harum.","Tambah kecap, garam, dan 3 sdm air.","Masukkan telur, aduk pelan sampai kuah mengental, angkat."]},
- {n:"Nasi Goreng Kecap",k:"Lauk",t:15,e:"🍛",c:"#f1d9bf",v:"LhpHCZbFb2A",i:["nasi","telur","cabai","kecap manis"],b:["1 piring nasi","1 butir telur","3 siung bawang merah","2 siung bawang putih","2 buah cabai","2 sdm kecap manis","garam secukupnya","2 sdm minyak"],
+ {n:"Nasi Goreng Kecap",k:"Nasi & Mie",t:15,e:"🍛",c:"#f1d9bf",v:"LhpHCZbFb2A",i:["nasi","telur","cabai","kecap manis"],b:["1 piring nasi","1 butir telur","3 siung bawang merah","2 siung bawang putih","2 buah cabai","2 sdm kecap manis","garam secukupnya","2 sdm minyak"],
   s:["Cincang bawang dan cabai.","Tumis bumbu sampai harum.","Masukkan telur, orak-arik.","Masukkan nasi, kecap, dan garam.","Aduk rata dengan api besar 3 menit, angkat."]},
- {n:"Mie Rebus Telur Sawi",k:"Lauk",t:8,e:"🍜",c:"#f7e3c6",v:"UtHIf0_OI0g",i:["mie instan","telur","sawi"],b:["1 bungkus mie instan","1 butir telur","beberapa lembar sawi","400 ml air"],
+ {n:"Mie Rebus Telur Sawi",k:"Nasi & Mie",t:8,e:"🍜",c:"#f7e3c6",v:"UtHIf0_OI0g",i:["mie instan","telur","sawi"],b:["1 bungkus mie instan","1 butir telur","beberapa lembar sawi","400 ml air"],
   s:["Didihkan air.","Masukkan mie dan sawi.","Pecahkan telur di pinggir panci, jangan diaduk dulu.","Masak 3 menit, campur bumbu di mangkuk, tuang."]},
- {n:"Mie Goreng Sederhana",k:"Lauk",t:15,e:"🍝",c:"#f4dcc0",v:"mBd4sqCKP6I",i:["mie","telur","sawi","kecap manis","saus tiram"],b:["2 keping mie telur","1 butir telur","1 ikat sawi","3 siung bawang putih","2 siung bawang merah","2 sdm kecap manis","1 sdm saus tiram","garam dan merica","2 sdm minyak"],
+ {n:"Mie Goreng Sederhana",k:"Nasi & Mie",t:15,e:"🍝",c:"#f4dcc0",v:"mBd4sqCKP6I",i:["mie","telur","sawi","kecap manis","saus tiram"],b:["2 keping mie telur","1 butir telur","1 ikat sawi","3 siung bawang putih","2 siung bawang merah","2 sdm kecap manis","1 sdm saus tiram","garam dan merica","2 sdm minyak"],
   s:["Rebus mie sampai setengah matang, tiriskan.","Tumis bawang cincang sampai harum.","Masukkan telur, orak-arik.","Masukkan sawi, mie, kecap, saus tiram, garam, dan merica.","Aduk rata dengan api besar 3 menit, angkat."]},
  {n:"Ayam Goreng Bawang",k:"Lauk",t:40,e:"🍗",c:"#f5d9b8",v:"fy6JUHj9ea4",i:["ayam"],b:["500 g ayam","8 siung bawang putih","1 sdt ketumbar bubuk (opsional)","1 sdt garam","500 ml air","minyak untuk menggoreng"],
   s:["Haluskan bawang putih dengan garam dan ketumbar.","Rebus ayam dengan bumbu dan air sampai airnya habis (±25 menit).","Panaskan banyak minyak.","Goreng ayam sampai kuning kecokelatan, angkat."],tip:"Sisa bumbu di panci bisa digoreng terpisah jadi kremesan bawang."},
@@ -432,26 +449,107 @@ const R=[
  {n:"Perkedel Kentang",k:"Lauk",t:30,e:"🥔",c:"#f3e4c6",v:"hEEMYwcNSow",i:["kentang","telur","daun bawang"],b:["4 buah kentang","1 butir telur","1 batang daun bawang","bawang goreng secukupnya","garam dan merica","minyak untuk menggoreng"],
   s:["Kupas dan potong kentang, goreng sampai matang.","Haluskan kentang selagi hangat.","Campur dengan daun bawang, bawang goreng, garam, dan merica.","Bentuk bulat pipih.","Celup ke kocokan telur, goreng sampai kuning, angkat."]},
  {n:"Bakwan Sayur",k:"Lauk",t:20,e:"🥕",c:"#f6dcbf",v:"-fbcJZbic64",i:["kol","wortel","toge","tepung terigu","daun bawang"],b:["¼ buah kol","1 buah wortel","segenggam toge","1 batang daun bawang","10 sdm tepung terigu","2 siung bawang putih","garam dan merica","air secukupnya","minyak untuk menggoreng"],
-  s:["Iris tipis kol, wortel, dan daun bawang.","Haluskan bawang putih dengan garam dan merica.","Campur sayur, bumbu, tepung, dan air sampai kental.","Ambil satu sendok adonan, goreng di minyak panas.","Goreng sampai kuning keemasan, angkat."]}
+  s:["Iris tipis kol, wortel, dan daun bawang.","Haluskan bawang putih dengan garam dan merica.","Campur sayur, bumbu, tepung, dan air sampai kental.","Ambil satu sendok adonan, goreng di minyak panas.","Goreng sampai kuning keemasan, angkat."]},
+ {n:"Tumis Kacang Panjang",k:"Tumis",t:12,e:"🫛",c:"#dcecd2",v:"u7HQMxAI-TY",i:["kacang panjang","cabai"],b:["1 ikat kacang panjang","3 siung bawang merah","2 siung bawang putih","3 buah cabai","garam dan gula","2 sdm minyak"],
+  s:["Potong kacang panjang sepanjang 3 cm, cuci.","Iris bawang dan cabai.","Tumis bumbu sampai harum.","Masukkan kacang panjang dan 3 sdm air.","Beri garam dan gula, masak 5 menit sampai layu, angkat."]},
+ {n:"Tumis Kol",k:"Tumis",t:10,e:"🥬",c:"#e3efd8",v:"vVfnkNBmzk0",i:["kol","cabai","tomat"],b:["¼ buah kol","3 siung bawang merah","2 siung bawang putih","2 buah cabai","1 buah tomat","garam dan gula","2 sdm minyak"],
+  s:["Iris kol, cuci, tiriskan.","Iris bawang, cabai, dan tomat.","Tumis bumbu sampai harum.","Masukkan kol, garam, dan gula.","Aduk 3 menit sampai kol layu, angkat."]},
+ {n:"Tumis Bayam Bawang Putih",k:"Tumis",t:7,e:"🥬",c:"#d3ead0",v:"AsGTuNlbGr8",i:["bayam"],b:["1 ikat bayam","5 siung bawang putih","garam secukupnya","½ sdt gula","2 sdm minyak"],
+  s:["Petik bayam, cuci, tiriskan.","Cincang bawang putih.","Tumis bawang putih sampai kekuningan.","Masukkan bayam, garam, dan gula.","Aduk cepat 1 menit, angkat."],tip:"Bayam cepat layu, jangan dimasak terlalu lama."},
+ {n:"Tumis Brokoli Bawang Putih",k:"Tumis",t:10,e:"🥦",c:"#d6ead4",v:"BDM68cINPp4",i:["brokoli","saus tiram"],b:["1 bonggol brokoli","5 siung bawang putih","1 sdm saus tiram","garam dan merica","2 sdm minyak"],
+  s:["Potong brokoli per kuntum, rendam air garam 5 menit, cuci.","Cincang bawang putih.","Tumis bawang putih sampai harum.","Masukkan brokoli, saus tiram, garam, merica, dan sedikit air.","Masak 3 menit sampai brokoli empuk tapi tetap hijau, angkat."]},
+ {n:"Tumis Terong Kecap",k:"Tumis",t:15,e:"🍆",c:"#e6d8ec",v:"JRunjbbXFJg",i:["terong","cabai","kecap manis"],b:["2 buah terong","3 siung bawang merah","2 siung bawang putih","3 buah cabai","3 sdm kecap manis","garam secukupnya","minyak untuk menggoreng"],
+  s:["Potong terong, goreng sebentar sampai layu, tiriskan.","Iris bawang dan cabai.","Tumis bumbu sampai harum.","Masukkan terong, kecap, garam, dan 2 sdm air.","Aduk rata sampai meresap, angkat."]},
+ {n:"Tumis Udang Cabai",k:"Tumis",t:15,e:"🦐",c:"#fbdcd0",v:"HOi1YLVMHEM",i:["udang","cabai","saus tiram"],b:["250 g udang","4 siung bawang merah","3 siung bawang putih","6 buah cabai","1 sdm saus tiram","1 sdm kecap manis","garam dan gula","2 sdm minyak"],
+  s:["Kupas udang, buang kotorannya, cuci.","Iris bawang dan cabai.","Tumis bumbu sampai harum.","Masukkan udang, aduk sampai berubah warna merah.","Tambah saus tiram, kecap, garam, dan gula.","Masak 2 menit, angkat."],tip:"Udang cepat matang. Terlalu lama dimasak membuatnya keras."},
+ {n:"Cah Sawi Putih",k:"Tumis",t:10,e:"🥬",c:"#eef3e0",v:"BQKOT_cQtDs",i:["sawi putih","saus tiram"],b:["½ buah sawi putih","3 siung bawang putih","1 sdm saus tiram","garam dan merica","1 sdt maizena (opsional)","2 sdm minyak"],
+  s:["Potong sawi putih, cuci.","Tumis bawang putih cincang sampai harum.","Masukkan sawi putih dan sedikit air.","Beri saus tiram, garam, dan merica.","Kentalkan dengan maizena yang dilarutkan air, angkat."]},
+ {n:"Tumis Pare Telur",k:"Tumis",t:15,e:"🥒",c:"#dfeccf",v:"KUTtWRyo92o",i:["pare","telur","cabai"],b:["2 buah pare","2 butir telur","3 siung bawang merah","2 siung bawang putih","2 buah cabai","garam dan gula","2 sdm minyak"],
+  s:["Iris tipis pare, remas dengan garam, diamkan 10 menit, lalu cuci bersih.","Iris bawang dan cabai.","Tumis bumbu sampai harum.","Masukkan telur, orak-arik.","Masukkan pare, garam, dan gula, aduk 4 menit, angkat."],tip:"Meremas pare dengan garam mengurangi rasa pahitnya."},
+ {n:"Tumis Tauge Tahu",k:"Tumis",t:12,e:"🌱",c:"#f0f2d4",v:"8gO_CsI29xE",i:["toge","tahu","cabai","daun bawang"],b:["200 g toge","3 potong tahu","3 siung bawang merah","2 siung bawang putih","2 buah cabai","1 batang daun bawang","garam dan gula","minyak untuk menggoreng"],
+  s:["Potong dadu tahu, goreng sampai kuning, tiriskan.","Iris bawang, cabai, dan daun bawang.","Tumis bumbu sampai harum.","Masukkan tahu dan toge, beri garam dan gula.","Aduk 2 menit dengan api besar, angkat."]},
+ {n:"Sayur Lodeh",k:"Sop",t:30,e:"🥘",c:"#f5ecd2",v:"MZkkLcFjeZ0",i:["labu siam","kacang panjang","terong","tempe","santan"],b:["1 buah labu siam","1 ikat kacang panjang","1 buah terong","½ papan tempe","65 ml santan instan","5 siung bawang merah","3 siung bawang putih","2 lembar daun salam","garam dan gula","800 ml air"],
+  s:["Potong semua sayur dan tempe.","Ulek bawang merah dan bawang putih.","Tumis bumbu halus dengan daun salam sampai harum.","Masukkan air, didihkan, lalu masukkan labu siam dan tempe.","Masukkan kacang panjang dan terong, masak 5 menit.","Tuang santan, beri garam dan gula, aduk terus sampai mendidih, angkat."],tip:"Aduk terus setelah santan masuk supaya santan tidak pecah."},
+ {n:"Sup Makaroni",k:"Sop",t:25,e:"🍲",c:"#f8e7c8",v:"kiop_F23Ouk",i:["makaroni","wortel","sosis","daun bawang"],b:["100 g makaroni","1 buah wortel","3 buah sosis","1 batang daun bawang","3 siung bawang putih","1 liter air","garam dan merica"],
+  s:["Rebus makaroni sampai empuk, tiriskan.","Tumis bawang putih geprek, masukkan air, didihkan.","Masukkan wortel, masak 7 menit.","Masukkan sosis dan makaroni.","Bumbui garam dan merica, tambah daun bawang, angkat."]},
+ {n:"Soto Ayam Sederhana",k:"Sop",t:45,e:"🍜",c:"#f7e3b5",v:"Z7ASujBYFPw",i:["ayam","kunyit","serai","toge","telur"],b:["500 g ayam","5 siung bawang merah","4 siung bawang putih","2 cm kunyit (atau ½ sdt bubuk)","1 batang serai","2 lembar daun salam","1,5 liter air","garam dan merica","toge dan telur rebus untuk pelengkap"],
+  s:["Rebus ayam sampai matang, angkat lalu suwir. Sisihkan kaldunya.","Haluskan bawang merah, bawang putih, dan kunyit.","Tumis bumbu dengan serai dan daun salam sampai harum.","Masukkan bumbu ke kaldu, beri garam dan merica, masak 10 menit.","Sajikan kuah dengan suwiran ayam, toge, dan telur rebus."]},
+ {n:"Sayur Oyong Bening",k:"Sop",t:15,e:"🥒",c:"#e2efd3",v:"6LPPhYNNAls",i:["oyong"],b:["2 buah oyong (gambas)","4 siung bawang merah","2 siung bawang putih","800 ml air","garam dan gula"],
+  s:["Kupas oyong, potong serong.","Iris bawang merah dan bawang putih.","Didihkan air bersama irisan bawang.","Masukkan oyong, beri garam dan gula.","Masak 4 menit sampai oyong empuk, angkat."]},
+ {n:"Sup Tomat Telur",k:"Sop",t:12,e:"🍅",c:"#fbd6c7",v:"hX82K6KeYxE",i:["tomat","telur","daun bawang"],b:["3 buah tomat","2 butir telur","3 siung bawang putih","1 batang daun bawang","700 ml air","garam, gula, dan merica"],
+  s:["Potong tomat, iris daun bawang.","Tumis bawang putih sampai harum, masukkan tomat sampai layu.","Masukkan air, didihkan.","Bumbui garam, gula, dan merica.","Kocok telur, tuang perlahan sambil diaduk, taburi daun bawang."]},
+ {n:"Sayur Bobor Bayam",k:"Sop",t:15,e:"🥬",c:"#e1eed2",v:"7D2jghZSCyo",i:["bayam","santan","labu siam"],b:["1 ikat bayam","1 buah labu siam (opsional)","65 ml santan instan","4 siung bawang merah","2 siung bawang putih","1 sdt ketumbar bubuk","2 lembar daun salam","garam dan gula","700 ml air"],
+  s:["Ulek bawang merah, bawang putih, dan ketumbar.","Didihkan air dengan bumbu dan daun salam.","Masukkan labu siam, masak 5 menit.","Tuang santan, aduk sampai mendidih.","Masukkan bayam, garam, dan gula, masak 1 menit, angkat."]},
+ {n:"Sop Tahu Bakso",k:"Sop",t:15,e:"🍡",c:"#ebe3d4",v:"3CCix8d6ZwI",i:["tahu","bakso","sawi","daun bawang"],b:["3 potong tahu","10 butir bakso","1 ikat sawi","3 siung bawang putih","1 batang daun bawang","1 liter air","garam dan merica"],
+  s:["Potong tahu dan sawi.","Tumis bawang putih sampai harum, tuang air, didihkan.","Masukkan bakso dan tahu, masak 5 menit.","Masukkan sawi, garam, dan merica.","Taburi daun bawang, angkat."]},
+ {n:"Sambal Goreng Kentang",k:"Sambal",t:30,e:"🥔",c:"#f6dcc0",v:"t6MinKW8-cY",i:["kentang","cabai","kecap manis"],b:["4 buah kentang","8 buah cabai merah","5 siung bawang merah","3 siung bawang putih","2 lembar daun salam","1 sdm kecap manis","garam dan gula","minyak untuk menggoreng"],
+  s:["Potong kentang korek api, goreng sampai kering, tiriskan.","Ulek cabai, bawang merah, dan bawang putih.","Tumis bumbu dengan daun salam sampai matang.","Beri kecap, garam, dan gula.","Masukkan kentang, aduk cepat sampai terbalut, angkat."]},
+ {n:"Sambal Dabu-dabu",k:"Sambal",t:5,e:"🍅",c:"#fcd5c8",v:"QSeMHSpKOjM",i:["cabai","tomat","jeruk nipis"],b:["10 buah cabai rawit","5 siung bawang merah","2 buah tomat","1 buah jeruk nipis","½ sdt garam","2 sdm minyak panas"],
+  s:["Potong dadu kecil tomat, iris cabai dan bawang merah.","Campur semua dengan garam.","Beri perasan jeruk nipis.","Siram minyak panas, aduk rata."],tip:"Cocok untuk ikan atau ayam bakar."},
+ {n:"Sambal Bajak",k:"Sambal",t:25,e:"🌶️",c:"#f6cfc2",v:"E-NNTwPKmiE",i:["cabai","tomat","terasi"],b:["15 buah cabai merah","8 siung bawang merah","4 siung bawang putih","2 buah tomat","1 sdt terasi","1 sdm gula merah","garam secukupnya","5 sdm minyak"],
+  s:["Haluskan cabai, bawang, tomat, dan terasi.","Panaskan minyak, masukkan bumbu halus.","Masak dengan api kecil sambil diaduk sampai matang dan berminyak (±15 menit).","Beri gula merah dan garam, aduk, angkat."],tip:"Dimasak lama supaya awet disimpan beberapa hari."},
+ {n:"Sambal Korek",k:"Sambal",t:5,e:"🌶️",c:"#f9d8cc",v:"DFBNsNElr4A",i:["cabai"],b:["15 buah cabai rawit","3 siung bawang putih","½ sdt garam","3 sdm minyak panas"],
+  s:["Ulek kasar cabai, bawang putih, dan garam.","Panaskan minyak sampai berasap.","Siram minyak ke sambal, aduk rata."]},
+ {n:"Ayam Geprek",k:"Lauk",t:35,e:"🍗",c:"#f5d7b6",v:"zX42CAdlwVQ",i:["ayam","tepung terigu","cabai"],b:["4 potong ayam","10 sdm tepung terigu","3 siung bawang putih","garam dan merica","15 buah cabai rawit","3 siung bawang putih (untuk sambal)","minyak untuk menggoreng"],
+  s:["Lumuri ayam dengan bawang putih halus, garam, dan merica, diamkan 15 menit.","Gulingkan ayam ke tepung, celup air, lalu gulingkan lagi.","Goreng sampai kering dan matang.","Ulek cabai, bawang putih, dan garam, siram sedikit minyak panas.","Taruh ayam di atas sambal, geprek sampai sambal meresap."]},
+ {n:"Ayam Goreng Kuning",k:"Lauk",t:45,e:"🍗",c:"#f8e2a8",v:"v5KSxuYIdSw",i:["ayam","kunyit","serai"],b:["500 g ayam","6 siung bawang merah","4 siung bawang putih","3 cm kunyit (atau 1 sdt bubuk)","1 sdt ketumbar bubuk","1 batang serai","2 lembar daun salam","1 sdt garam","500 ml air","minyak untuk menggoreng"],
+  s:["Haluskan bawang merah, bawang putih, kunyit, ketumbar, dan garam.","Ungkep ayam dengan bumbu, serai, daun salam, dan air sampai air habis (±25 menit).","Panaskan minyak.","Goreng ayam sampai kuning kecokelatan, angkat."]},
+ {n:"Ayam Saus Tiram",k:"Lauk",t:30,e:"🍗",c:"#ecd6c2",v:"w0F6uaEpbqg",i:["ayam","saus tiram","daun bawang"],b:["400 g ayam fillet","4 siung bawang putih","½ buah bawang bombay (opsional)","2 sdm saus tiram","1 sdm kecap manis","1 batang daun bawang","garam dan merica","150 ml air","2 sdm minyak"],
+  s:["Potong ayam kecil-kecil, beri sedikit garam dan merica.","Tumis bawang putih dan bawang bombay sampai harum.","Masukkan ayam, aduk sampai berubah warna.","Tambah saus tiram, kecap, dan air.","Masak sampai kuah mengental (±10 menit), taburi daun bawang, angkat."]},
+ {n:"Semur Ayam",k:"Lauk",t:45,e:"🍗",c:"#e5cdb8",v:"jhSpRAaDqd8",i:["ayam","kecap manis","kentang"],b:["500 g ayam","2 buah kentang","5 siung bawang merah","3 siung bawang putih","½ sdt merica","5 sdm kecap manis","2 lembar daun salam","garam secukupnya","500 ml air","2 sdm minyak"],
+  s:["Haluskan bawang merah, bawang putih, dan merica.","Tumis bumbu dengan daun salam sampai harum.","Masukkan ayam, aduk sampai berubah warna.","Tuang air dan kecap, masukkan kentang.","Masak dengan api kecil sampai kuah kental dan ayam empuk (±25 menit).","Cicipi, tambah garam bila perlu, angkat."]},
+ {n:"Semur Telur",k:"Lauk",t:25,e:"🥚",c:"#ead6c2",v:"yH68YVncOoA",i:["telur","kecap manis","kentang"],b:["6 butir telur","2 buah kentang (opsional)","5 siung bawang merah","3 siung bawang putih","½ sdt merica","4 sdm kecap manis","2 lembar daun salam","garam secukupnya","300 ml air","2 sdm minyak"],
+  s:["Rebus telur 10 menit, kupas.","Haluskan bawang dan merica.","Tumis bumbu dengan daun salam sampai harum.","Masukkan air, kecap, telur, dan kentang.","Masak sampai kuah mengental (±10 menit), angkat."]},
+ {n:"Tahu Tempe Bacem",k:"Lauk",t:40,e:"🟫",c:"#e4cfb2",v:"QN923TflOqs",i:["tahu","tempe","kecap manis"],b:["5 potong tahu","1 papan tempe","5 siung bawang merah","3 siung bawang putih","1 sdt ketumbar bubuk","3 sdm gula merah","2 sdm kecap manis","2 lembar daun salam","1 sdt garam","400 ml air","minyak untuk menggoreng"],
+  s:["Potong tahu dan tempe.","Haluskan bawang merah, bawang putih, dan ketumbar.","Rebus tahu dan tempe dengan bumbu, gula merah, kecap, daun salam, garam, dan air.","Masak sampai air habis (±25 menit).","Goreng sebentar sampai kecokelatan, angkat."],tip:"Bacem yang sudah diungkep bisa disimpan di kulkas dan digoreng kapan saja."},
+ {n:"Tahu Isi Sayur",k:"Lauk",t:30,e:"🧈",c:"#f4e7c2",v:"PjSO00QtkMw",i:["tahu","wortel","kol","toge","tepung terigu"],b:["10 buah tahu pong (tahu kopong)","1 buah wortel","¼ buah kol","segenggam toge","2 siung bawang putih","garam dan merica","8 sdm tepung terigu","air secukupnya","minyak untuk menggoreng"],
+  s:["Iris tipis wortel dan kol.","Tumis bawang putih, masukkan sayur, beri garam dan merica, masak sampai layu.","Belah sisi tahu, isi dengan tumisan sayur.","Celup tahu ke adonan tepung yang diberi garam dan air.","Goreng sampai kuning keemasan, angkat."]},
+ {n:"Pepes Tahu",k:"Lauk",t:40,e:"🍃",c:"#d5e7cc",v:"5PBa6IHqej0",i:["tahu","telur","daun pisang","cabai"],b:["5 potong tahu","1 butir telur","4 siung bawang merah","2 siung bawang putih","3 buah cabai","1 batang daun bawang","garam dan gula","daun pisang secukupnya"],
+  s:["Hancurkan tahu dengan garpu.","Haluskan bawang dan cabai, campur ke tahu bersama telur, daun bawang, garam, dan gula.","Bungkus adonan dengan daun pisang, semat dengan lidi.","Kukus selama 25 menit.","Angkat. Bisa dibakar sebentar di wajan supaya lebih wangi."]},
+ {n:"Udang Goreng Tepung",k:"Lauk",t:20,e:"🦐",c:"#fad9b9",v:"lIGBAAW2TzY",i:["udang","tepung terigu","telur"],b:["250 g udang","8 sdm tepung terigu","2 sdm tepung maizena (opsional)","1 butir telur","2 siung bawang putih","garam dan merica","minyak untuk menggoreng"],
+  s:["Kupas udang, sisakan ekornya, cuci.","Lumuri udang dengan bawang putih halus, garam, dan merica.","Celup udang ke kocokan telur.","Gulingkan ke campuran tepung.","Goreng sampai kuning keemasan dan renyah, angkat."]},
+ {n:"Telur Gulung",k:"Lauk",t:10,e:"🥚",c:"#fbe9b5",v:"hiWVFSIl5EY",i:["telur","daun bawang"],b:["3 butir telur","1 batang daun bawang","garam secukupnya","1 sdm minyak"],
+  s:["Kocok telur dengan garam dan irisan daun bawang.","Panaskan sedikit minyak di wajan dengan api kecil.","Tuang tipis adonan telur, tunggu setengah matang.","Gulung pelan ke satu sisi, lalu tuang adonan lagi di sisi kosong.","Ulangi sampai adonan habis, angkat dan potong-potong."],tip:"Pakai api kecil supaya telur tidak gosong."},
+ {n:"Ikan Kecap",k:"Lauk",t:30,e:"🐟",c:"#dbe2ea",v:"nGHNhQhbNx0",i:["ikan","kecap manis","cabai","tomat","jeruk nipis"],b:["2 ekor ikan (nila atau kembung)","1 buah jeruk nipis","4 siung bawang merah","3 siung bawang putih","4 buah cabai","1 buah tomat","4 sdm kecap manis","garam secukupnya","minyak untuk menggoreng"],
+  s:["Lumuri ikan dengan jeruk nipis dan garam, goreng sampai kering.","Iris bawang, cabai, dan tomat.","Tumis bumbu sampai harum.","Tambah kecap, garam, dan 100 ml air, masak sampai sedikit kental.","Masukkan ikan, siram dengan kuah, masak 2 menit, angkat."]},
+ {n:"Martabak Mie",k:"Nasi & Mie",t:15,e:"🍳",c:"#f7e2b8",v:"JtFHH9h_4UE",i:["mie instan","telur","daun bawang"],b:["1 bungkus mie instan","2 butir telur","1 batang daun bawang","½ buah wortel (opsional)","2 sdm minyak"],
+  s:["Rebus mie sampai matang, tiriskan.","Kocok telur dengan bumbu mie, daun bawang, dan parutan wortel.","Campur mie ke kocokan telur.","Tuang ke wajan berminyak, ratakan.","Masak sampai bagian bawah kering, balik, masak sampai matang, angkat."]},
+ {n:"Nasi Goreng Kampung",k:"Nasi & Mie",t:15,e:"🍛",c:"#f0d4b4",v:"xBZeOw681vk",i:["nasi","telur","cabai","terasi","ikan teri"],b:["2 piring nasi","1 butir telur","5 siung bawang merah","2 siung bawang putih","5 buah cabai rawit","½ sdt terasi","1 sdm ikan teri goreng (opsional)","garam secukupnya","2 sdm minyak"],
+  s:["Ulek bawang, cabai, terasi, dan garam.","Tumis bumbu sampai harum.","Masukkan telur, orak-arik.","Masukkan nasi, aduk rata dengan api besar.","Tambah teri, aduk 2 menit, angkat."],tip:"Pakai nasi dingin atau nasi sisa supaya tidak lembek."},
+ {n:"Nasi Uduk Rice Cooker",k:"Nasi & Mie",t:40,e:"🍚",c:"#f1ead8",v:"P4_lYdF3e44",i:["beras","santan","serai"],b:["2 gelas beras","65 ml santan instan","1 batang serai","2 lembar daun salam","1 sdt garam","air secukupnya (seperti masak nasi biasa)"],
+  s:["Cuci beras sampai bersih.","Masukkan ke rice cooker dengan santan, air, serai, daun salam, dan garam.","Aduk rata, lalu masak seperti biasa.","Setelah matang, aduk dan diamkan 10 menit sebelum disajikan."]},
+ {n:"Nasi Liwet Rice Cooker",k:"Nasi & Mie",t:40,e:"🍚",c:"#ece7d6",v:"idWchMK6ddc",i:["beras","ikan teri","serai","cabai"],b:["2 gelas beras","5 siung bawang merah","3 siung bawang putih","1 batang serai","2 lembar daun salam","2 sdm ikan teri","5 buah cabai rawit utuh","1 sdt garam","2 sdm minyak","air secukupnya"],
+  s:["Iris bawang, tumis dengan serai dan daun salam sampai harum.","Masukkan teri, aduk sebentar.","Cuci beras, masukkan ke rice cooker dengan tumisan, cabai, garam, dan air.","Masak seperti biasa.","Aduk setelah matang, sajikan."]},
+ {n:"Nasi Kuning Rice Cooker",k:"Nasi & Mie",t:40,e:"🍚",c:"#f8e8a6",v:"XxrEakGVyAw",i:["beras","santan","kunyit","serai"],b:["2 gelas beras","65 ml santan instan","1 sdt kunyit bubuk","1 batang serai","2 lembar daun salam","1 sdt garam","air secukupnya"],
+  s:["Cuci beras.","Larutkan kunyit dan garam ke santan dan air.","Masukkan semua ke rice cooker bersama serai dan daun salam.","Masak seperti biasa, aduk setelah matang."]},
+ {n:"Bihun Goreng",k:"Nasi & Mie",t:20,e:"🍝",c:"#f3e2c6",v:"mjS4pIRshKk",i:["bihun","telur","sawi","kecap manis"],b:["150 g bihun","1 butir telur","1 ikat sawi","4 siung bawang merah","3 siung bawang putih","2 sdm kecap manis","1 sdm saus tiram","garam dan merica","2 sdm minyak"],
+  s:["Rendam bihun di air panas sampai lunak, tiriskan.","Tumis bawang cincang sampai harum.","Masukkan telur, orak-arik.","Masukkan sawi, bihun, kecap, saus tiram, garam, dan merica.","Aduk rata sampai bumbu meresap, angkat."]},
+ {n:"Kwetiau Goreng",k:"Nasi & Mie",t:20,e:"🍜",c:"#eedcc2",v:"DzSbohnChfE",i:["kwetiau","telur","sawi","kecap manis","bakso"],b:["250 g kwetiau basah","1 butir telur","1 ikat sawi","5 butir bakso","3 siung bawang putih","2 sdm kecap manis","1 sdm saus tiram","garam dan merica","2 sdm minyak"],
+  s:["Iris bakso dan potong sawi.","Tumis bawang putih sampai harum.","Masukkan telur, orak-arik, lalu bakso.","Masukkan kwetiau, sawi, kecap, saus tiram, garam, dan merica.","Aduk pelan dengan api besar 3 menit, angkat."]},
+ {n:"Mie Nyemek",k:"Nasi & Mie",t:12,e:"🍜",c:"#f4dcc0",v:"zkm29h5-bHE",i:["mie instan","telur","sawi","cabai"],b:["1 bungkus mie instan","1 butir telur","beberapa lembar sawi","2 siung bawang putih","3 buah cabai rawit","200 ml air","1 sdm minyak"],
+  s:["Rebus mie setengah matang, tiriskan.","Tumis bawang putih dan cabai sampai harum.","Masukkan telur, orak-arik.","Tuang air, bumbu mie, sawi, dan mie.","Masak sampai kuah menyusut dan kental, angkat."],tip:"Nyemek artinya basah sedikit berkuah, jadi jangan sampai kuahnya habis."},
+ {n:"Nasi Gila",k:"Nasi & Mie",t:15,e:"🍛",c:"#f2d6c0",v:"UJZLjghbCPc",i:["nasi","sosis","bakso","telur","saus tiram","cabai"],b:["2 piring nasi hangat","3 buah sosis","5 butir bakso","1 butir telur","3 siung bawang putih","3 buah cabai","1 sdm saus tiram","2 sdm saus sambal","1 sdm kecap manis","2 sdm minyak"],
+  s:["Iris sosis, bakso, bawang, dan cabai.","Tumis bawang dan cabai sampai harum.","Masukkan telur, orak-arik, lalu sosis dan bakso.","Tambah saus tiram, saus sambal, kecap, dan sedikit air.","Masak 2 menit, siramkan di atas nasi hangat."]}
 ];
 const store={get(k,d){try{const v=localStorage.getItem("ms-"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("ms-"+k,JSON.stringify(v))}catch(e){}}};
 let favs=new Set(store.get("fav",[])),have=new Set(store.get("have",[])),labels=new Set(store.get("labels",[])),done=store.get("done",{}),notes=store.get("notes",{}),shop=store.get("shop",[]),plan=store.get("plan",null);
 let cat="Semua",seg="fav",cur=null,por=2;
 const SITE="https://amonkshark.github.io/masak-simpel/";
-const ANAK=new Set(["Telur Dadar Daun Bawang","Sop Telur Sosis","Nasi Goreng Kecap","Perkedel Kentang","Ayam Kecap","Tahu Goreng Crispy","Sop Jagung Telur","Mie Goreng Sederhana","Ayam Goreng Bawang","Sop Bakso","Bakwan Sayur","Telur Ceplok Kecap","Tumis Telur Tomat","Sop Ayam Sederhana","Mie Rebus Telur Sawi","Sop Sayur Bening","Tempe Goreng","Orek Tempe"]);
+const ANAK=new Set(["Telur Dadar Daun Bawang","Sop Telur Sosis","Nasi Goreng Kecap","Perkedel Kentang","Ayam Kecap","Tahu Goreng Crispy","Sop Jagung Telur","Mie Goreng Sederhana","Ayam Goreng Bawang","Sop Bakso","Bakwan Sayur","Telur Ceplok Kecap","Tumis Telur Tomat","Sop Ayam Sederhana","Mie Rebus Telur Sawi","Sop Sayur Bening","Tempe Goreng","Orek Tempe","Sup Makaroni","Telur Gulung","Udang Goreng Tepung","Martabak Mie","Nasi Uduk Rice Cooker","Nasi Kuning Rice Cooker","Semur Telur","Semur Ayam","Ayam Saus Tiram","Ayam Goreng Kuning","Bihun Goreng","Kwetiau Goreng","Sop Tahu Bakso","Sup Tomat Telur","Tahu Isi Sayur","Tahu Tempe Bacem"]);
 const LABELS=["Pedas","Tanpa daging","Hemat","Anak suka"];
-R.forEach(r=>{const meat=r.i.some(x=>["ayam","ikan","ikan teri","bakso","sosis"].includes(x));r.L=[];
+function lab(r){const meat=r.i.some(x=>["ayam","ikan","ikan teri","bakso","sosis","udang"].includes(x));r.L=[];if(r.own)r.L.push("Resepku");
   if(r.k==="Sambal"||/rawit|cabai merah|10 buah cabai|15 buah cabai/.test(r.b.join(" ")))r.L.push("Pedas");
   if(!meat)r.L.push("Tanpa daging");
-  if(!r.i.includes("ayam")&&!r.i.includes("ikan"))r.L.push("Hemat");
-  if(ANAK.has(r.n))r.L.push("Anak suka")});
+  if(!["ayam","ikan","udang"].some(x=>r.i.includes(x)))r.L.push("Hemat");
+  if(ANAK.has(r.n))r.L.push("Anak suka");return r}
+R.forEach(lab);
 const byName=n=>R.find(r=>r.n===n);
-const img=r=>`https://i.ytimg.com/vi/${r.v}/hqdefault.jpg`;
-const ph=r=>`<img class="photo" src="${img(r)}" alt="" loading="lazy" onload="if(this.naturalWidth<=120){this.parentNode.classList.remove('has');this.remove()}" onerror="this.parentNode.classList.remove('has');this.remove()">`;
+const img=r=>r.p||(r.v?`https://i.ytimg.com/vi/${r.v}/hqdefault.jpg`:"");
+const ph=r=>!img(r)?"":`<img class="photo${r.p?" own":""}" src="${img(r)}" alt="" loading="lazy" onload="if(this.naturalWidth<=120){this.parentNode.classList.remove('has');this.remove()}" onerror="this.parentNode.classList.remove('has');this.remove()">`;
 const HEART=f=>`<svg width="18" height="18" viewBox="0 0 24 24" fill="${f?"#e5484d":"none"}" stroke="${f?"#e5484d":"#12241a"}" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20.5s-7.6-4.6-9.4-9.3C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.4 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>`;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const GRP={"Protein":["telur","ayam","ikan","ikan teri","tahu","tempe","bakso","sosis"],"Sayur":["kangkung","bayam","sawi","kol","toge","jamur","wortel","kentang","buncis","kacang panjang","labu siam","terong","jagung","tomat","daun bawang"],"Bumbu & lainnya":["cabai","cabai hijau","kecap manis","saus tiram","terasi","serai","jeruk nipis","asam jawa","tepung terigu","nasi","mie","mie instan"]};
-const CATS=[["Semua","Nasi Goreng Kecap"],["Tumis","Tumis Kangkung"],["Sop","Sop Ayam Sederhana"],["Sambal","Sambal Tomat"],["Lauk","Ayam Goreng Bawang"]];
+const GRP={"Protein":["telur","ayam","ikan","ikan teri","udang","tahu","tempe","bakso","sosis"],"Sayur":["kangkung","bayam","sawi","sawi putih","kol","toge","jamur","brokoli","wortel","kentang","buncis","kacang panjang","labu siam","oyong","pare","terong","jagung","tomat","daun bawang"],"Bumbu":["cabai","cabai hijau","kecap manis","saus tiram","terasi","serai","kunyit","jeruk nipis","asam jawa","santan","daun pisang"],"Nasi, mie & tepung":["beras","nasi","mie","mie instan","bihun","kwetiau","makaroni","tepung terigu"]};
+const CATS=[["Semua","Nasi Goreng Kecap"],["Tumis","Tumis Kangkung"],["Sop","Sop Ayam Sederhana"],["Sambal","Sambal Tomat"],["Lauk","Ayam Goreng Bawang"],["Nasi & Mie","Nasi Goreng Kampung"]];
 const miss=r=>r.i.filter(x=>!have.has(x));
 let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2400)}
 
@@ -466,7 +564,7 @@ function drawCats(){
   $("lchips").querySelectorAll(".lchip").forEach(b=>b.onclick=()=>{const l=b.dataset.l;labels.has(l)?labels.delete(l):labels.add(l);store.set("labels",[...labels]);drawCats();drawGrid()});
 }
 function drawRail(){
-  $("rail").innerHTML=R.filter(r=>r.t<=10).map(r=>`<button class="fcard has" data-n="${esc(r.n)}">${ph(r)}<span class="badge">⚡ ${r.t} MENIT</span><div><div class="t">${r.n}</div><div class="m">${r.k} · ${r.s.length} langkah</div></div></button>`).join("");
+  $("rail").innerHTML=R.filter(r=>r.t<=10).map(r=>`<button class="fcard ${img(r)?"has":""}" data-n="${esc(r.n)}">${ph(r)}<span class="badge">⚡ ${r.t} MENIT</span><div><div class="t">${r.n}</div><div class="m">${r.k} · ${r.s.length} langkah</div></div></button>`).join("");
   $("rail").querySelectorAll(".fcard").forEach(c=>c.onclick=()=>openR(byName(c.dataset.n)));
 }
 function filtered(){
@@ -478,7 +576,7 @@ function filtered(){
 function card(r,showMatch){
   return `<div class="card" tabindex="0" role="button" data-n="${esc(r.n)}">
     <button class="fav" data-f="${esc(r.n)}" aria-label="Favorit">${HEART(favs.has(r.n))}</button>
-    <div class="art has" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}<span class="time">⏱ ${r.t} mnt</span>${done[r.n]?`<span class="donebadge">✓ Pernah dimasak</span>`:""}</div>
+    <div class="art ${img(r)?"has":""}" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}<span class="time">⏱ ${r.t} mnt</span>${done[r.n]?`<span class="donebadge">✓ Pernah dimasak</span>`:""}</div>
     <div class="cbody"><span class="k">${r.k}</span><h3>${r.n}</h3><span class="sub">${r.L.slice(0,2).join(" · ")||r.b.length+" bahan"}</span>
     ${showMatch?(miss(r).length?`<span class="match no">Kurang: ${miss(r).join(", ")}</span>`:`<span class="match ok">✓ Bahan lengkap</span>`):""}</div></div>`;
 }
@@ -524,7 +622,7 @@ function scale(s,k){if(k===1)return s;const m=s.match(/^(\d+(?:,\d+)?|½|¼|¾)(
 /* ---------- Resep ---------- */
 function openR(r){
   cur=r;por=2;
-  $("sheet").innerHTML=`<div class="shero has" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}
+  $("sheet").innerHTML=`<div class="shero ${img(r)?"has":""}" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}
     <button class="sbtn" id="back" style="left:16px" aria-label="Kembali">←</button>
     <button class="sbtn" id="sfav" style="right:16px" aria-label="Favorit">${HEART(favs.has(r.n))}</button></div>
   <div class="sbody"><div class="in">
@@ -539,11 +637,12 @@ function openR(r){
     <section class="sec"><h4>Cara memasak</h4><div class="steps">${r.s.map((x,i)=>{const m=mins(x);return `<div class="st"><div class="n">${i+1}</div><div class="tx">${x}${m?`<span class="tm">⏱ Timer ${m} menit tersedia di mode masak</span>`:""}</div></div>`}).join("")}</div></section>
     ${r.tip?`<div class="tip"><b>TIPS</b><div>${r.tip}</div></div>`:""}
     <section class="sec"><h4>Catatanku</h4><textarea class="note" id="note" placeholder="Mis. garamnya kurangi sedikit, cabai tambah 2…">${esc(notes[r.n]||"")}</textarea></section>
-    <section class="sec"><h4>Tonton videonya</h4>
+    ${r.v?`<section class="sec"><h4>Tonton videonya</h4>
       <div class="video"><iframe src="https://www.youtube.com/embed/${r.v}" title="Video ${esc(r.n)}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-      <a class="ytlink" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener">Video tidak muncul? Buka di YouTube ↗</a></section>
+      <a class="ytlink" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener">Video tidak muncul? Buka di YouTube ↗</a></section>`:""}
     <div class="row"><button class="btn ${done[r.n]?"sec":"pri"}" id="mark">${done[r.n]?"✓ Sudah pernah dimasak":"Tandai sudah dimasak"}</button>
       <a class="btn wa" id="share" target="_blank" rel="noopener" href="${waLink(recipeText(r))}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>Bagikan ke WhatsApp</a></div>
+    ${r.own?`<div class="row"><button class="btn sec" id="edR">Edit resep</button><button class="btn sec" id="delR" style="color:var(--red)">Hapus resep</button></div>`:""}
   </div></div>`;
   drawIngs();
   $("porsi").querySelectorAll("button").forEach(b=>b.onclick=()=>{por=+b.dataset.p;$("porsi").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",+x.dataset.p===por));drawIngs()});
@@ -553,6 +652,7 @@ function openR(r){
   $("note").oninput=e=>{notes[r.n]=e.target.value;store.set("notes",notes)};
   $("mark").onclick=()=>{if(done[r.n]){delete done[r.n];toast("Tanda dihapus")}else{done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});toast("Mantap! Tercatat di Koleksi")}store.set("done",done);drawGrid();drawSaved();const y=$("sheet").scrollTop;openR(r);$("sheet").scrollTop=y};
   $("back").onclick=closeR;
+  if(r.own){$("edR").onclick=()=>editor(r);let dz=0;$("delR").onclick=()=>{if(Date.now()-dz>3000){dz=Date.now();$("delR").textContent="Ketuk lagi untuk menghapus";return}delMine(r)}}
   if(!$("sheet").classList.contains("on")){$("sheet").scrollTop=0;$("sheet").classList.add("on");document.body.classList.add("lock");history.pushState({s:1},"")}
 }
 function drawIngs(){const k=por/2;$("ings").innerHTML=cur.b.map((x,i)=>`<label><input class="ck" type="checkbox" id="b${i}"><span>${scale(x,k)}</span></label>`).join("")}
@@ -560,9 +660,9 @@ function closeR(fromPop){
   if(!$("sheet").classList.contains("on"))return;
   $("sheet").classList.remove("on");document.body.classList.remove("lock");
   setTimeout(()=>{if(!$("sheet").classList.contains("on"))$("sheet").innerHTML=""},380);
-  if(fromPop!==true)history.back();
+  if(fromPop!==true){skipPop=true;history.back()};
 }
-function recipeText(r){return `*${r.n}* (${r.t} menit)\n\n*Bahan:*\n${r.b.map(x=>"• "+x).join("\n")}\n\n*Cara:*\n${r.s.map((x,i)=>(i+1)+". "+x).join("\n")}\n\nVideo: https://youtu.be/${r.v}\nResep lain: ${SITE}`}
+function recipeText(r){return `*${r.n}* (${r.t} menit)\n\n*Bahan:*\n${r.b.map(x=>"• "+x).join("\n")}\n\n*Cara:*\n${r.s.map((x,i)=>(i+1)+". "+x).join("\n")}${r.v?"\n\nVideo: https://youtu.be/"+r.v:""}\n\nResep lain: ${SITE}`}
 const waLink=t=>"https://wa.me/?text="+encodeURIComponent(t);
 
 /* ---------- Mode masak ---------- */
@@ -571,7 +671,7 @@ let ck={r:null,i:0},timer={end:0,left:0,run:false,tick:null},wl=null;
 async function wake(){try{if("wakeLock" in navigator){wl=await navigator.wakeLock.request("screen")}}catch(e){wl=null}}
 document.addEventListener("visibilitychange",()=>{if(!$("cook").hidden&&document.visibilityState==="visible")wake()});
 function cook(r){ck={r,i:0};$("cook").hidden=false;wake();history.pushState({c:1},"");drawCook()}
-function closeCook(fromPop){if($("cook").hidden)return;$("cook").hidden=true;stopTimer();try{wl&&wl.release()}catch(e){}wl=null;if(fromPop!==true)history.back()}
+function closeCook(fromPop){if($("cook").hidden)return;$("cook").hidden=true;stopTimer();try{wl&&wl.release()}catch(e){}wl=null;if(fromPop!==true){skipPop=true;history.back()}}
 function drawCook(){
   const {r,i}=ck,n=r.s.length,fin=i>=n,m=fin?0:mins(r.s[i]);
   $("cook").innerHTML=`<div class="ctop"><button class="x" id="cx" aria-label="Keluar">✕</button><div class="nm">${r.n}</div></div>
@@ -621,11 +721,11 @@ let sure=0;$("sAll").onclick=()=>{if(Date.now()-sure>3000){sure=Date.now();$("sA
 
 /* ---------- Mingguan ---------- */
 const DAYS=["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"];
-const VEG=R.filter(r=>r.k==="Tumis"||r.k==="Sop"),LAUK=R.filter(r=>r.k==="Lauk"||r.n.includes("Balado"));
+let VEG,LAUK;function pools(){VEG=R.filter(r=>r.k==="Tumis"||r.k==="Sop");LAUK=R.filter(r=>r.k==="Lauk"||r.n.includes("Balado"))}pools();
 const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 function makePlan(){const v=shuf(VEG),l=shuf(LAUK);plan=DAYS.map((d,i)=>({d,a:v[i%v.length].n,b:l[i%l.length].n}));store.set("plan",plan)}
 function reroll(i){const used=new Set(plan.flatMap(p=>[p.a,p.b]));const v=shuf(VEG).find(r=>!used.has(r.n))||shuf(VEG)[0],l=shuf(LAUK).find(r=>!used.has(r.n))||shuf(LAUK)[0];plan[i]={...plan[i],a:v.n,b:l.n};store.set("plan",plan);drawPlan()}
-function mini(r,lab){return `<button class="mini" data-n="${esc(r.n)}"><span class="th has" style="background:${r.c}">${r.e}${`<img src="${img(r)}" alt="" loading="lazy" onerror="this.remove()">`}</span><span style="min-width:0"><span>${lab}</span><strong>${r.n}</strong><em>${r.t} menit</em></span></button>`}
+function mini(r,lab){return `<button class="mini" data-n="${esc(r.n)}"><span class="th has" style="background:${r.c}">${r.e}${img(r)?`<img src="${img(r)}" alt="" loading="lazy" onerror="this.remove()">`:""}</span><span style="min-width:0"><span>${lab}</span><strong>${r.n}</strong><em>${r.t} menit</em></span></button>`}
 function drawPlan(){
   if(!plan||plan.some(p=>!byName(p.a)||!byName(p.b)))makePlan();
   const today=(new Date().getDay()+6)%7;
@@ -638,25 +738,72 @@ $("pShop").onclick=()=>{const before=shop.length;plan.forEach(p=>[p.a,p.b].forEa
 
 /* ---------- Koleksi ---------- */
 function drawSaved(){
-  const l=seg==="fav"?R.filter(r=>favs.has(r.n)):R.filter(r=>done[r.n]);
-  $("sgrid").innerHTML=l.length?l.map(r=>card(r,false)).join(""):`<div class="empty"><b>${seg==="fav"?"Belum ada favorit":"Belum ada riwayat"}</b>${seg==="fav"?"Ketuk ikon hati di resep yang kamu suka.":"Setelah memasak, ketuk \"Tandai sudah dimasak\" di halaman resep."}</div>`;
+  const l=seg==="fav"?R.filter(r=>favs.has(r.n)):seg==="mine"?R.filter(r=>r.own):R.filter(r=>done[r.n]);
+  $("sgrid").innerHTML=l.length?l.map(r=>card(r,false)).join(""):`<div class="empty"><b>${seg==="fav"?"Belum ada favorit":seg==="mine"?"Belum ada resep buatanmu":"Belum ada riwayat"}</b>${seg==="mine"?"Ketuk tombol Buat resep sendiri di atas untuk menyimpan resep andalanmu.":seg==="fav"?"Ketuk ikon hati di resep yang kamu suka.":"Setelah memasak, ketuk \"Tandai sudah dimasak\" di halaman resep."}</div>`;
   bindCards($("sgrid"));
 }
-$("segF").onclick=()=>{seg="fav";$("segF").setAttribute("aria-pressed",true);$("segD").setAttribute("aria-pressed",false);drawSaved()};
-$("segD").onclick=()=>{seg="done";$("segD").setAttribute("aria-pressed",true);$("segF").setAttribute("aria-pressed",false);drawSaved()};
+const SEGS={segF:"fav",segD:"done",segM:"mine"};Object.keys(SEGS).forEach(id=>$(id).onclick=()=>{seg=SEGS[id];Object.keys(SEGS).forEach(x=>$(x).setAttribute("aria-pressed",x===id));drawSaved()});
+
+/* ---------- Resep sendiri ---------- */
+let mine=store.get("mine",[]);
+const tagsOf=b=>{const t=b.join(" ").toLowerCase();return [...new Set(Object.values(GRP).flat().filter(x=>t.includes(x)))]};
+function saveMine(){try{localStorage.setItem("ms-mine",JSON.stringify(mine));return true}catch(e){return false}}
+function loadMine(){for(let k=R.length-1;k>=0;k--)if(R[k].own)R.splice(k,1);
+  mine.forEach(m=>R.push(lab({...m,own:true,e:"🍳",c:"#efe6d6",i:tagsOf(m.b)})));
+  pools();$("nres").textContent=R.length;drawRail();drawGrid();drawSaved()}
+let edPhoto=null,edId=null;
+function editor(r){
+  edId=r?r.id:null;edPhoto=r&&r.p?r.p:null;
+  $("ed").innerHTML=`<header class="phead"><div class="in edhead"><button class="sbtn" id="edX" aria-label="Tutup">✕</button><h1 style="font-size:1.6rem">${r?"Edit resep":"Buat resep sendiri"}</h1></div></header>
+  <form class="in form" id="edF" novalidate>
+    <label class="photoIn" id="phBox">${edPhoto?`<img src="${edPhoto}" alt="">`:`<span>📷 Ketuk untuk menambah foto masakan<br><small style="font-weight:600">opsional</small></span>`}<input type="file" id="edP" accept="image/*" hidden></label>
+    <div class="fld"><label for="edN">Nama masakan</label><input id="edN" maxlength="60" value="${r?esc(r.n):""}" placeholder="Mis. Tumis Jamur Pedas" autocomplete="off"></div>
+    <div class="two"><div class="fld"><label for="edK">Kategori</label><select id="edK">${["Tumis","Sop","Sambal","Lauk","Nasi & Mie"].map(k=>`<option ${r&&r.k===k?"selected":""}>${k}</option>`).join("")}</select></div>
+    <div class="fld"><label for="edT">Lama masak (menit)</label><input id="edT" type="number" inputmode="numeric" min="1" max="600" value="${r?r.t:15}"></div></div>
+    <div class="fld"><label for="edB">Bahan <small>satu bahan per baris</small></label><textarea id="edB" rows="6" placeholder="2 butir telur&#10;3 siung bawang merah&#10;garam secukupnya">${r?esc(r.b.join("\n")):""}</textarea></div>
+    <div class="fld"><label for="edS">Langkah <small>satu langkah per baris</small></label><textarea id="edS" rows="6" placeholder="Kocok telur dengan garam.&#10;Goreng di minyak panas sampai matang.">${r?esc(r.s.join("\n")):""}</textarea></div>
+    <div class="fld"><label for="edTip">Tips <small>opsional</small></label><input id="edTip" value="${r&&r.tip?esc(r.tip):""}" placeholder="Mis. pakai api kecil supaya tidak gosong" autocomplete="off"></div>
+    <div class="fld"><label for="edV">Link video YouTube <small>opsional</small></label><input id="edV" inputmode="url" value="${r&&r.v?"https://youtu.be/"+r.v:""}" placeholder="https://youtu.be/…" autocomplete="off"></div>
+    <p class="err" id="edE" hidden></p>
+    <div class="row"><button type="button" class="btn sec" id="edC">Batal</button><button type="submit" class="btn pri">Simpan resep</button></div>
+  </form>`;
+  $("edX").onclick=closeEd;$("edC").onclick=closeEd;
+  $("edP").onchange=e=>{const f=e.target.files[0];if(!f)return;const u=URL.createObjectURL(f),im=new Image();
+    im.onload=()=>{const sc=Math.min(1,640/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext("2d").drawImage(im,0,0,c.width,c.height);edPhoto=c.toDataURL("image/jpeg",.78);URL.revokeObjectURL(u);const old=$("phBox").querySelector("img,span");if(old)old.outerHTML=`<img src="${edPhoto}" alt="">`};
+    im.onerror=()=>{showErr("Foto tidak bisa dibaca. Coba foto lain.")};im.src=u};
+  $("edF").onsubmit=e=>{e.preventDefault();
+    const n=$("edN").value.trim(),b=$("edB").value.split("\n").map(x=>x.trim()).filter(Boolean),st=$("edS").value.split("\n").map(x=>x.trim().replace(/^\d+[.)]\s*/,"")).filter(Boolean),vr=$("edV").value.trim();
+    const vm=vr.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);
+    const er=!n?"Nama masakan belum diisi.":!b.length?"Tulis minimal satu bahan.":!st.length?"Tulis minimal satu langkah.":vr&&!vm?"Link YouTube tidak dikenali. Salin link dari tombol Bagikan di YouTube.":"";
+    if(er)return showErr(er);
+    let name=n;if(R.some(x=>x.n===name&&x.id!==edId))name=n+" (resepku)";
+    const old=edId?mine.find(x=>x.id===edId):null;
+    const rec={id:edId||"m"+Date.now(),n:name,k:$("edK").value,t:Math.max(1,parseInt($("edT").value)||15),b,s:st,tip:$("edTip").value.trim(),v:vm?vm[1]:"",p:edPhoto||""};
+    const prev=mine.slice();mine=mine.filter(x=>x.id!==rec.id);mine.push(rec);
+    if(!saveMine()){mine=prev;return showErr("Memori aplikasi di HP ini penuh. Coba simpan tanpa foto.")}
+    if(old&&old.n!==rec.n){if(favs.delete(old.n)){favs.add(rec.n);store.set("fav",[...favs])}if(done[old.n]){done[rec.n]=done[old.n];delete done[old.n];store.set("done",done)}if(notes[old.n]){notes[rec.n]=notes[old.n];delete notes[old.n];store.set("notes",notes)}}
+    loadMine();$("ed").classList.remove("on");openR(byName(rec.n));toast(edId?"Perubahan disimpan":"Resep disimpan di Koleksi → Resepku")};
+  $("ed").scrollTop=0;$("ed").classList.add("on");document.body.classList.add("lock");history.pushState({e:1},"");
+  setTimeout(()=>{try{$("edN").focus({preventScroll:true})}catch(e){}},350);
+}
+function showErr(m){$("edE").textContent=m;$("edE").hidden=false;$("edE").scrollIntoView({block:"center",behavior:"smooth"})}
+function closeEd(fromPop){if(!$("ed").classList.contains("on"))return;$("ed").classList.remove("on");if(!$("sheet").classList.contains("on"))document.body.classList.remove("lock");if(fromPop!==true){skipPop=true;history.back()}}
+function delMine(r){mine=mine.filter(x=>x.id!==r.id);saveMine();closeR();loadMine();toast("Resep dihapus")}
+$("newR").onclick=()=>editor(null);$("newR2").onclick=()=>editor(null);
 
 /* ---------- Navigasi ---------- */
 function show(v){["vHome","vPlan","vShop","vSaved"].forEach(x=>$(x).hidden=x!==v);$("nav").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===v));
   if(v==="vPlan")drawPlan();if(v==="vShop")drawShop();if(v==="vSaved")drawSaved();window.scrollTo({top:0})}
 $("nav").querySelectorAll("button").forEach(b=>b.onclick=()=>show(b.dataset.v));
-window.addEventListener("popstate",()=>{if(!$("cook").hidden)closeCook(true);else closeR(true)});
+let skipPop=false;
+window.addEventListener("popstate",()=>{if(skipPop){skipPop=false;return}if(!$("cook").hidden)closeCook(true);else if($("ed").classList.contains("on"))closeEd(true);else closeR(true)});
 
 /* ---------- Pasang aplikasi ---------- */
 let dp=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;$("install").hidden=false});
 $("install").onclick=async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice}catch(e){}dp=null;$("install").hidden=true};
 if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
 
-drawCats();drawRail();drawGrid();saveShop();
+loadMine();drawCats();saveShop();
 </script>
 </body>
 </html>
