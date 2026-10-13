@@ -1148,7 +1148,7 @@ async function openAdmin(){$("adm").classList.add("on");document.body.classList.
 
 /* ---------- Statistik ---------- */
 (function(){try{const today=new Date().toISOString().slice(0,10);if(store.get("vday","")===today)return;let id=store.get("dev","");if(!id){id=(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)).replace(/-/g,"").slice(0,32);store.set("dev",id)}
-  fetch(SB.u+"/rest/v1/visits",{method:"POST",headers:{apikey:SB.k,"Content-Type":"application/json",Prefer:"return=minimal,resolution=ignore-duplicates"},body:JSON.stringify({device:id})}).then(r=>{if(r.ok||r.status===409)store.set("vday",today)}).catch(()=>{})}catch(e){}})();
+  fetch(SB.u+"/rest/v1/visits",{method:"POST",headers:{apikey:SB.k,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({device:id})}).then(r=>{if(r.ok||r.status===409)store.set("vday",today)}).catch(()=>{})}catch(e){}})();
 async function loadStats(){const b=$("admStats");b.innerHTML=`<div class="skel">Memuat statistik…</div>`;
   try{const s=await api("rpc/admin_stats",{method:"POST",body:"{}"});const mx=Math.max(1,...s.harian.map(x=>x.n));
     const T=(n,l)=>`<div class="stt"><b>${Number(n).toLocaleString("id-ID")}</b><span>${l}</span></div>`;
