@@ -383,6 +383,18 @@ input,select,textarea{font-size:16px}
 .mystat{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
 .mystat div{background:var(--surface);border-radius:14px;padding:10px 6px;text-align:center;box-shadow:var(--sh);display:grid}
 .mystat b{font-family:var(--display);font-size:1.3rem}.mystat span{font-size:.68rem;color:var(--muted);font-weight:700}
+.today{width:100%;border:0;border-radius:24px;min-height:190px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:0;cursor:pointer;text-align:left;box-shadow:var(--sh)}
+.today img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.today .emo{position:absolute;top:30px;left:50%;transform:translateX(-50%);font-size:64px}
+.today.has .emo{display:none}
+.today>div{position:relative;width:100%;padding:44px 16px 14px;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;display:grid;gap:3px}
+.today b{font-family:var(--display);font-size:1.4rem}.today span{font-size:.85rem;opacity:.9}
+.today .badge{position:static;justify-self:start;background:var(--sun);color:#0f3b26;border-radius:999px;padding:3px 10px;font-weight:800;font-size:.7rem;opacity:1}
+.tags .t2{background:var(--tang-soft)!important;color:var(--fg)!important}
+.smart{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border-radius:16px;padding:12px 14px;margin-bottom:12px;box-shadow:var(--sh);font-size:.88rem;color:var(--muted)}
+.smart input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent)}.smart b{color:var(--fg)}
+#fold{margin:12px 0 0}
+.fdbox{background:var(--surface);border-radius:18px;padding:12px;box-shadow:var(--sh);margin-top:10px;display:grid;gap:10px}
 .ytbtn small{color:var(--muted);font-size:.8rem}
 .tsbox{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translateX(-50%);z-index:70}
 .credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
@@ -418,6 +430,7 @@ input,select,textarea{font-size:16px}
 </div></div></div>
 
 <div class="in">
+  <section class="blk" id="todayBlk"></section>
   <section class="blk" id="chBlk"></section>
   <section class="blk"><h2 class="h">Koleksi spesial</h2><div class="lchips" id="spec"></div></section>
   <section class="blk"><h2 class="h">Kategori</h2><div class="cats" id="cats"></div><div class="lchips" id="lchips"></div></section>
@@ -442,6 +455,7 @@ input,select,textarea{font-size:16px}
   <header class="phead"><div class="in"><h1>Daftar Belanja</h1><p>Centang bahan yang sudah dibeli. Tersimpan di HP-mu.</p></div></header>
   <div class="in">
     <section class="blk">
+      <label class="smart"><input type="checkbox" id="smartT"> <span><b>Belanja pintar</b> · lewati garam, gula, minyak, bawang, dan bahan yang kamu tandai "ada di dapur" di Filter</span></label>
       <form class="addrow" id="addForm"><input id="addIn" placeholder="Tambah barang, mis. beras 1 kg" autocomplete="off" aria-label="Tambah barang"><button class="btn pri" type="submit">Tambah</button></form>
       <div class="prog2" id="sProg"></div>
       <div id="sList"></div>
@@ -458,7 +472,7 @@ input,select,textarea{font-size:16px}
 <div id="vSaved" hidden>
   <header class="phead"><div class="in"><h1>Koleksiku</h1><p>Resep favorit dan riwayat masakan yang sudah pernah kamu buat.</p></div></header>
   <div class="in">
-    <section class="blk"><div id="acct2"></div><button class="btn org" id="newR2" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Buat resep sendiri</button><div class="seg"><button id="segF" aria-pressed="true">Favorit</button><button id="segD" aria-pressed="false">Pernah dimasak</button><button id="segM" aria-pressed="false">Resepku</button></div></section>
+    <section class="blk"><div id="acct2"></div><button class="btn org" id="newR2" style="width:100%"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Buat resep sendiri</button><div class="seg"><button id="segF" aria-pressed="true">Favorit</button><button id="segD" aria-pressed="false">Pernah dimasak</button><button id="segM" aria-pressed="false">Resepku</button><button id="segO" aria-pressed="false">Folder</button></div><div id="fold" class="lchips" hidden></div></section>
     <section class="blk"><div class="mystat" id="mystat"></div><div class="grid" id="sgrid"></div></section>
     <section class="blk"><h2 class="h">Cadangkan data</h2>
       <p style="margin:0;color:var(--muted)">Favorit, catatan, riwayat, daftar belanja, menu mingguan, dan resep buatanmu tersimpan di HP ini. Simpan cadangannya supaya tidak hilang saat ganti HP atau menghapus data.</p>
@@ -716,7 +730,7 @@ const R=[
 ];
 const store={get(k,d){try{const v=localStorage.getItem("ms-"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("ms-"+k,JSON.stringify(v))}catch(e){}}};
 let favs=new Set(store.get("fav",[])),have=new Set(store.get("have",[])),labels=new Set(store.get("labels",[])),done=store.get("done",{}),notes=store.get("notes",{}),shop=store.get("shop",[]),plan=store.get("plan",null);
-let cat="Semua",seg="fav",cur=null,por=2,spec="";let fx={t:0,c:0,s:"rek"};try{fx=Object.assign(fx,JSON.parse(localStorage.getItem("ms-fx"))||{})}catch(e){}let dfx={...fx};
+let curF="";let cat="Semua",seg="fav",cur=null,por=2,spec="";let fx={t:0,c:0,s:"rek",al:[],dt:[]};try{fx=Object.assign(fx,JSON.parse(localStorage.getItem("ms-fx"))||{})}catch(e){}let dfx={...fx};
 const SITE="https://masaksimpel.my.id/";
 const ANAK=new Set(["Telur Dadar Daun Bawang","Sop Telur Sosis","Nasi Goreng Kecap","Perkedel Kentang","Ayam Kecap","Tahu Goreng Crispy","Sop Jagung Telur","Mie Goreng Sederhana","Ayam Goreng Bawang","Sop Bakso","Bakwan Sayur","Telur Ceplok Kecap","Tumis Telur Tomat","Sop Ayam Sederhana","Mie Rebus Telur Sawi","Sop Sayur Bening","Tempe Goreng","Orek Tempe","Sup Makaroni","Telur Gulung","Udang Goreng Tepung","Martabak Mie","Nasi Uduk Rice Cooker","Nasi Kuning Rice Cooker","Semur Telur","Semur Ayam","Ayam Saus Tiram","Ayam Goreng Kuning","Bihun Goreng","Kwetiau Goreng","Sop Tahu Bakso","Sup Tomat Telur","Tahu Isi Sayur","Tahu Tempe Bacem"]);
 /* ---------- Harga & kalori (perkiraan) ---------- */
@@ -729,6 +743,20 @@ function est(r){if(r._e)return r._e;let rp=0,kk=0;for(const line of r.b){const l
   rp=Math.max(rp,3000);return r._e={rp,kk}}
 const rp=n=>"Rp"+(Math.round(n/500)*500).toLocaleString("id-ID");
 
+
+/* ---------- Alat masak & diet (otomatis dari resep) ---------- */
+const ALAT=["Tanpa kompor","Rice cooker","Wajan/teflon saja"],DIET=["Vegetarian","Tanpa telur","Tanpa santan","Tanpa seafood","Tidak pedas"];
+function tagsX(r){if(r._x)return r._x;const st=r.s.join(" ").toLowerCase(),b=r.b.join(" ").toLowerCase(),t=new Set();
+  const heat=/goreng|tumis|rebus|didih|panaskan|kukus|bakar|panggang|masak|sangrai|seduh|presto|rice cooker/;
+  if(!heat.test(st))t.add("Tanpa kompor");
+  if(/rice cooker/.test(st+" "+r.n.toLowerCase()))t.add("Rice cooker");
+  if(/goreng|tumis|panaskan/.test(st)&&!/rebus|kukus|oven|blender|rice cooker|presto|panci/.test(st))t.add("Wajan/teflon saja");
+  const meat=/ayam|daging|sapi|ikan|teri|udang|cumi|kerang|bakso|sosis|ceker|kornet|hati|ampela/;if(!meat.test(b)&&!/terasi/.test(b))t.add("Vegetarian");
+  if(!/telur/.test(b))t.add("Tanpa telur");
+  if(!/santan/.test(b))t.add("Tanpa santan");
+  if(!/ikan|teri|udang|cumi|kerang|terasi|seafood/.test(b))t.add("Tanpa seafood");
+  if(!/cabai|cabe|rawit|sambal|balado|lada hitam/.test(b+" "+r.n.toLowerCase()))t.add("Tidak pedas");
+  return r._x=t}
 const LABELS=["Pedas","Tanpa daging","Hemat","Anak suka"];
 function lab(r){const meat=r.i.some(x=>["ayam","ikan","ikan teri","bakso","sosis","udang"].includes(x));r.L=[];if(r.own)r.L.push("Resepku");
   if(r.k==="Sambal"||/rawit|cabai merah|10 buah cabai|15 buah cabai/.test(r.b.join(" ")))r.L.push("Pedas");
@@ -768,7 +796,7 @@ function filtered(){
   const words=$("q").value.toLowerCase().split(/[,\s]+/).filter(Boolean);
   let l=R.filter(r=>(cat==="Semua"||r.k===cat)&&words.every(w=>(r.n+" "+r.b.join(" ")).toLowerCase().includes(w))&&[...labels].every(x=>r.L.includes(x)));
   if(spec&&SPEC[spec])l=l.filter(SPEC[spec].f);
-  if(fx.t)l=l.filter(r=>r.t<=fx.t);if(fx.c)l=l.filter(r=>est(r).rp/2<=fx.c);
+  if(fx.al&&fx.al.length)l=l.filter(r=>fx.al.every(x=>tagsX(r).has(x)));if(fx.dt&&fx.dt.length)l=l.filter(r=>fx.dt.every(x=>tagsX(r).has(x)));if(fx.t)l=l.filter(r=>r.t<=fx.t);if(fx.c)l=l.filter(r=>est(r).rp/2<=fx.c);
   const SO={cepat:(a,b)=>a.t-b.t,murah:(a,b)=>est(a).rp-est(b).rp,bahan:(a,b)=>a.b.length-b.b.length,az:(a,b)=>a.n.localeCompare(b.n)};if(SO[fx.s])l=[...l].sort(SO[fx.s]);
   if(have.size)l=l.filter(r=>r.i.some(x=>have.has(x))).sort((a,b)=>miss(a).length-miss(b).length);
   return l;
@@ -786,9 +814,9 @@ function bindCards(box){
 }
 function toggleFav(n){favs.has(n)?favs.delete(n):favs.add(n);store.set("fav",[...favs]);drawGrid();drawSaved();toast(favs.has(n)?"Disimpan ke favorit":"Dihapus dari favorit")}
 function drawGrid(){
-  const searching=$("q").value.trim().length>0,byIng=have.size>0,nf=have.size+labels.size+(fx.t?1:0)+(fx.c?1:0)+(fx.s!=="rek"?1:0);
+  const searching=$("q").value.trim().length>0,byIng=have.size>0,nf=have.size+labels.size+(fx.al||[]).length+(fx.dt||[]).length+(fx.t?1:0)+(fx.c?1:0)+(fx.s!=="rek"?1:0);
   $("clr").hidden=!searching;$("fDot").hidden=!nf;$("fDot").textContent=nf;
-  $("fastBlk").hidden=searching||byIng||labels.size>0||!!spec||!!fx.t||!!fx.c;
+  $("fastBlk").hidden=searching||byIng||labels.size>0||!!spec||!!fx.t||!!fx.c||!!(fx.al||[]).length||!!(fx.dt||[]).length;
   const list=filtered();
   $("ttl").textContent=byIng?"Cocok dengan bahanmu":searching?"Hasil pencarian":spec?SPEC[spec].t:cat==="Semua"?"Semua menu":"Menu "+cat;
   $("count").textContent=list.length+" menu";
@@ -803,17 +831,18 @@ $("clr").onclick=e=>{e.preventDefault();$("q").value="";drawGrid();$("q").focus(
 let draft=new Set(),draftL=new Set();
 function drawF(){
   const O=(k,v,t)=>`<button class="ing2" data-fx="${k}" data-v="${v}" aria-pressed="${dfx[k]==v}">${t}</button>`;
-  $("fBody").innerHTML=`<div class="fg"><b>Urutkan</b><div class="chips2">${O("s","rek","Rekomendasi")}${O("s","cepat","Paling cepat")}${O("s","murah","Paling murah")}${O("s","bahan","Bahan paling sedikit")}${O("s","az","A–Z")}</div></div><div class="fg"><b>Waktu masak</b><div class="chips2">${O("t",0,"Semua")}${O("t",10,"≤ 10 menit")}${O("t",20,"≤ 20 menit")}${O("t",30,"≤ 30 menit")}</div></div><div class="fg"><b>Biaya per porsi</b><div class="chips2">${O("c",0,"Semua")}${O("c",5000,"≤ Rp5.000")}${O("c",10000,"≤ Rp10.000")}</div></div><div class="fg"><b>Label</b><div class="chips2">${LABELS.map(l=>`<button class="ing2" data-l="${l}" aria-pressed="${draftL.has(l)}">${l}</button>`).join("")}</div></div>`+
+  $("fBody").innerHTML=`<div class="fg"><b>Urutkan</b><div class="chips2">${O("s","rek","Rekomendasi")}${O("s","cepat","Paling cepat")}${O("s","murah","Paling murah")}${O("s","bahan","Bahan paling sedikit")}${O("s","az","A–Z")}</div></div><div class="fg"><b>Waktu masak</b><div class="chips2">${O("t",0,"Semua")}${O("t",10,"≤ 10 menit")}${O("t",20,"≤ 20 menit")}${O("t",30,"≤ 30 menit")}</div></div><div class="fg"><b>Biaya per porsi</b><div class="chips2">${O("c",0,"Semua")}${O("c",5000,"≤ Rp5.000")}${O("c",10000,"≤ Rp10.000")}</div></div><div class="fg"><b>Alat masak</b><div class="chips2">${ALAT.map(x=>`<button class="ing2" data-ar="al" data-v="${x}" aria-pressed="${(dfx.al||[]).includes(x)}">${x}</button>`).join("")}</div></div><div class="fg"><b>Diet & pantangan</b><div class="chips2">${DIET.map(x=>`<button class="ing2" data-ar="dt" data-v="${x}" aria-pressed="${(dfx.dt||[]).includes(x)}">${x}</button>`).join("")}</div></div><div class="fg"><b>Label</b><div class="chips2">${LABELS.map(l=>`<button class="ing2" data-l="${l}" aria-pressed="${draftL.has(l)}">${l}</button>`).join("")}</div></div>`+
     Object.entries(GRP).map(([g,l])=>`<div class="fg"><b>${g}</b><div class="chips2">${l.map(x=>`<button class="ing2" aria-pressed="${draft.has(x)}" data-x="${x}">${x}</button>`).join("")}</div></div>`).join("");
   $("fBody").querySelectorAll("[data-fx]").forEach(b=>b.onclick=()=>{const k=b.dataset.fx;dfx[k]=k==="s"?b.dataset.v:+b.dataset.v;drawF()});
-  $("fBody").querySelectorAll(".ing2:not([data-fx])").forEach(b=>b.onclick=()=>{const s=b.dataset.l?draftL:draft,v=b.dataset.l||b.dataset.x;s.has(v)?s.delete(v):s.add(v);b.setAttribute("aria-pressed",s.has(v));cnt()});
+  $("fBody").querySelectorAll("[data-ar]").forEach(b=>b.onclick=()=>{const k=b.dataset.ar,v=b.dataset.v,a=new Set(dfx[k]||[]);a.has(v)?a.delete(v):a.add(v);dfx[k]=[...a];drawF()});
+  $("fBody").querySelectorAll(".ing2:not([data-fx]):not([data-ar])").forEach(b=>b.onclick=()=>{const s=b.dataset.l?draftL:draft,v=b.dataset.l||b.dataset.x;s.has(v)?s.delete(v):s.add(v);b.setAttribute("aria-pressed",s.has(v));cnt()});
   cnt();
 }
-function cnt(){const n=R.filter(r=>(!draft.size||r.i.some(x=>draft.has(x)))&&[...draftL].every(x=>r.L.includes(x))&&(!dfx.t||r.t<=dfx.t)&&(!dfx.c||est(r).rp/2<=dfx.c)).length;$("fApply").textContent=`Tampilkan ${n} menu`}
-$("fOpen").onclick=()=>{dfx={...fx};draft=new Set(have);draftL=new Set(labels);drawF();$("fs").classList.add("on");document.body.classList.add("lock")};
+function cnt(){const n=R.filter(r=>(!draft.size||r.i.some(x=>draft.has(x)))&&[...draftL].every(x=>r.L.includes(x))&&(dfx.al||[]).every(x=>tagsX(r).has(x))&&(dfx.dt||[]).every(x=>tagsX(r).has(x))&&(!dfx.t||r.t<=dfx.t)&&(!dfx.c||est(r).rp/2<=dfx.c)).length;$("fApply").textContent=`Tampilkan ${n} menu`}
+$("fOpen").onclick=()=>{dfx={...fx,al:[...(fx.al||[])],dt:[...(fx.dt||[])]};draft=new Set(have);draftL=new Set(labels);drawF();$("fs").classList.add("on");document.body.classList.add("lock")};
 const fClose=()=>{$("fs").classList.remove("on");if(!$("sheet").classList.contains("on"))document.body.classList.remove("lock")};
 $("fClose").onclick=fClose;$("fs").onclick=e=>{if(e.target.id==="fs")fClose()};
-$("fReset").onclick=()=>{draft.clear();draftL.clear();dfx={t:0,c:0,s:"rek"};drawF()};
+$("fReset").onclick=()=>{draft.clear();draftL.clear();dfx={t:0,c:0,s:"rek",al:[],dt:[]};drawF()};
 $("fApply").onclick=()=>{fx={...dfx};store.set("fx",fx);have=new Set(draft);labels=new Set(draftL);store.set("have",[...have]);store.set("labels",[...labels]);fClose();drawCats();drawGrid();window.scrollTo({top:0,behavior:"smooth"})};
 
 /* ---------- Porsi ---------- */
@@ -830,7 +859,7 @@ function openR(r){
   <div class="sbody"><div class="in">
     <div><span style="font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--tang)">${r.k}</span>
       <h2>${r.n}</h2>${r.comm?`<div class="by">Resep dari <b>${r.comm.author}</b></div>`:""}
-      <div class="tags">${r.L.map(l=>`<span>${l}</span>`).join("")}${done[r.n]?`<span style="background:var(--accent);color:#fff">✓ Dimasak ${done[r.n]}</span>`:""}</div>
+      <div class="tags">${r.L.map(l=>`<span>${l}</span>`).join("")}${[...tagsX(r)].filter(x=>["Tanpa kompor","Rice cooker","Vegetarian","Tidak pedas"].includes(x)&&!r.L.includes(x)).map(l=>`<span class="t2">${l}</span>`).join("")}${done[r.n]?`<span style="background:var(--accent);color:#fff">✓ Dimasak ${done[r.n]}</span>`:""}</div>
       <div class="stats"><div><b>${r.t}</b><span>menit</span></div><div><b>${r.b.length}</b><span>bahan</span></div><div><b>${r.s.length}</b><span>langkah</span></div></div>${(()=>{const e=est(r);return `<div class="est"><span>💸 ± ${rp(e.rp/2)} <small>/ porsi</small></span><span>🔥 ± ${e.kk/2|0} kkal <small>/ porsi</small></span></div><div class="estn">Perkiraan kasar harga pasar & kalori, bisa beda di tempatmu.</div>`})()}</div>
     <div class="row"><button class="btn org" id="go"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.9l12-7.5a1 1 0 0 0 0-1.8l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>Mulai masak</button></div>
     ${r.comm?`<div class="row"><button class="btn sec ${liked.has(r.comm.id)?"on":""}" id="likeB">♥ <span id="likeN">${r.comm.likes}</span> suka</button>${r.comm.mine?`<button class="btn sec" id="cDel" style="color:var(--red)">Hapus dari Komunitas</button>`:`<button class="btn sec" id="cRep">Laporkan</button>`}</div>`:""}
@@ -846,7 +875,7 @@ function openR(r){
     ${r.v?`<section class="sec"><h4>Tonton videonya</h4><div class="vbox"><button class="vplay" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.youtube-nocookie.com/embed/${r.v}?autoplay=1&amp;rel=0&amp;playsinline=1&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture; fullscreen&quot; allowfullscreen></iframe>'" style="background-image:url(${img(r)||""})" aria-label="Putar video"><span>▶</span></button></div><a class="ytbtn" style="margin-top:10px" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener"><span class="yplay"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span><span><b>Video tidak bisa diputar?</b><small>Buka di aplikasi YouTube</small></span><span aria-hidden="true">↗</span></a><a class="ytbtn" style="margin-top:10px" target="_blank" rel="noopener" href="https://www.tiktok.com/search?q=${encodeURIComponent("resep "+r.n)}"><span class="yplay" style="background:#111">♪</span><span><b>Video versi TikTok</b><small>Cari video resep ini di TikTok</small></span><span aria-hidden="true">↗</span></a></section>`:""}
     <div class="row"><button class="btn ${done[r.n]?"sec":"pri"}" id="mark">${done[r.n]?"✓ Sudah pernah dimasak":"Tandai sudah dimasak"}</button>
       <button class="btn wa" id="share"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Bagikan</button></div>
-    <div class="row"><button class="btn sec" id="prR">🖨 Cetak / simpan PDF</button></div>
+    <div class="row"><button class="btn sec" id="fdB">📁 Simpan ke folder</button><button class="btn sec" id="prR">🖨 Cetak / PDF</button></div><div id="fdBox" class="fdbox" hidden></div>
     ${r.own?`<div class="row"><button class="btn org" id="upR">${(mine.find(m=>m.id===r.id)||{}).cid?"Perbarui di Komunitas":"Bagikan ke Komunitas"}</button></div><div class="tip" id="needLogin" hidden><b>LOGIN</b><div>Untuk membagikan resep ke Komunitas, masuk dulu dengan akun Google. Resepmu akan langsung diunggah setelah masuk.<div style="margin-top:12px"><button class="btn gbtn" id="gBtn">${GICON}Masuk dengan Google</button></div></div></div><form class="addrow" id="upBox" hidden><input id="upName" maxlength="40" placeholder="Nama tampilanmu, mis. Bunda Rina" autocomplete="off" aria-label="Nama tampilan"><button class="btn org" type="submit">Unggah</button></form><div class="row"><button class="btn sec" id="edR">Edit resep</button><button class="btn sec" id="delR" style="color:var(--red)">Hapus resep</button></div>`:""}
   </div></div>`;
   drawIngs();
@@ -857,7 +886,7 @@ function openR(r){
   $("note").oninput=e=>{notes[r.n]=e.target.value;store.set("notes",notes)};
   $("mark").onclick=()=>{if(done[r.n]){delete done[r.n];toast("Tanda dihapus")}else{done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});logDone(r);toast("Mantap! Tercatat di Koleksi")}store.set("done",done);drawGrid();drawSaved();const y=$("sheet").scrollTop;openR(r);$("sheet").scrollTop=y};
   $("back").onclick=closeR;
-  $("share").onclick=()=>openShare(r);if(rkey(r))loadReviews(r);$("prR").onclick=()=>window.print();
+  $("share").onclick=()=>openShare(r);if(rkey(r))loadReviews(r);$("prR").onclick=()=>window.print();$("fdB").onclick=()=>{const box=$("fdBox");if(!box.hidden){box.hidden=true;return}const draw=()=>{const F=store.get("folders",{});box.innerHTML=`<div class="lchips">${Object.keys(F).map(n=>`<button class="lchip" data-ff="${esc(n)}" aria-pressed="${F[n].includes(r.n)}">${F[n].includes(r.n)?"✓ ":""}${esc(n)}</button>`).join("")}</div><form id="fdNew" class="addrow"><input id="fdIn" maxlength="30" placeholder="Folder baru, mis. Bekal anak" aria-label="Nama folder baru"><button class="btn pri" type="submit">Buat</button></form>`;box.querySelectorAll("[data-ff]").forEach(b=>b.onclick=()=>{const F=store.get("folders",{}),a=F[b.dataset.ff];const i=a.indexOf(r.n);i<0?a.push(r.n):a.splice(i,1);store.set("folders",F);toast(i<0?"Disimpan ke "+b.dataset.ff:"Dihapus dari "+b.dataset.ff);draw()});$("fdNew").onsubmit=e=>{e.preventDefault();const n=$("fdIn").value.replace(/[<>"]/g,"").trim();if(!n)return;const F=store.get("folders",{});F[n]=F[n]||[];if(!F[n].includes(r.n))F[n].push(r.n);store.set("folders",F);toast("Disimpan ke folder "+n);draw()}};draw();box.hidden=false};
   if(r.own){$("edR").onclick=()=>editor(r);let dz=0;$("delR").onclick=()=>{if(Date.now()-dz>3000){dz=Date.now();$("delR").textContent="Ketuk lagi untuk menghapus";return}delMine(r)}}
   if(r.comm){$("likeB").onclick=()=>toggleLike(r);
     if($("cRep")){let rz=0;$("cRep").onclick=async()=>{if(Date.now()-rz>3000){rz=Date.now();$("cRep").textContent="Ketuk lagi untuk melaporkan";return}$("cRep").disabled=true;try{await api("reports",{method:"POST",body:JSON.stringify({recipe_id:r.comm.id,reason:"tidak pantas"})});toast("Terima kasih, laporan sudah dikirim")}catch(e){toast(/duplicate|409/.test(e.message)?"Kamu sudah melaporkan resep ini":"Gagal mengirim laporan. Cek koneksi internet.")}$("cRep").textContent="Laporkan";$("cRep").disabled=false}}
@@ -967,7 +996,9 @@ function beep(){try{unlockAudio();[0,.45,.9].forEach(t=>{const o=actx.createOsci
 
 /* ---------- Belanja ---------- */
 const BASIC=/^(garam|gula|minyak|air|\d.*\bair\b|.*secukupnya)/;
-function addShop(r,p){const k=(p||2)/2;let n=0;r.b.forEach(x=>{const t=scale(x,k);if(!shop.some(s=>s.t===t&&s.f===r.n)){shop.push({id:Date.now()+Math.random(),t,f:r.n,d:false});n++}});saveShop();toast(n?`${n} bahan masuk daftar belanja`:"Bahan resep ini sudah ada di daftar")}
+const PANTRY=/^(garam|gula|minyak|air|merica|bawang merah|bawang putih)\b|secukupnya$/;
+function skipIng(x){const l=x.toLowerCase().replace(/^[\d\/½¼¾.,\s-]+(sdm|sdt|siung|buah|butir|batang|lembar|ikat|gram|g|ml|gelas|ruas|potong|bungkus|ekor|cm|biji|genggam|kg|liter|mangkuk|keping)?\s*/,"");if(PANTRY.test(l)||/^air\b/.test(l))return true;return [...have].some(h=>l.startsWith(h))}
+function addShop(r,p){const k=(p||2)/2;let n=0,sk=0;r.b.forEach(x=>{if(store.get("smart",true)&&skipIng(x)){sk++;return}const t=scale(x,k);if(!shop.some(s=>s.t===t&&s.f===r.n)){shop.push({id:Date.now()+Math.random(),t,f:r.n,d:false});n++}});saveShop();toast((n?`${n} bahan masuk daftar belanja`:"Bahan resep ini sudah ada di daftar")+(sk?` · ${sk} dilewati (sudah ada di dapur)`:""))}
 function saveShop(){store.set("shop",shop);const left=shop.filter(s=>!s.d).length;$("nb").hidden=!left;$("nb").textContent=left;if(!$("vShop").hidden)drawShop()}
 function drawShop(){
   const groups={};shop.forEach(s=>(groups[s.f||"Lainnya"]=groups[s.f||"Lainnya"]||[]).push(s));
@@ -980,6 +1011,7 @@ function drawShop(){
   $("sList").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{shop=shop.filter(x=>String(x.id)!==b.dataset.del);saveShop()});
   $("sWa").href=waLink("*Daftar belanja*\n"+shop.filter(s=>!s.d).map(s=>"☐ "+s.t).join("\n"));
 }
+$("smartT").checked=store.get("smart",true);$("smartT").onchange=e=>{store.set("smart",e.target.checked);toast(e.target.checked?"Belanja pintar aktif":"Semua bahan akan dimasukkan")};
 $("addForm").onsubmit=e=>{e.preventDefault();const v=$("addIn").value.trim();if(!v)return;shop.push({id:Date.now(),t:v,f:"Lainnya",d:false});$("addIn").value="";saveShop()};
 $("sClean").onclick=()=>{shop=shop.filter(s=>!s.d);saveShop();toast("Barang yang sudah dibeli dihapus")};
 let sure=0;$("sAll").onclick=()=>{if(Date.now()-sure>3000){sure=Date.now();$("sAll").textContent="Ketuk lagi untuk mengosongkan";setTimeout(()=>$("sAll").textContent="Kosongkan",3000);return}shop=[];saveShop();$("sAll").textContent="Kosongkan";toast("Daftar belanja dikosongkan")};
@@ -1000,16 +1032,18 @@ function drawPlan(){
   $("days").querySelectorAll("[data-rr]").forEach(b=>b.onclick=()=>reroll(+b.dataset.rr));
 }
 $("pShuffle").onclick=()=>{makePlan();drawPlan();toast("Menu seminggu sudah diacak ulang")};
-$("pShop").onclick=()=>{const before=shop.length;plan.forEach(p=>[p.a,p.b].forEach(n=>{const r=byName(n);r.b.forEach(x=>{if(!shop.some(s=>s.t===x&&s.f===r.n))shop.push({id:Date.now()+Math.random(),t:x,f:r.n,d:false})})}));saveShop();toast(`${shop.length-before} bahan masuk daftar belanja`)};
+$("pShop").onclick=()=>{const before=shop.length;plan.forEach(p=>[p.a,p.b].forEach(n=>{const r=byName(n);r.b.forEach(x=>{if(store.get("smart",true)&&skipIng(x))return;if(!shop.some(s=>s.t===x&&s.f===r.n))shop.push({id:Date.now()+Math.random(),t:x,f:r.n,d:false})})}));saveShop();toast(`${shop.length-before} bahan masuk daftar belanja`)};
 
 /* ---------- Koleksi ---------- */
 function drawSaved(){
   {const w=typeof weekNo==="function"?weekNo(Date.now()):0,dl=store.get("dlog",[]),wk=new Set(dl.filter(x=>weekNo(x.ts)===w).map(x=>x.n)).size;$("mystat").innerHTML=`<div><b>${Object.keys(done).length}</b><span>menu pernah dimasak</span></div><div><b>${wk}</b><span>dimasak minggu ini</span></div><div><b>${favs.size}</b><span>favorit</span></div><div><b>🏅 ${store.get("badges",[]).length}</b><span>lencana</span></div>`}
+  $("fold").hidden=seg!=="fold";if(seg==="fold"){const F=store.get("folders",{}),names=Object.keys(F);if(!curF||!F[curF])curF=names[0]||"";$("fold").innerHTML=names.map(n=>`<button class="lchip" data-fd="${esc(n)}" aria-pressed="${n===curF}">📁 ${esc(n)} (${F[n].length})</button>`).join("")+(curF?`<button class="lchip" id="fDel" style="color:var(--red)">Hapus folder ini</button>`:"");$("fold").querySelectorAll("[data-fd]").forEach(b=>b.onclick=()=>{curF=b.dataset.fd;drawSaved()});if($("fDel")){let z=0;$("fDel").onclick=()=>{if(Date.now()-z>3000){z=Date.now();$("fDel").textContent="Ketuk lagi untuk menghapus";return}delete F[curF];store.set("folders",F);curF="";drawSaved()}}
+    const l=curF?(F[curF]||[]).map(byName).filter(Boolean):[];$("sgrid").innerHTML=l.length?l.map(r=>card(r,false)).join(""):`<div class="empty"><b>${names.length?"Folder ini masih kosong":"Belum ada folder"}</b>Buka resep, lalu ketuk <b style="display:inline;font-size:inherit">📁 Simpan ke folder</b> untuk membuat folder seperti "Bekal anak" atau "Menu tamu".</div>`;bindCards($("sgrid"));return}
   const l=seg==="fav"?R.filter(r=>favs.has(r.n)):seg==="mine"?R.filter(r=>r.own):R.filter(r=>done[r.n]);
   $("sgrid").innerHTML=l.length?l.map(r=>card(r,false)).join(""):`<div class="empty"><b>${seg==="fav"?"Belum ada favorit":seg==="mine"?"Belum ada resep buatanmu":"Belum ada riwayat"}</b>${seg==="mine"?"Ketuk tombol Buat resep sendiri di atas untuk menyimpan resep andalanmu.":seg==="fav"?"Ketuk ikon hati di resep yang kamu suka.":"Setelah memasak, ketuk \"Tandai sudah dimasak\" di halaman resep."}</div>`;
   bindCards($("sgrid"));
 }
-const SEGS={segF:"fav",segD:"done",segM:"mine"};Object.keys(SEGS).forEach(id=>$(id).onclick=()=>{seg=SEGS[id];Object.keys(SEGS).forEach(x=>$(x).setAttribute("aria-pressed",x===id));drawSaved()});
+const SEGS={segF:"fav",segD:"done",segM:"mine",segO:"fold"};Object.keys(SEGS).forEach(id=>$(id).onclick=()=>{seg=SEGS[id];Object.keys(SEGS).forEach(x=>$(x).setAttribute("aria-pressed",x===id));drawSaved()});
 
 /* ---------- Resep sendiri ---------- */
 let mine=store.get("mine",[]);
@@ -1187,7 +1221,7 @@ const closeAdm=()=>{$("adm").classList.remove("on");document.body.classList.remo
 $("admClose").onclick=closeAdm;$("adm").onclick=e=>{if(e.target.id==="adm")closeAdm()};
 
 /* ---------- Cadangan ---------- */
-const BK=["fav","have","labels","done","notes","shop","plan","mine","author"];
+const BK=["fav","have","labels","done","notes","shop","plan","mine","author","folders","dlog","badges","fx"];
 $("expBtn").onclick=()=>{const data={app:"masak-simpel",v:1,at:new Date().toISOString()};BK.forEach(k=>{const v=store.get(k,null);if(v!==null)data[k]=v});
   const blob=new Blob([JSON.stringify(data)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);
   a.download="masak-simpel-cadangan-"+new Date().toISOString().slice(0,10)+".json";document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);
@@ -1237,6 +1271,11 @@ function drawSpec(){const b=$("spec");if(!b)return;b.innerHTML=Object.entries(SP
   b.querySelectorAll("[data-s]").forEach(x=>x.onclick=()=>{spec=spec===x.dataset.s?"":x.dataset.s;drawSpec();drawGrid();if(spec)$("grid").scrollIntoView({behavior:"smooth",block:"start"})})}
 drawSpec();
 
+
+/* ---------- Menu hari ini ---------- */
+function drawToday(){const b=$("todayBlk");if(!b)return;const d=new Date(),key=d.getFullYear()*1000+Math.floor((d-new Date(d.getFullYear(),0,0))/864e5);const pool=R.filter(r=>!r.own&&r.k!=="Minuman"&&r.k!=="Sambal");let h=key;h=(h*9301+49297)%233280;const r=pool[h%pool.length];if(!r){b.hidden=true;return}
+  b.innerHTML=`<h2 class="h">Menu hari ini <small>${d.toLocaleDateString("id-ID",{weekday:"long",day:"numeric",month:"short"})}</small></h2><button class="today ${img(r)?"has":""}" id="todayR" style="background:${r.c}">${ph(r)}<span class="emo">${r.e}</span><div><span class="badge">⭐ PILIHAN HARI INI</span><b>${r.n}</b><span>${r.k} · ${r.t} menit · ± ${rp(est(r).rp/2)}/porsi</span></div></button>`;$("todayR").onclick=()=>openR(r)}
+drawToday();
 /* ---------- Tantangan mingguan ---------- */
 let doneLog=store.get("dlog",[]);
 function logDone(r){doneLog.push({n:r.n,ts:Date.now()});doneLog=doneLog.slice(-300);store.set("dlog",doneLog);setTimeout(drawChal,50)}
