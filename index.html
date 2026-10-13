@@ -14,8 +14,8 @@
 <title>Masak Simpel</title>
 <meta property="og:title" content="Masak Simpel – resep rumahan gampang">
 <meta property="og:description" content="100+ resep simpel dengan bahan dapur biasa, lengkap dengan video dan mode masak.">
-<meta property="og:image" content="https://amonkshark.github.io/masak-simpel/icon-512.png">
-<meta property="og:url" content="https://amonkshark.github.io/masak-simpel/">
+<meta property="og:image" content="https://masaksimpel.my.id/icon-512.png">
+<meta property="og:url" content="https://masaksimpel.my.id/">
 <meta property="og:type" content="website">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
@@ -710,7 +710,7 @@ const R=[
 const store={get(k,d){try{const v=localStorage.getItem("ms-"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("ms-"+k,JSON.stringify(v))}catch(e){}}};
 let favs=new Set(store.get("fav",[])),have=new Set(store.get("have",[])),labels=new Set(store.get("labels",[])),done=store.get("done",{}),notes=store.get("notes",{}),shop=store.get("shop",[]),plan=store.get("plan",null);
 let cat="Semua",seg="fav",cur=null,por=2,spec="";
-const SITE="https://amonkshark.github.io/masak-simpel/";
+const SITE="https://masaksimpel.my.id/";
 const ANAK=new Set(["Telur Dadar Daun Bawang","Sop Telur Sosis","Nasi Goreng Kecap","Perkedel Kentang","Ayam Kecap","Tahu Goreng Crispy","Sop Jagung Telur","Mie Goreng Sederhana","Ayam Goreng Bawang","Sop Bakso","Bakwan Sayur","Telur Ceplok Kecap","Tumis Telur Tomat","Sop Ayam Sederhana","Mie Rebus Telur Sawi","Sop Sayur Bening","Tempe Goreng","Orek Tempe","Sup Makaroni","Telur Gulung","Udang Goreng Tepung","Martabak Mie","Nasi Uduk Rice Cooker","Nasi Kuning Rice Cooker","Semur Telur","Semur Ayam","Ayam Saus Tiram","Ayam Goreng Kuning","Bihun Goreng","Kwetiau Goreng","Sop Tahu Bakso","Sup Tomat Telur","Tahu Isi Sayur","Tahu Tempe Bacem"]);
 const LABELS=["Pedas","Tanpa daging","Hemat","Anak suka"];
 function lab(r){const meat=r.i.some(x=>["ayam","ikan","ikan teri","bakso","sosis","udang"].includes(x));r.L=[];if(r.own)r.L.push("Resepku");
@@ -887,7 +887,7 @@ async function makeCard(r){const W=1080,H=1920,c=document.createElement("canvas"
   let yy=y2+90;x.font="600 40px 'Plus Jakarta Sans',sans-serif";x.fillStyle="#cfe3d6";
   for(const b of r.b.slice(0,6)){if(yy>1700)break;x.fillText("•  "+(b.length>40?b.slice(0,39)+"…":b),80,yy);yy+=58}
   if(r.b.length>6&&yy<1720){x.fillText("…dan "+(r.b.length-6)+" bahan lain",80,yy)}
-  x.fillStyle="#ffc53d";x.font="800 44px 'Plus Jakarta Sans',sans-serif";x.fillText("Masak Simpel",80,1820);x.fillStyle="#cfe3d6";x.font="600 32px 'Plus Jakarta Sans',sans-serif";x.fillText("amonkshark.github.io/masak-simpel",80,1868);
+  x.fillStyle="#ffc53d";x.font="800 44px 'Plus Jakarta Sans',sans-serif";x.fillText("Masak Simpel",80,1820);x.fillStyle="#cfe3d6";x.font="600 32px 'Plus Jakarta Sans',sans-serif";x.fillText("masaksimpel.my.id",80,1868);
   return new Promise(res=>c.toBlob(b=>res(b),"image/png"))}
 let y2=0;function wrap(x,t,_,__,w){const ws=t.split(" "),out=[];let l="";for(const q of ws){const tt=l?l+" "+q:q;if(x.measureText(tt).width>w&&l){out.push(l);l=q}else l=tt}out.push(l);return out.slice(0,3)}
 async function saveCard(r){const b=await makeCard(r),u=URL.createObjectURL(b),a=document.createElement("a");a.href=u;a.download="resep-"+r.n.replace(/\W+/g,"-").toLowerCase()+".png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
