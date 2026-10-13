@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://amonkshark.github.io/masak-simpel/sitemap.xml

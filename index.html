@@ -13,7 +13,7 @@
 <meta name="apple-mobile-web-app-title" content="Masak Simpel">
 <title>Masak Simpel</title>
 <meta property="og:title" content="Masak Simpel – resep rumahan gampang">
-<meta property="og:description" content="80+ resep simpel dengan bahan dapur biasa, lengkap dengan video dan mode masak.">
+<meta property="og:description" content="100+ resep simpel dengan bahan dapur biasa, lengkap dengan video dan mode masak.">
 <meta property="og:image" content="https://amonkshark.github.io/masak-simpel/icon-512.png">
 <meta property="og:url" content="https://amonkshark.github.io/masak-simpel/">
 <meta property="og:type" content="website">
@@ -367,6 +367,15 @@ input,select,textarea{font-size:16px}
 .remind>div:first-child{display:grid}
 .remind span{color:var(--muted);font-size:.9rem}
 .remind input{height:52px;border-radius:14px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);font:700 16px var(--body);padding:0 12px}
+.stg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stt{background:var(--bg);border-radius:14px;padding:12px;display:grid}
+.stt b{font-family:var(--display);font-size:1.6rem}
+.stt span{font-size:.8rem;color:var(--muted);font-weight:700}
+.sbar{background:var(--bg);border-radius:14px;padding:12px;margin:10px 0}
+.sbars{display:flex;align-items:flex-end;gap:4px;height:110px;margin-top:10px}
+.sbars div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px}
+.sbars i{width:100%;background:var(--tang);border-radius:5px 5px 2px 2px;display:block}
+.sbars span{font-size:.65rem;color:var(--muted)}
 .ytbtn small{color:var(--muted);font-size:.8rem}
 .tsbox{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translateX(-50%);z-index:70}
 .credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
@@ -407,7 +416,7 @@ input,select,textarea{font-size:16px}
   <section class="blk"><h2 class="h">Kategori</h2><div class="cats" id="cats"></div><div class="lchips" id="lchips"></div></section>
   <section class="blk" id="fastBlk"><h2 class="h">Paling cepat <small>≤ 10 menit</small></h2><div class="rail" id="rail"></div></section>
   <section class="blk"><h2 class="h"><span id="ttl">Semua menu</span><small id="count"></small></h2><div class="grid" id="grid"></div></section>
-  <p class="credit">Foto masakan dari <a href="kredit.html" style="color:inherit">Wikimedia Commons</a> · Video dari YouTube · <a href="privacy.html" style="color:inherit">Kebijakan Privasi</a> · <a href="#" id="fbLink" style="color:inherit">Kirim masukan</a></p>
+  <p class="credit">Foto masakan dari <a href="kredit.html" style="color:inherit">Wikimedia Commons</a> · Video dari YouTube · <a href="privacy.html" style="color:inherit">Kebijakan Privasi</a> · <a href="resep/" style="color:inherit">Daftar semua resep</a> · <a href="#" id="fbLink" style="color:inherit">Kirim masukan</a></p>
 </div>
 </div>
 
@@ -490,8 +499,8 @@ input,select,textarea{font-size:16px}
     <button class="btn pri" type="submit" id="fbSend">Kirim</button>
   </form></div></div>
 <div class="fs" id="adm"><div class="fpanel">
-  <div class="fhead"><div><h3>Kotak Masukan</h3><p>Hanya terlihat oleh admin.</p></div><button class="fx" id="admClose" aria-label="Tutup">✕</button></div>
-  <div class="fbody" id="admList"></div></div></div>
+  <div class="fhead"><div><h3>Panel Admin</h3><p>Hanya terlihat oleh admin.</p></div><button class="fx" id="admClose" aria-label="Tutup">✕</button></div>
+  <div class="fbody"><div id="admStats"></div><h4 style="margin:18px 0 8px">Kotak Masukan</h4><div id="admList"></div></div></div></div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -656,7 +665,47 @@ const R=[
  {n:"Mie Nyemek",k:"Nasi & Mie",t:12,e:"🍜",c:"#f4dcc0",v:"zkm29h5-bHE",i:["mie instan","telur","sawi","cabai"],b:["1 bungkus mie instan","1 butir telur","beberapa lembar sawi","2 siung bawang putih","3 buah cabai rawit","200 ml air","1 sdm minyak"],
   s:["Rebus mie setengah matang, tiriskan.","Tumis bawang putih dan cabai sampai harum.","Masukkan telur, orak-arik.","Tuang air, bumbu mie, sawi, dan mie.","Masak sampai kuah menyusut dan kental, angkat."],tip:"Nyemek artinya basah sedikit berkuah, jadi jangan sampai kuahnya habis."},
  {n:"Nasi Gila",k:"Nasi & Mie",t:15,e:"🍛",c:"#f2d6c0",v:"UJZLjghbCPc",i:["nasi","sosis","bakso","telur","saus tiram","cabai"],b:["2 piring nasi hangat","3 buah sosis","5 butir bakso","1 butir telur","3 siung bawang putih","3 buah cabai","1 sdm saus tiram","2 sdm saus sambal","1 sdm kecap manis","2 sdm minyak"],
-  s:["Iris sosis, bakso, bawang, dan cabai.","Tumis bawang dan cabai sampai harum.","Masukkan telur, orak-arik, lalu sosis dan bakso.","Tambah saus tiram, saus sambal, kecap, dan sedikit air.","Masak 2 menit, siramkan di atas nasi hangat."]}
+  s:["Iris sosis, bakso, bawang, dan cabai.","Tumis bawang dan cabai sampai harum.","Masukkan telur, orak-arik, lalu sosis dan bakso.","Tambah saus tiram, saus sambal, kecap, dan sedikit air.","Masak 2 menit, siramkan di atas nasi hangat."]},
+ {n:"Pisang Goreng Crispy",k:"Kue & Camilan",t:20,e:"🍌",c:"#f6e3a8",v:"",i:["pisang","tepung terigu","gula"],b:["4 buah pisang kepok matang","6 sdm tepung terigu","2 sdm tepung beras","1 sdm gula pasir","sejumput garam","8 sdm air","minyak untuk menggoreng"],
+  s:["Kupas pisang, belah dua memanjang lalu tekan sedikit supaya pipih.","Campur tepung terigu, tepung beras, gula, garam, dan air sampai jadi adonan kental.","Celupkan pisang ke adonan sampai rata.","Goreng di minyak panas api sedang 5 menit sampai kuning keemasan.","Angkat dan tiriskan."],tip:"Tambah 1 sdm maizena di adonan supaya lebih renyah lama."},
+ {n:"Bakwan Jagung",k:"Kue & Camilan",t:20,e:"🌽",c:"#f8e39a",v:"",i:["jagung","telur","tepung terigu","daun bawang"],b:["2 buah jagung manis, pipil","5 sdm tepung terigu","1 butir telur","1 batang daun bawang, iris","2 siung bawang putih, haluskan","garam dan merica","minyak untuk menggoreng"],
+  s:["Tumbuk kasar sebagian jagung supaya adonan lengket.","Campur jagung, telur, tepung, daun bawang, bawang putih, garam, dan merica.","Ambil 1 sdm adonan, pipihkan di sendok.","Goreng di minyak panas 4 menit sampai kecokelatan, balik sekali.","Tiriskan dan sajikan hangat."],tip:"Enak dicocol saus sambal atau cabai rawit."},
+ {n:"Roti Bakar Cokelat Keju",k:"Kue & Camilan",t:10,e:"🍞",c:"#ecd3b4",v:"",i:["roti","mentega","susu"],b:["4 lembar roti tawar","2 sdm mentega","3 sdm meses cokelat","3 sdm keju parut","2 sdm susu kental manis"],
+  s:["Olesi kedua sisi roti dengan mentega.","Taburi 2 lembar roti dengan meses, keju, dan susu kental manis.","Tutup dengan roti lainnya.","Panggang di teflon api kecil 3 menit tiap sisi sampai kecokelatan.","Potong dua dan sajikan."],tip:"Tekan roti dengan spatula saat dipanggang agar isinya meleleh."},
+ {n:"Martabak Telur Mini",k:"Kue & Camilan",t:20,e:"🥟",c:"#f3d9a6",v:"",i:["telur","daun bawang","kulit lumpia"],b:["10 lembar kulit lumpia","3 butir telur","2 batang daun bawang, iris","1 buah bawang bombay kecil, cincang","garam dan merica","minyak untuk menggoreng"],
+  s:["Kocok telur dengan daun bawang, bawang bombay, garam, dan merica.","Letakkan 2 sdm isian di tengah kulit lumpia.","Lipat menjadi kotak, rekatkan ujungnya dengan sedikit air.","Goreng di minyak sedang 3 menit tiap sisi sampai renyah.","Tiriskan dan sajikan dengan acar atau saus."],tip:"Tambahkan daging ayam cincang tumis kalau ingin lebih mengenyangkan."},
+ {n:"Cireng Isi",k:"Kue & Camilan",t:30,e:"🥠",c:"#f1e2c6",v:"",i:["tepung tapioka","bawang putih","daun bawang"],b:["200 g tepung tapioka","50 g tepung terigu","2 siung bawang putih, haluskan","1 batang daun bawang, iris","1 sdt garam","150 ml air mendidih","isian: sambal atau keju"],
+  s:["Campur tapioka, terigu, bawang putih, daun bawang, dan garam.","Tuang air mendidih sedikit-sedikit, aduk pakai sendok lalu uleni sampai kalis.","Ambil adonan seukuran bola pingpong, pipihkan, beri isian, lalu tutup.","Goreng di minyak yang belum terlalu panas sampai mengembang dan renyah, sekitar 6 menit.","Tiriskan dan sajikan dengan bumbu rujak atau saus."],tip:"Air harus benar-benar mendidih supaya cireng kenyal, tidak keras."},
+ {n:"Kue Lumpur Teflon",k:"Kue & Camilan",t:30,e:"🧁",c:"#f6e7b8",v:"",i:["kentang","telur","tepung terigu","santan","gula"],b:["200 g kentang kukus, haluskan","2 butir telur","100 g gula pasir","150 g tepung terigu","400 ml santan","50 g mentega leleh","sejumput garam","kismis (opsional)"],
+  s:["Kocok telur dan gula sampai larut.","Masukkan kentang halus, terigu, santan, mentega, dan garam, aduk rata.","Panaskan cetakan kue lumpur atau teflon kecil, olesi mentega.","Tuang adonan, masak api kecil tertutup 5 menit.","Beri kismis, masak sampai matang lalu angkat."],tip:"Api harus kecil supaya bawahnya tidak gosong sebelum atasnya matang."},
+ {n:"Kentang Goreng Bumbu",k:"Kue & Camilan",t:25,e:"🍟",c:"#f7df9c",v:"",i:["kentang","bawang putih"],b:["3 buah kentang","1 sdm tepung maizena","1 sdt bawang putih bubuk","garam secukupnya","bumbu tabur balado atau keju","minyak untuk menggoreng"],
+  s:["Kupas kentang, potong memanjang.","Rendam di air garam 10 menit, lalu tiriskan dan keringkan.","Balur dengan maizena dan bawang putih bubuk.","Goreng di minyak panas 8 menit sampai renyah.","Taburi garam dan bumbu tabur selagi panas, kocok dalam wadah."],tip:"Goreng dua kali: 5 menit, angkat, lalu goreng lagi 3 menit supaya ekstra renyah."},
+ {n:"Puding Cokelat Susu",k:"Kue & Camilan",t:15,e:"🍮",c:"#d9b9a0",v:"",i:["agar-agar","susu","gula"],b:["1 bungkus agar-agar cokelat","700 ml susu cair","100 g gula pasir","2 sdm cokelat bubuk","sejumput garam"],
+  s:["Campur semua bahan dalam panci, aduk sampai tidak bergerindil.","Masak api sedang sambil terus diaduk sampai mendidih.","Matikan api, aduk sebentar supaya uap keluar.","Tuang ke cetakan.","Dinginkan di suhu ruang lalu masukkan kulkas 1 jam."],tip:"Sajikan dengan vla susu atau potongan buah."},
+ {n:"Singkong Goreng Merekah",k:"Kue & Camilan",t:35,e:"🥔",c:"#efe0bd",v:"",i:["singkong","bawang putih"],b:["500 g singkong","3 siung bawang putih, haluskan","1 sdt garam","1 liter air","minyak untuk menggoreng"],
+  s:["Kupas singkong, potong-potong, cuci bersih.","Rebus dengan bawang putih dan garam 20 menit sampai empuk dan mulai merekah.","Tiriskan, lalu masukkan freezer 15 menit atau diamkan sampai dingin.","Goreng di minyak panas sampai kuning dan merekah.","Tiriskan dan sajikan dengan sambal."],tip:"Didinginkan dulu setelah direbus supaya singkong merekah cantik saat digoreng."},
+ {n:"Telur Gulung Sosis",k:"Kue & Camilan",t:15,e:"🍢",c:"#f7dfa8",v:"",i:["telur","sosis"],b:["3 butir telur","3 buah sosis, belah dua","sejumput garam","tusuk sate","minyak untuk menggoreng"],
+  s:["Tusuk sosis dengan tusuk sate.","Kocok telur dengan garam.","Panaskan minyak, tuang 1 sdm telur.","Letakkan sosis di pinggir telur, putar perlahan sampai telur menggulung.","Ulangi 2 kali supaya tebal, lalu angkat."],tip:"Pakai minyak agak banyak dan api sedang agar telur mudah digulung."},
+ {n:"Es Teh Manis",k:"Minuman",t:5,e:"🧋",c:"#e9c9a0",v:"",i:["teh","gula"],b:["2 kantong teh celup","400 ml air panas","3 sdm gula pasir","es batu secukupnya","irisan jeruk nipis (opsional)"],
+  s:["Seduh teh dengan air panas 3 menit.","Angkat kantong teh, larutkan gula.","Biarkan agak dingin.","Isi gelas dengan es batu.","Tuang teh, beri irisan jeruk nipis kalau suka."],tip:"Jangan seduh terlalu lama supaya teh tidak pahit."},
+ {n:"Es Jeruk Peras",k:"Minuman",t:5,e:"🍊",c:"#fbd38a",v:"",i:["jeruk","gula"],b:["4 buah jeruk peras","2 sdm gula pasir atau madu","200 ml air dingin","es batu"],
+  s:["Belah jeruk lalu peras airnya.","Saring supaya bijinya tidak ikut.","Larutkan gula dengan sedikit air hangat.","Campur air jeruk, gula, dan air dingin.","Sajikan dengan es batu."],tip:"Tambahkan sejumput garam, rasanya jadi lebih segar."},
+ {n:"Wedang Jahe",k:"Minuman",t:15,e:"🫖",c:"#e8c98f",v:"",i:["jahe","gula merah","serai"],b:["1 ruas besar jahe, bakar lalu memarkan","2 batang serai, memarkan","3 sdm gula merah sisir","500 ml air","sejumput garam"],
+  s:["Bakar jahe sebentar di atas api, lalu memarkan.","Rebus air bersama jahe dan serai.","Masukkan gula merah dan garam.","Masak 10 menit sampai harum.","Saring dan minum hangat."],tip:"Tambah sebatang kayu manis untuk aroma yang lebih hangat."},
+ {n:"Kopi Susu Gula Aren",k:"Minuman",t:5,e:"☕",c:"#cfa47c",v:"",i:["kopi","susu","gula merah"],b:["2 sdm kopi bubuk","100 ml air panas","200 ml susu cair dingin","2 sdm gula aren cair","es batu"],
+  s:["Seduh kopi dengan air panas, aduk lalu diamkan 3 menit.","Saring kopi supaya ampasnya tidak ikut.","Masukkan gula aren ke dasar gelas.","Tambah es dan susu.","Tuang kopi perlahan di atasnya, aduk sebelum diminum."],tip:"Gula aren cair: rebus 100 g gula aren dengan 50 ml air sampai larut."},
+ {n:"Es Kopyor Pandan",k:"Minuman",t:15,e:"🥥",c:"#cfe7c4",v:"",i:["kelapa","susu","gula"],b:["200 g kelapa muda kerok","200 ml susu kental manis + air","3 sdm sirup pandan","1 bungkus nata de coco","es batu"],
+  s:["Campur susu kental manis dengan 300 ml air.","Masukkan sirup pandan.","Tambah kelapa muda dan nata de coco.","Aduk rata.","Sajikan dengan banyak es."],tip:"Ganti sirup pandan dengan sirup cocopandan untuk warna merah muda."},
+ {n:"Jus Alpukat Cokelat",k:"Minuman",t:7,e:"🥑",c:"#cfe0a6",v:"",i:["alpukat","susu","gula"],b:["1 buah alpukat matang","200 ml susu cair dingin","2 sdm gula pasir","2 sdm susu kental cokelat","es batu"],
+  s:["Kerok daging alpukat.","Blender alpukat, susu, gula, dan es sampai halus.","Hias dinding gelas dengan susu kental cokelat.","Tuang jus.","Sajikan segera."],tip:"Alpukat yang matang terasa empuk saat ditekan dan tangkainya mudah lepas."},
+ {n:"Es Cendol Simpel",k:"Minuman",t:20,e:"🍧",c:"#bfe0b0",v:"",i:["tepung beras","santan","gula merah"],b:["50 g tepung beras","2 sdm tepung tapioka","300 ml air + 1 sdt pasta pandan","200 ml santan + sejumput garam","150 g gula merah, rebus jadi sirup","es batu"],
+  s:["Masak tepung beras, tapioka, dan air pandan sambil diaduk sampai kental.","Tekan adonan panas lewat saringan berlubang ke air es sampai jadi cendol.","Rebus santan dengan garam sebentar, dinginkan.","Masukkan cendol dan sirup gula merah ke gelas.","Tuang santan dan es batu."],tip:"Kalau tidak punya saringan cendol, pakai plastik segitiga yang ujungnya digunting."},
+ {n:"Teh Tarik",k:"Minuman",t:7,e:"🍵",c:"#e2bf98",v:"",i:["teh","susu"],b:["2 kantong teh celup hitam","250 ml air panas","3 sdm susu kental manis","2 sdm susu cair (opsional)"],
+  s:["Seduh teh pekat dengan air panas 5 menit.","Masukkan susu kental manis, aduk.","Tuang bolak-balik dari satu gelas ke gelas lain dari agak tinggi beberapa kali.","Berhenti saat muncul busa.","Sajikan panas atau dengan es."],tip:"Semakin sering ditarik, busa makin tebal dan rasa makin lembut."},
+ {n:"Susu Jahe Gula Merah",k:"Minuman",t:10,e:"🥛",c:"#ead2b0",v:"",i:["susu","jahe","gula merah"],b:["300 ml susu cair","1 ruas jahe, geprek","2 sdm gula merah sisir"],
+  s:["Masukkan susu, jahe, dan gula merah ke panci.","Panaskan api kecil sambil diaduk.","Jangan sampai mendidih bergolak, cukup panas berasap.","Saring jahenya.","Minum hangat sebelum tidur."],tip:"Api kecil supaya susu tidak pecah atau tumpah."},
+ {n:"Es Buah Segar",k:"Minuman",t:15,e:"🍉",c:"#f7c3c3",v:"",i:["semangka","melon","susu"],b:["1 potong semangka","1 potong melon","1 buah apel","1 bungkus nata de coco","sirup merah secukupnya","susu kental manis","es batu"],
+  s:["Potong dadu semua buah.","Masukkan buah dan nata de coco ke mangkuk.","Tuang sirup dan sedikit air dingin.","Beri es batu.","Siram susu kental manis di atasnya."],tip:"Pakai buah yang ada di rumah, pepaya atau nanas juga cocok."}
 ];
 const store={get(k,d){try{const v=localStorage.getItem("ms-"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("ms-"+k,JSON.stringify(v))}catch(e){}}};
 let favs=new Set(store.get("fav",[])),have=new Set(store.get("have",[])),labels=new Set(store.get("labels",[])),done=store.get("done",{}),notes=store.get("notes",{}),shop=store.get("shop",[]),plan=store.get("plan",null);
@@ -772,6 +821,7 @@ function openR(r){
     ${r.tip?`<div class="tip"><b>TIPS</b><div>${r.tip}</div></div>`:""}
     ${rkey(r)?`<section class="sec" id="revSec"><h4>Ulasan & hasil masakan <span id="revAvg" class="ravg"></span></h4><div id="revSnap" class="snaps"></div><div id="revForm"></div><div id="revList" class="revs"><div class="skel">Memuat ulasan…</div></div></section>`:""}
     <section class="sec"><h4>Catatanku</h4><textarea class="note" id="note" placeholder="Mis. garamnya kurangi sedikit, cabai tambah 2…">${esc(notes[r.n]||"")}</textarea></section>
+    ${!r.v&&!r.own?`<section class="sec"><h4>Cari videonya</h4><a class="ytbtn" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent("resep "+r.n)}"><span class="yplay">▶</span><span><b>Video di YouTube</b><small>Cari video resep ini di YouTube</small></span><span aria-hidden="true">↗</span></a><a class="ytbtn" style="margin-top:10px" target="_blank" rel="noopener" href="https://www.tiktok.com/search?q=${encodeURIComponent("resep "+r.n)}"><span class="yplay" style="background:#111">♪</span><span><b>Video di TikTok</b><small>Cari video resep ini di TikTok</small></span><span aria-hidden="true">↗</span></a></section>`:""}
     ${r.v?`<section class="sec"><h4>Tonton videonya</h4><div class="vbox"><button class="vplay" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.youtube-nocookie.com/embed/${r.v}?autoplay=1&amp;rel=0&amp;playsinline=1&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture; fullscreen&quot; allowfullscreen></iframe>'" style="background-image:url(${img(r)||""})" aria-label="Putar video"><span>▶</span></button></div><a class="ytbtn" style="margin-top:10px" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener"><span class="yplay"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span><span><b>Video tidak bisa diputar?</b><small>Buka di aplikasi YouTube</small></span><span aria-hidden="true">↗</span></a><a class="ytbtn" style="margin-top:10px" target="_blank" rel="noopener" href="https://www.tiktok.com/search?q=${encodeURIComponent("resep "+r.n)}"><span class="yplay" style="background:#111">♪</span><span><b>Video versi TikTok</b><small>Cari video resep ini di TikTok</small></span><span aria-hidden="true">↗</span></a></section>`:""}
     <div class="row"><button class="btn ${done[r.n]?"sec":"pri"}" id="mark">${done[r.n]?"✓ Sudah pernah dimasak":"Tandai sudah dimasak"}</button>
       <button class="btn wa" id="share"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Bagikan</button></div>
@@ -1089,12 +1139,23 @@ $("fbForm").onsubmit=async e=>{e.preventDefault();const m=$("fbMsg").value.trim(
   catch(err){$("fbErr").textContent=/Batas/.test(err.message)?err.message:"Gagal mengirim. Periksa koneksi internet lalu coba lagi.";$("fbErr").hidden=false}
   b.disabled=false;b.textContent="Kirim"};
 function drawAdminBtn(){$("adminBtn").hidden=!(isGoogle()&&sess.email===ADMIN)}
-async function openAdmin(){$("adm").classList.add("on");document.body.classList.add("lock");$("admList").innerHTML=`<div class="skel">Memuat masukan…</div>`;
+async function openAdmin(){$("adm").classList.add("on");document.body.classList.add("lock");loadStats();$("admList").innerHTML=`<div class="skel">Memuat masukan…</div>`;
   try{const rows=await api("feedback?select=*&order=created_at.desc&limit=200");
     $("admList").innerHTML=rows.length?rows.map(r=>`<div class="fbi ${r.status==="selesai"?"selesai":""}"><div class="fbh"><span class="tagk">${clean(r.kind)}</span><small>${new Date(r.created_at).toLocaleString("id-ID",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"})}</small></div><p>${clean(r.message)}</p>${r.contact?`<small>Kontak: ${clean(r.contact)}</small>`:""}${r.page?`<small>Dari: ${clean(r.page)}</small>`:""}<select data-id="${r.id}" aria-label="Status">${["baru","diproses","selesai"].map(x=>`<option ${x===r.status?"selected":""}>${x}</option>`).join("")}</select></div>`).join("")
       :`<div class="empty"><b>Belum ada masukan</b>Masukan dari pengguna akan tampil di sini.</div>`;
     $("admList").querySelectorAll("select").forEach(sl=>sl.onchange=async()=>{try{await api("feedback?id=eq."+sl.dataset.id,{method:"PATCH",headers:{Prefer:"return=minimal"},body:JSON.stringify({status:sl.value})});sl.closest(".fbi").classList.toggle("selesai",sl.value==="selesai");toast("Status diubah: "+sl.value)}catch(e){toast("Gagal mengubah status")}})}
   catch(e){$("admList").innerHTML=`<div class="empty"><b>Tidak bisa memuat</b>Pastikan kamu masuk dengan akun admin dan terhubung ke internet.</div>`}}
+
+/* ---------- Statistik ---------- */
+(function(){try{const today=new Date().toISOString().slice(0,10);if(store.get("vday","")===today)return;let id=store.get("dev","");if(!id){id=(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2)).replace(/-/g,"").slice(0,32);store.set("dev",id)}
+  fetch(SB.u+"/rest/v1/visits",{method:"POST",headers:{apikey:SB.k,"Content-Type":"application/json",Prefer:"return=minimal,resolution=ignore-duplicates"},body:JSON.stringify({device:id})}).then(r=>{if(r.ok||r.status===409)store.set("vday",today)}).catch(()=>{})}catch(e){}})();
+async function loadStats(){const b=$("admStats");b.innerHTML=`<div class="skel">Memuat statistik…</div>`;
+  try{const s=await api("rpc/admin_stats",{method:"POST",body:"{}"});const mx=Math.max(1,...s.harian.map(x=>x.n));
+    const T=(n,l)=>`<div class="stt"><b>${Number(n).toLocaleString("id-ID")}</b><span>${l}</span></div>`;
+    b.innerHTML=`<div class="stg">${T(s.hari_ini,"Pengunjung hari ini")}${T(s.minggu,"Pengunjung 7 hari")}${T(s.bulan,"Pengunjung 30 hari")}${T(s.total_hp,"Total HP pernah buka")}${T(s.google,"Login Google")}${T(s.google_baru_7,"Login baru 7 hari")}${T(s.resep,"Resep Komunitas")}${T(s.ulasan,"Ulasan")}${T(s.suka,"Suka")}${T(s.masukan_baru,"Masukan baru")}</div>
+    <div class="sbar"><b>Pengunjung 14 hari terakhir</b><div class="sbars">${s.harian.map(x=>`<div title="${x.d}: ${x.n}"><i style="height:${Math.max(3,x.n/mx*100)}%"></i><span>${new Date(x.d+"T00:00").getDate()}</span></div>`).join("")}</div></div>
+    <small style="color:var(--muted)">Pengunjung dihitung per HP per hari, sejak fitur statistik dipasang.</small>`}
+  catch(e){b.innerHTML=`<div class="skel">Statistik belum bisa dimuat.</div>`}}
 $("adminBtn").onclick=openAdmin;
 const closeAdm=()=>{$("adm").classList.remove("on");document.body.classList.remove("lock")};
 $("admClose").onclick=closeAdm;$("adm").onclick=e=>{if(e.target.id==="adm")closeAdm()};
@@ -1135,7 +1196,7 @@ if($("thm"))$("thm").onclick=()=>{const o=["auto","light","dark"],t=o[(o.indexOf
 applyTheme();
 
 /* ---------- Harga & kalori (perkiraan) ---------- */
-const EST=[["ayam fillet",15000,450],["ayam",20000,700],["udang",20000,200],["ikan teri",6000,150],["ikan",15000,350],["bakso",8000,300],["sosis",6000,300],["telur",2000,75,1],["tahu pong",4000,250],["tahu",4000,300],["tempe",5000,400],
+const EST=[["susu kental",2000,130],["kulit lumpia",5000,300],["nata de coco",5000,150],["agar-agar",3000,30],["cokelat bubuk",2000,50],["meses",2000,150],["pisang",6000,400],["roti",4000,300],["mentega",2000,200],["susu",5000,250],["kopi",2000,5],["teh",500,0],["jahe",1000,10],["jeruk peras",6000,120],["alpukat",8000,320],["kelapa",8000,350],["singkong",4000,600],["tapioka",2000,350],["keju",4000,150],["sirup",2000,150],["semangka",4000,60],["melon",4000,50],["apel",3000,80],["kismis",2000,80],["ayam fillet",15000,450],["ayam",20000,700],["udang",20000,200],["ikan teri",6000,150],["ikan",15000,350],["bakso",8000,300],["sosis",6000,300],["telur",2000,75,1],["tahu pong",4000,250],["tahu",4000,300],["tempe",5000,400],
 ["kangkung",4000,40],["bayam",3000,25],["sawi putih",4000,30],["sawi",3000,20],["kol",3000,40],["brokoli",8000,60],["buncis",3000,30],["kacang panjang",3000,40],["wortel",2000,40],["labu siam",2000,30],["oyong",3000,30],["pare",3000,20],["terong",4000,50],["toge",2000,30],["tauge",2000,30],["jamur",5000,40],["jagung",4000,180],["kentang",5000,300],
 ["mie instan",3000,380,1],["mie telur",4000,400],["bihun",3000,350],["kwetiau",6000,400],["makaroni",4000,350],["piring nasi",2000,200,1],["gelas beras",3000,550,1],["tepung terigu",2000,350],["tepung beras",1500,300],["maizena",300,30],["santan",3000,250],
 ["minyak untuk menggoreng",3000,250],["minyak",600,120],["bawang merah",1500,10],["bawang putih",1000,10],["bawang bombay",2000,30],["bawang goreng",1000,50],["daun bawang",1000,5],["cabai rawit",1500,5],["cabai",2000,10],["tomat",1500,20],
