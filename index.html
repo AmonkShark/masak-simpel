@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f3b26">
+<title>Masak Simpel</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: app HP — header hijau melengkung, carousel "paling cepat", kategori ikon bulat, grid kartu, nav bawah */
+:root{
+  --bg:#f5f7f2;--surface:#ffffff;--fg:#12241a;--muted:#6b7a70;--line:#e4ebe2;
+  --deep:#0f3b26;--deep2:#17573a;--accent:#1f8a52;--accent-soft:#e3f3e8;--tang:#ff7a1a;--tang-soft:#fff0e3;--sun:#ffc53d;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;
+  --sh:0 2px 4px rgba(15,59,38,.05),0 12px 28px rgba(15,59,38,.10);
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0b130e;--surface:#152119;--fg:#ecf3ee;--muted:#9db1a3;--line:#23342a;
+  --deep:#0a2a1a;--deep2:#103a25;--accent:#5fd393;--accent-soft:#183324;--tang:#ff9447;--tang-soft:#3a2414;
+  --sh:0 2px 4px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.4);color-scheme:dark}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scrollbar-gutter:stable;overflow-y:scroll}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;overscroll-behavior-y:none;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
+.in{max-width:980px;margin:0 auto;padding:0 16px}
+.emo{filter:drop-shadow(0 8px 10px rgba(0,0,0,.18));display:inline-block}
+
+/* Header */
+.hero{background:radial-gradient(120% 90% at 100% 0%,var(--deep2) 0%,var(--deep) 60%);color:#fff;padding-top:calc(env(safe-area-inset-top,0px) + 22px);padding-bottom:84px;border-radius:0 0 32px 32px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1.2px,transparent 1.2px);background-size:18px 18px;pointer-events:none}
+.top{display:flex;justify-content:space-between;align-items:center;position:relative}
+.greet{font-size:.85rem;opacity:.8;font-weight:600}
+.logo{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:1.3rem}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,8.5vw,3.4rem);line-height:1;letter-spacing:-.025em;margin:14px 0 0;max-width:12ch;position:relative;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--sun)}
+.float{position:absolute;right:14px;bottom:62px;font-size:4.6rem;transform:rotate(-12deg);animation:bob 4s ease-in-out infinite}
+@keyframes bob{50%{transform:rotate(-6deg) translateY(-6px)}}
+
+/* Search */
+.bar{position:sticky;top:0;z-index:5;margin-top:-34px}
+.search{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:20px;padding:0 8px 0 18px;height:60px;box-shadow:var(--sh)}
+.search svg{flex:none;color:var(--accent)}
+.search input{flex:1;min-width:0;border:0;background:none;outline:0;font:inherit;font-size:16px;font-weight:500;color:var(--fg);height:100%}
+.search input::placeholder{color:var(--muted)}
+.search input::-webkit-search-cancel-button{display:none}
+#clr{width:44px;height:44px;border-radius:14px;background:var(--bg);color:var(--muted);font-size:1rem}
+
+h2.h{font-family:var(--display);font-weight:800;font-size:1.35rem;margin:0;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:baseline}
+h2.h small{font-family:var(--body);font-size:.8rem;font-weight:700;color:var(--muted)}
+section.blk{margin-top:26px;display:grid;gap:14px}
+
+/* Categories */
+.cats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.cat{display:grid;justify-items:center;gap:7px;font-size:.78rem;font-weight:700;color:var(--muted)}
+.cat .ic{width:100%;max-width:64px;aspect-ratio:1;border-radius:22px;background:var(--surface);box-shadow:var(--sh);display:grid;place-items:center;font-size:1.7rem;transition:transform .2s,background .2s}
+.cat[aria-pressed="true"]{color:var(--fg)}
+.cat[aria-pressed="true"] .ic{background:var(--tang);transform:translateY(-3px)}
+
+/* Carousel */
+.rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px;padding:4px 16px 14px}
+.rail::-webkit-scrollbar{display:none}
+.fcard{flex:none;width:min(78vw,300px);scroll-snap-align:start;border-radius:26px;padding:18px;color:#12241a;display:grid;grid-template-columns:1fr auto;align-items:end;min-height:150px;position:relative;overflow:hidden;text-align:left;box-shadow:var(--sh)}
+.fcard .t{font-family:var(--display);font-weight:800;font-size:1.3rem;line-height:1.1}
+.fcard .m{font-size:.78rem;font-weight:700;margin-top:6px;opacity:.75}
+.fcard .badge{position:absolute;top:14px;left:14px;background:#12241a;color:#fff;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.04em}
+.fcard .emo{font-size:4.2rem;transform:rotate(8deg) translate(6px,6px)}
+
+/* Grid */
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (min-width:640px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
+@media (min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card{background:var(--surface);border-radius:24px;box-shadow:var(--sh);display:flex;flex-direction:column;text-align:left;padding:8px;position:relative;transition:transform .2s}
+.card:active{transform:scale(.97)}
+@media (hover:hover){.card:hover{transform:translateY(-4px)}}
+.art{aspect-ratio:1/0.85;border-radius:18px;display:grid;place-items:center;font-size:3.6rem;position:relative;overflow:hidden}
+.art::before{content:"";position:absolute;width:70%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.45)}
+.art .emo{position:relative}
+.time{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,.95);color:#12241a;font-size:.7rem;font-weight:800;padding:4px 9px;border-radius:999px}
+.fav{position:absolute;right:16px;top:16px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;font-size:.95rem;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.cbody{padding:10px 6px 6px;display:grid;gap:2px}
+.cbody .k{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--tang)}
+.cbody h3{font-family:var(--display);font-weight:600;font-size:1.04rem;line-height:1.2;margin:0}
+.cbody .sub{font-size:.75rem;color:var(--muted);font-weight:600}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 10px;font-weight:500}
+.empty b{display:block;font-size:2.8rem}
+.card:focus-visible,.cat:focus-visible,.fcard:focus-visible,.nav button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* Bottom nav */
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:8;background:var(--deep);border-radius:24px;padding:6px;display:flex;gap:4px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.nav button{color:rgba(255,255,255,.7);font-weight:700;font-size:.85rem;padding:12px 22px;border-radius:18px;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.nav button[aria-pressed="true"]{background:var(--tang);color:#fff}
+
+/* Sheet */
+.sheet{position:fixed;inset:0;z-index:20;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);visibility:hidden}
+.sheet.on{transform:none;visibility:visible}
+.shero{height:280px;display:grid;place-items:center;font-size:7.5rem;position:relative;overflow:hidden}
+.shero::before{content:"";position:absolute;width:260px;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.45)}
+.shero .emo{position:relative;animation:bob 4s ease-in-out infinite}
+.sbtn{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);width:44px;height:44px;border-radius:15px;background:rgba(255,255,255,.95);color:#12241a;font-size:1.15rem;box-shadow:var(--sh);display:grid;place-items:center;z-index:2}
+.sbody{background:var(--bg);border-radius:30px 30px 0 0;margin-top:-30px;position:relative;padding:26px 0 calc(env(safe-area-inset-bottom,0px) + 40px)}
+.sbody .in{max-width:660px;display:grid;gap:26px}
+.sbody h2{font-family:var(--display);font-weight:800;font-size:2.1rem;line-height:1.02;margin:6px 0 0;letter-spacing:-.02em;text-wrap:balance}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.stats div{background:var(--surface);border-radius:18px;padding:12px;text-align:center;box-shadow:var(--sh)}
+.stats b{display:block;font-family:var(--display);font-size:1.3rem}
+.stats span{font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.sec h4{font-family:var(--display);font-size:1.25rem;margin:0 0 12px;display:flex;justify-content:space-between;align-items:baseline}
+.sec h4 small{font-family:var(--body);font-size:.78rem;color:var(--accent);font-weight:700}
+.ings{background:var(--surface);border-radius:22px;padding:6px 16px;box-shadow:var(--sh)}
+.ings label{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--line);cursor:pointer;font-weight:500}
+.ings label:last-child{border:0}
+.ings input{appearance:none;width:24px;height:24px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;flex:none;margin:0;transition:.15s}
+.ings input:checked{background:var(--accent);border-color:var(--accent)}
+.ings input:checked::after{content:"✓";color:#fff;font-size:.8rem;font-weight:800}
+.ings input:checked+span{text-decoration:line-through;color:var(--muted)}
+.steps{display:grid;gap:0;position:relative}
+.st{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;position:relative;padding-bottom:16px}
+.st::before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:var(--line)}
+.st:last-child::before{display:none}
+.st .n{width:44px;height:44px;border-radius:15px;background:var(--deep);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.05rem}
+.st .box{background:var(--surface);border-radius:20px;box-shadow:var(--sh);overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 88px}
+.st .tx{padding:14px 14px 14px 16px;font-weight:500;align-self:center}
+.st .pic{display:grid;place-items:center;font-size:2.4rem}
+.tip{background:var(--tang-soft);border-radius:20px;padding:16px 18px;font-size:.93rem;display:flex;gap:12px;align-items:flex-start}
+.tip b{font-size:1.4rem;line-height:1}
+.video{position:relative;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#000;box-shadow:var(--sh)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ytlink{display:inline-block;margin-top:10px;color:var(--tang);font-weight:700;font-size:.88rem;text-decoration:none}
+body.lock{overflow:hidden}
+.sw{display:flex;gap:10px;align-items:center}
+.sw .search{flex:1;min-width:0}
+.fbtn{flex:none;width:60px;height:60px;border-radius:20px;background:var(--tang);color:#fff;display:grid;place-items:center;box-shadow:var(--sh);position:relative}
+.fbtn .dot{position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--deep);color:#fff;font-size:.72rem;font-weight:800;display:grid;place-items:center;border:2px solid var(--bg)}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.36)}
+.art .photo{border-radius:18px}
+.art.has::before,.shero.has::before{display:none}
+.art.has::after,.shero.has::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.35))}
+.art .time{z-index:1}
+.fcard.has{color:#fff}
+.fcard.has::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.72))}
+.fcard>*{position:relative;z-index:1}
+.fcard .photo{z-index:0}
+.match{font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:999px;justify-self:start;margin-top:4px}
+.match.ok{background:var(--accent-soft);color:var(--accent)}
+.match.no{background:var(--tang-soft);color:var(--tang)}
+.fs{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,15,10,.5);opacity:0;visibility:hidden;transition:.25s}
+.fs.on{opacity:1;visibility:visible}
+.fpanel{background:var(--bg);width:100%;max-width:640px;max-height:86%;border-radius:28px 28px 0 0;display:flex;flex-direction:column;transform:translateY(40px);transition:transform .3s}
+.fs.on .fpanel{transform:none}
+.fhead{padding:20px 20px 10px;display:flex;justify-content:space-between;align-items:center}
+.fhead h3{font-family:var(--display);font-size:1.4rem;margin:0}
+.fhead p{margin:2px 0 0;font-size:.82rem;color:var(--muted)}
+.fbody{overflow-y:auto;padding:6px 20px 16px;display:grid;gap:18px}
+.fg b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.fg .chips2{display:flex;flex-wrap:wrap;gap:8px}
+.ing2{height:40px;padding:0 14px;border-radius:999px;background:var(--surface);border:1.5px solid var(--line);font-weight:600;font-size:.88rem}
+.ing2[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.ffoot{display:flex;gap:10px;padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 16px);border-top:1px solid var(--line)}
+.ffoot button{height:52px;border-radius:16px;font-weight:800}
+#fReset{padding:0 20px;background:var(--surface);border:1px solid var(--line)}
+#fApply{flex:1;background:var(--deep);color:#fff}
+.credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px 0 0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="in">
+  <div class="top"><span class="greet" id="greet">Halo!</span><span class="logo">🍳</span></div>
+  <h1>Masak enak, <em>tanpa ribet.</em></h1>
+  <span class="float emo">🥘</span>
+</div></header>
+
+<div class="bar"><div class="in">
+  <div class="sw"><label class="search">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Cari menu atau bahan…" autocomplete="off" aria-label="Cari menu atau bahan">
+    <button id="clr" hidden aria-label="Hapus pencarian">✕</button>
+  </label>
+  <button class="fbtn" id="fOpen" aria-label="Filter bahan"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="dot" id="fDot" hidden>0</span></button>
+</div></div></div>
+
+<div class="in">
+  <section class="blk"><h2 class="h">Kategori</h2><div class="cats" id="cats"></div></section>
+  <section class="blk" id="fastBlk"><h2 class="h">Paling cepat <small>≤ 10 menit</small></h2><div class="rail" id="rail"></div></section>
+  <section class="blk"><h2 class="h"><span id="ttl">Semua menu</span><small id="count"></small></h2><div class="grid" id="grid"></div></section>
+</div>
+
+<nav class="nav">
+  <button id="nHome" aria-pressed="true">🏠 Beranda</button>
+  <button id="nFav" aria-pressed="false">♥ Favorit</button>
+</nav>
+
+<p class="credit in">Foto & video dari YouTube milik masing-masing kreator.</p>
+<div class="fs" id="fs"><div class="fpanel">
+  <div class="fhead"><div><h3>Bahan yang kamu punya</h3><p>Bawang, garam, gula, dan minyak dianggap sudah ada.</p></div><button class="sbtn" id="fClose" style="position:static;box-shadow:none;background:var(--surface);color:var(--fg)" aria-label="Tutup">✕</button></div>
+  <div class="fbody" id="fBody"></div>
+  <div class="ffoot"><button id="fReset">Reset</button><button id="fApply">Tampilkan menu</button></div>
+</div></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+
+<script>
+const R=[
+ {n:"Tumis Kangkung",k:"Tumis",t:10,e:"🥬",c:"#d6ecd0",v:"RRd7NGS2wGA",i:["kangkung","cabai"],b:["1 ikat kangkung","3 siung bawang merah","2 siung bawang putih","3 buah cabai","1 sdt garam","½ sdt gula","2 sdm minyak"],
+  s:["Petik kangkung, cuci, tiriskan.","Iris bawang merah, bawang putih, dan cabai.","Panaskan minyak, tumis irisan bumbu sampai harum (±1 menit).","Masukkan kangkung, aduk cepat dengan api besar.","Tambah garam, gula, dan 2 sdm air. Aduk 2 menit, angkat."],tip:"Api besar dan masak sebentar supaya kangkung tetap hijau dan renyah."},
+ {n:"Tumis Telur Tomat",k:"Tumis",t:10,e:"🍅",c:"#fbd9cf",v:"BJWs8BPIgUI",i:["telur","tomat","kecap manis"],b:["3 butir telur","2 buah tomat","2 siung bawang putih","garam secukupnya","½ sdt gula","1 sdm kecap manis","2 sdm minyak"],
+  s:["Kocok telur dengan sejumput garam.","Goreng telur orak-arik setengah matang, sisihkan.","Tumis bawang putih cincang, masukkan potongan tomat sampai layu.","Tambah kecap, sedikit gula dan garam.","Masukkan lagi telur, aduk rata, angkat."]},
+ {n:"Tumis Tahu Tempe Kecap",k:"Tumis",t:15,e:"🟫",c:"#efdfc4",v:"Kus6dfsqpjw",i:["tahu","tempe","cabai","kecap manis"],b:["3 potong tahu","1 papan tempe","3 siung bawang merah","2 siung bawang putih","2 buah cabai","3 sdm kecap manis","garam secukupnya","minyak untuk menggoreng"],
+  s:["Potong dadu tahu dan tempe, goreng sampai kuning.","Iris bawang dan cabai.","Tumis bumbu sampai harum.","Masukkan tahu tempe, tambah kecap dan sedikit garam.","Aduk sampai bumbu meresap, angkat."]},
+ {n:"Tumis Buncis Wortel",k:"Tumis",t:15,e:"🥕",c:"#fde0c2",v:"lMtO8M78DPE",i:["buncis","wortel","saus tiram"],b:["200 g buncis","1 buah wortel","2 siung bawang putih","2 siung bawang merah","1 sdm saus tiram","garam secukupnya","2 sdm minyak"],
+  s:["Potong tipis buncis dan wortel.","Tumis bawang sampai harum.","Masukkan wortel dulu, lalu buncis.","Tambah saus tiram, garam, dan sedikit air.","Masak 4 menit sampai layu, angkat."]},
+ {n:"Tumis Sawi Bakso",k:"Tumis",t:10,e:"🥗",c:"#dcefd5",v:"TIG7QY4RU9A",i:["sawi","bakso","saus tiram"],b:["1 ikat sawi","5 butir bakso","2 siung bawang putih","1 sdm saus tiram","garam secukupnya","2 sdm minyak"],
+  s:["Potong sawi dan iris bakso.","Tumis bawang putih sampai harum.","Masukkan bakso, aduk 1 menit.","Masukkan sawi, saus tiram, garam, dan sedikit air.","Aduk sampai layu, angkat."]},
+ {n:"Tumis Toge",k:"Tumis",t:8,e:"🌱",c:"#eef3d2",v:"E-8757A8--8",i:["toge","cabai","daun bawang"],b:["250 g toge","2 siung bawang putih","2 siung bawang merah","2 buah cabai","1 batang daun bawang","garam dan gula","2 sdm minyak"],
+  s:["Cuci toge, buang akar yang kotor, tiriskan.","Iris bawang, cabai, dan daun bawang.","Tumis bumbu sampai harum.","Masukkan toge, aduk cepat dengan api besar.","Beri garam dan gula, masak 1–2 menit saja, angkat."],tip:"Jangan terlalu lama supaya toge tetap renyah."},
+ {n:"Tumis Jamur",k:"Tumis",t:12,e:"🍄",c:"#ece2d6",v:"yOg2L3QbBEk",i:["jamur","cabai","saus tiram","daun bawang"],b:["200 g jamur tiram","3 siung bawang putih","2 siung bawang merah","2 buah cabai","1 sdm saus tiram","1 batang daun bawang","garam secukupnya","2 sdm minyak"],
+  s:["Suwir jamur, cuci, lalu peras airnya.","Iris bawang, cabai, dan daun bawang.","Tumis bawang dan cabai sampai harum.","Masukkan jamur, saus tiram, dan garam.","Aduk 4 menit sampai jamur layu, tambah daun bawang, angkat."]},
+ {n:"Capcay Sederhana",k:"Tumis",t:15,e:"🥦",c:"#d9ecd8",v:"Lhzq6qWAlMc",i:["sawi","wortel","kol","bakso","saus tiram"],b:["1 buah wortel","¼ buah kol","1 ikat sawi","5 butir bakso","3 siung bawang putih","2 sdm saus tiram","1 sdt maizena (opsional)","garam dan merica","200 ml air"],
+  s:["Potong semua sayur dan iris bakso.","Tumis bawang putih cincang sampai harum.","Masukkan bakso dan wortel, aduk sebentar.","Masukkan kol, sawi, saus tiram, dan air.","Bumbui garam dan merica, masak 3 menit.","Kentalkan dengan maizena yang dilarutkan air, angkat."]},
+ {n:"Tumis Labu Siam",k:"Tumis",t:15,e:"🥒",c:"#e3f0d4",v:"L3nsqWzV2qo",i:["labu siam","cabai","tomat"],b:["1 buah labu siam","3 siung bawang merah","2 siung bawang putih","3 buah cabai","1 buah tomat","garam dan gula","2 sdm minyak"],
+  s:["Kupas labu siam, potong korek api, remas dengan garam lalu cuci.","Iris bawang, cabai, dan tomat.","Tumis bumbu sampai harum.","Masukkan labu siam dan sedikit air.","Bumbui garam dan gula, masak 5 menit sampai layu, angkat."]},
+ {n:"Orek Tempe",k:"Tumis",t:20,e:"🟫",c:"#eedcc0",v:"nvTdQob4JVs",i:["tempe","cabai","kecap manis"],b:["1 papan tempe","3 siung bawang merah","2 siung bawang putih","3 buah cabai","3 sdm kecap manis","garam secukupnya","minyak untuk menggoreng"],
+  s:["Potong tempe korek api, goreng sampai kering, tiriskan.","Iris bawang dan cabai.","Tumis bumbu sampai harum.","Masukkan tempe, kecap, garam, dan 2 sdm air.","Aduk sampai kecap mengering dan meresap, angkat."]},
+ {n:"Sop Sayur Bening",k:"Sop",t:20,e:"🍲",c:"#d4e8f2",v:"PLBODc66OCs",i:["wortel","kentang","kol","daun bawang"],b:["1 buah wortel","1 buah kentang","¼ buah kol","1 batang daun bawang","3 siung bawang putih","1 liter air","garam dan merica"],
+  s:["Potong semua sayur kecil-kecil.","Didihkan air dengan bawang putih geprek.","Masukkan wortel dan kentang, masak 10 menit.","Masukkan kol dan daun bawang.","Bumbui garam dan merica, masak 3 menit lalu angkat."],tip:"Sayur keras dulu, sayur lunak belakangan."},
+ {n:"Sop Telur Sosis",k:"Sop",t:15,e:"🥚",c:"#f8edc4",v:"_tGEI625fXQ",i:["telur","sosis","daun bawang"],b:["2 butir telur","3 buah sosis","2 siung bawang putih","1 batang daun bawang","700 ml air","garam dan merica"],
+  s:["Didihkan air dengan bawang putih geprek.","Masukkan potongan sosis.","Kocok telur, tuang perlahan sambil diaduk.","Bumbui garam dan merica.","Taburi daun bawang, angkat."]},
+ {n:"Sayur Bening Bayam Jagung",k:"Sop",t:15,e:"🌽",c:"#f6ecbc",v:"V3akmg0XmgM",i:["bayam","jagung"],b:["1 ikat bayam","1 buah jagung","3 siung bawang merah","800 ml air","garam secukupnya","sedikit gula"],
+  s:["Iris bawang merah, pipil atau potong jagung.","Didihkan air dengan bawang merah.","Masukkan jagung, masak 7 menit.","Masukkan bayam, garam, dan sedikit gula.","Masak 2 menit saja, angkat."]},
+ {n:"Sop Ayam Sederhana",k:"Sop",t:35,e:"🍗",c:"#f6dcc6",v:"5VI2DRgsXdw",i:["ayam","wortel","kentang","daun bawang"],b:["300 g ayam","1 buah wortel","1 buah kentang","1 batang daun bawang","3 siung bawang putih","1,2 liter air","garam dan merica"],
+  s:["Rebus ayam sampai mendidih, buang busanya.","Tumis bawang putih geprek, masukkan ke rebusan.","Masukkan wortel dan kentang, masak 15 menit.","Bumbui garam dan merica.","Tambah daun bawang, masak 2 menit lalu angkat."]},
+ {n:"Sayur Asem",k:"Sop",t:30,e:"🥘",c:"#f3e2c8",v:"B4eb-Ejn0SE",i:["kacang panjang","jagung","labu siam","asam jawa","cabai"],b:["1 buah jagung","1 buah labu siam","1 ikat kacang panjang","4 siung bawang merah","2 siung bawang putih","2 buah cabai","1 sdm asam jawa","1 sdm gula merah","1,5 liter air","garam secukupnya"],
+  s:["Potong semua sayur.","Ulek bawang merah, bawang putih, dan cabai.","Didihkan air, masukkan bumbu halus dan jagung.","Masukkan labu siam, masak 5 menit.","Masukkan kacang panjang, asam jawa, gula merah, dan garam.","Masak 5 menit lagi, cicipi, angkat."]},
+ {n:"Sop Bakso",k:"Sop",t:15,e:"🍡",c:"#e8e1d6",v:"fZt4jG2Nh4Y",i:["bakso","sawi","daun bawang"],b:["10 butir bakso","1 ikat sawi","3 siung bawang putih","1 batang daun bawang","1 liter air","garam dan merica","bawang goreng (opsional)"],
+  s:["Tumis bawang putih cincang sampai harum.","Masukkan air, didihkan.","Masukkan bakso, masak 5 menit.","Masukkan sawi, garam, dan merica.","Masak 2 menit, taburi daun bawang, angkat."]},
+ {n:"Sop Jagung Telur",k:"Sop",t:15,e:"🌽",c:"#faefc0",v:"F6GcQcVsV5k",i:["jagung","telur","daun bawang"],b:["2 buah jagung","2 butir telur","2 siung bawang putih","1 batang daun bawang","800 ml air","1 sdm maizena (opsional)","garam dan merica"],
+  s:["Pipil atau serut jagung.","Tumis bawang putih sampai harum, masukkan air.","Masukkan jagung, masak 7 menit.","Bumbui garam dan merica, kentalkan dengan maizena.","Kocok telur, tuang perlahan sambil diaduk.","Taburi daun bawang, angkat."]},
+ {n:"Sayur Labu Siam Bening",k:"Sop",t:15,e:"🥒",c:"#e1efd6",v:"7t17NEdk_aw",i:["labu siam"],b:["1 buah labu siam","3 siung bawang merah","2 siung bawang putih","800 ml air","garam dan gula"],
+  s:["Kupas labu siam, potong tipis, cuci.","Iris bawang merah dan bawang putih.","Didihkan air dengan irisan bawang.","Masukkan labu siam, beri garam dan gula.","Masak 5 menit sampai empuk, angkat."]},
+ {n:"Sambal Tomat",k:"Sambal",t:10,e:"🌶️",c:"#fcd3cb",v:"bKeoM_fRmHA",i:["cabai","tomat"],b:["10 buah cabai rawit","5 siung bawang merah","2 siung bawang putih","1 buah tomat","garam dan gula","3 sdm minyak"],
+  s:["Goreng sebentar cabai, bawang, dan tomat sampai layu.","Ulek atau blender kasar dengan garam dan gula.","Tumis lagi sebentar dengan sedikit minyak, angkat."],tip:"Ditumis ulang supaya lebih awet dan wangi."},
+ {n:"Sambal Kecap",k:"Sambal",t:3,e:"🫙",c:"#e8d6cc",v:"XT5Q0JJ6VnA",i:["cabai","kecap manis"],b:["5 buah cabai rawit","2 siung bawang merah","3 sdm kecap manis","jeruk nipis (opsional)"],
+  s:["Iris tipis cabai dan bawang merah.","Campur dengan kecap manis.","Tambah perasan jeruk nipis kalau ada."]},
+ {n:"Sambal Bawang",k:"Sambal",t:8,e:"🧄",c:"#efe6d4",v:"s7MLs977rdY",i:["cabai"],b:["15 buah cabai rawit","5 siung bawang putih","½ sdt garam","4 sdm minyak"],
+  s:["Ulek kasar cabai, bawang putih, dan garam.","Panaskan minyak sampai sangat panas.","Siram minyak panas ke sambal, aduk rata."]},
+ {n:"Sambal Teri",k:"Sambal",t:15,e:"🐟",c:"#d7e3ee",v:"bT_HDl_kkV0",i:["ikan teri","cabai"],b:["50 g ikan teri","10 buah cabai","4 siung bawang merah","2 siung bawang putih","garam dan gula","minyak untuk menggoreng"],
+  s:["Goreng teri sampai kering, sisihkan.","Ulek kasar cabai dan bawang.","Tumis sambal sampai matang, beri garam dan gula.","Masukkan teri, aduk rata, angkat."]},
+ {n:"Sambal Matah",k:"Sambal",t:7,e:"🌶️",c:"#fbe0c8",v:"BLgmthGPYFM",i:["cabai","serai","jeruk nipis","terasi"],b:["10 buah cabai rawit","8 siung bawang merah","2 batang serai","1 buah jeruk nipis","½ sdt terasi bakar (opsional)","½ sdt garam","3 sdm minyak panas"],
+  s:["Iris tipis cabai, bawang merah, dan serai bagian putih.","Campur semua irisan dengan garam dan terasi.","Remas sebentar dengan tangan supaya keluar aromanya.","Siram minyak panas, beri perasan jeruk nipis, aduk."],tip:"Sambal mentah ini paling enak dimakan dengan ayam atau ikan goreng."},
+ {n:"Sambal Ijo",k:"Sambal",t:15,e:"🫑",c:"#d8ecc9",v:"NGsbbT8NpLk",i:["cabai hijau","tomat"],b:["10 buah cabai hijau besar","5 buah cabai rawit hijau","5 siung bawang merah","2 siung bawang putih","1 buah tomat hijau","garam dan gula","4 sdm minyak"],
+  s:["Rebus atau kukus cabai, bawang, dan tomat sampai layu.","Ulek kasar semua bahan dengan garam dan gula.","Tumis sambal sebentar dengan minyak sampai matang, angkat."],tip:"Ulek kasar supaya teksturnya seperti sambal ijo padang."},
+ {n:"Sambal Terasi",k:"Sambal",t:10,e:"🌶️",c:"#f8d2c6",v:"TjIqO7qm-eY",i:["cabai","terasi","tomat"],b:["15 buah cabai","4 siung bawang merah","2 siung bawang putih","1 buah tomat","1 sdt terasi","garam dan gula","3 sdm minyak"],
+  s:["Goreng cabai, bawang, tomat, dan terasi sampai layu.","Ulek semua bahan dengan garam dan gula.","Siram sedikit minyak bekas menggoreng, aduk."]},
+ {n:"Terong Balado",k:"Sambal",t:20,e:"🍆",c:"#e5d6ec",v:"KrJ9CKTb3QA",i:["terong","cabai","tomat"],b:["2 buah terong","10 buah cabai merah","5 siung bawang merah","3 siung bawang putih","1 buah tomat","garam dan gula","minyak untuk menggoreng"],
+  s:["Potong terong, goreng sebentar sampai layu, tiriskan.","Ulek kasar cabai, bawang, dan tomat.","Tumis bumbu sampai matang dan harum.","Beri garam dan gula, masukkan terong.","Aduk rata sampai terbalut sambal, angkat."]},
+ {n:"Telur Balado",k:"Sambal",t:20,e:"🥚",c:"#fbd8cc",v:"6y29jFt1xfw",i:["telur","cabai","tomat"],b:["5 butir telur","10 buah cabai merah","5 siung bawang merah","2 siung bawang putih","1 buah tomat","garam dan gula","minyak untuk menggoreng"],
+  s:["Rebus telur 10 menit, kupas.","Goreng telur sebentar sampai kulitnya berkerut.","Ulek kasar cabai, bawang, dan tomat.","Tumis bumbu sampai matang, beri garam dan gula.","Masukkan telur, aduk rata, angkat."]},
+ {n:"Telur Dadar Daun Bawang",k:"Lauk",t:7,e:"🍳",c:"#fbe8b8",v:"pT-wDpL7r14",i:["telur","daun bawang"],b:["3 butir telur","1 batang daun bawang","2 siung bawang merah","garam secukupnya","2 sdm minyak"],
+  s:["Iris daun bawang dan bawang merah.","Kocok telur dengan irisan dan garam.","Goreng di minyak panas, balik sekali, angkat."]},
+ {n:"Telur Ceplok Kecap",k:"Lauk",t:10,e:"🍳",c:"#f6e2bd",v:"aqiyzMC4a4c",i:["telur","kecap manis","cabai"],b:["4 butir telur","3 siung bawang merah","2 siung bawang putih","2 buah cabai","3 sdm kecap manis","garam secukupnya","minyak untuk menggoreng"],
+  s:["Goreng telur ceplok, sisihkan.","Iris bawang dan cabai.","Tumis bumbu sampai harum.","Tambah kecap, garam, dan 3 sdm air.","Masukkan telur, aduk pelan sampai kuah mengental, angkat."]},
+ {n:"Nasi Goreng Kecap",k:"Lauk",t:15,e:"🍛",c:"#f1d9bf",v:"LhpHCZbFb2A",i:["nasi","telur","cabai","kecap manis"],b:["1 piring nasi","1 butir telur","3 siung bawang merah","2 siung bawang putih","2 buah cabai","2 sdm kecap manis","garam secukupnya","2 sdm minyak"],
+  s:["Cincang bawang dan cabai.","Tumis bumbu sampai harum.","Masukkan telur, orak-arik.","Masukkan nasi, kecap, dan garam.","Aduk rata dengan api besar 3 menit, angkat."]},
+ {n:"Mie Rebus Telur Sawi",k:"Lauk",t:8,e:"🍜",c:"#f7e3c6",v:"ngEpr2RJw3M",i:["mie instan","telur","sawi"],b:["1 bungkus mie instan","1 butir telur","beberapa lembar sawi","400 ml air"],
+  s:["Didihkan air.","Masukkan mie dan sawi.","Pecahkan telur di pinggir panci, jangan diaduk dulu.","Masak 3 menit, campur bumbu di mangkuk, tuang."]},
+ {n:"Mie Goreng Sederhana",k:"Lauk",t:15,e:"🍝",c:"#f4dcc0",v:"mBd4sqCKP6I",i:["mie","telur","sawi","kecap manis","saus tiram"],b:["2 keping mie telur","1 butir telur","1 ikat sawi","3 siung bawang putih","2 siung bawang merah","2 sdm kecap manis","1 sdm saus tiram","garam dan merica","2 sdm minyak"],
+  s:["Rebus mie sampai setengah matang, tiriskan.","Tumis bawang cincang sampai harum.","Masukkan telur, orak-arik.","Masukkan sawi, mie, kecap, saus tiram, garam, dan merica.","Aduk rata dengan api besar 3 menit, angkat."]},
+ {n:"Ayam Goreng Bawang",k:"Lauk",t:40,e:"🍗",c:"#f5d9b8",v:"fy6JUHj9ea4",i:["ayam"],b:["500 g ayam","8 siung bawang putih","1 sdt ketumbar bubuk (opsional)","1 sdt garam","500 ml air","minyak untuk menggoreng"],
+  s:["Haluskan bawang putih dengan garam dan ketumbar.","Rebus ayam dengan bumbu dan air sampai airnya habis (±25 menit).","Panaskan banyak minyak.","Goreng ayam sampai kuning kecokelatan, angkat."],tip:"Sisa bumbu di panci bisa digoreng terpisah jadi kremesan bawang."},
+ {n:"Ayam Kecap",k:"Lauk",t:35,e:"🍗",c:"#ead2bf",v:"E80S48fuKsc",i:["ayam","kecap manis","tomat"],b:["500 g ayam","4 siung bawang merah","3 siung bawang putih","4 sdm kecap manis","1 buah tomat","garam dan merica","300 ml air","2 sdm minyak"],
+  s:["Goreng ayam sebentar sampai kulitnya kecokelatan.","Iris bawang dan tomat.","Tumis bawang sampai harum.","Masukkan ayam, kecap, garam, merica, dan air.","Masak sampai kuah mengental (±20 menit).","Masukkan tomat, aduk sebentar, angkat."]},
+ {n:"Ikan Goreng",k:"Lauk",t:25,e:"🐟",c:"#d9e6ef",v:"-B1Rj0qbOM0",i:["ikan","jeruk nipis"],b:["2 ekor ikan (nila atau kembung)","4 siung bawang putih","1 sdt garam","½ sdt kunyit bubuk (opsional)","1 buah jeruk nipis","minyak untuk menggoreng"],
+  s:["Bersihkan ikan, kerat badannya, lumuri jeruk nipis.","Haluskan bawang putih dengan garam dan kunyit.","Lumuri ikan dengan bumbu, diamkan 10 menit.","Goreng di minyak panas sampai kering, jangan sering dibalik.","Angkat, tiriskan."],tip:"Tunggu minyak benar-benar panas supaya ikan tidak lengket."},
+ {n:"Tahu Goreng Crispy",k:"Lauk",t:15,e:"🧈",c:"#f7ebc5",v:"0TPECs_JRUE",i:["tahu","tepung terigu"],b:["5 potong tahu","5 sdm tepung terigu","2 sdm tepung beras (opsional)","2 siung bawang putih","garam dan merica","air secukupnya","minyak untuk menggoreng"],
+  s:["Potong tahu sesuai selera.","Haluskan bawang putih dengan garam dan merica.","Campur bumbu dengan tepung dan sedikit air jadi adonan kental.","Celup tahu ke adonan.","Goreng sampai kuning keemasan dan renyah, angkat."]},
+ {n:"Tempe Mendoan",k:"Lauk",t:15,e:"🟫",c:"#eadfc2",v:"CyjWpZunID8",i:["tempe","tepung terigu","daun bawang"],b:["1 papan tempe (iris tipis)","8 sdm tepung terigu","2 siung bawang putih","1 batang daun bawang","garam secukupnya","air secukupnya","minyak untuk menggoreng"],
+  s:["Iris tipis tempe.","Haluskan bawang putih dan garam, campur dengan tepung dan air.","Masukkan irisan daun bawang ke adonan.","Celup tempe ke adonan.","Goreng sebentar saja sampai setengah kering, angkat."],tip:"Mendoan enak dimakan dengan sambal kecap."},
+ {n:"Tempe Goreng",k:"Lauk",t:12,e:"🟫",c:"#efe0c4",v:"0eKDCgctqZA",i:["tempe"],b:["1 papan tempe","3 siung bawang putih","1 sdt garam","100 ml air","minyak untuk menggoreng"],
+  s:["Potong tempe sesuai selera.","Haluskan bawang putih dengan garam, campur dengan air.","Rendam tempe di air bumbu selama 5 menit.","Goreng sampai kuning kecokelatan, angkat."]},
+ {n:"Perkedel Kentang",k:"Lauk",t:30,e:"🥔",c:"#f3e4c6",v:"hEEMYwcNSow",i:["kentang","telur","daun bawang"],b:["4 buah kentang","1 butir telur","1 batang daun bawang","bawang goreng secukupnya","garam dan merica","minyak untuk menggoreng"],
+  s:["Kupas dan potong kentang, goreng sampai matang.","Haluskan kentang selagi hangat.","Campur dengan daun bawang, bawang goreng, garam, dan merica.","Bentuk bulat pipih.","Celup ke kocokan telur, goreng sampai kuning, angkat."]},
+ {n:"Bakwan Sayur",k:"Lauk",t:20,e:"🥕",c:"#f6dcbf",v:"-fbcJZbic64",i:["kol","wortel","toge","tepung terigu","daun bawang"],b:["¼ buah kol","1 buah wortel","segenggam toge","1 batang daun bawang","10 sdm tepung terigu","2 siung bawang putih","garam dan merica","air secukupnya","minyak untuk menggoreng"],
+  s:["Iris tipis kol, wortel, dan daun bawang.","Haluskan bawang putih dengan garam dan merica.","Campur sayur, bumbu, tepung, dan air sampai kental.","Ambil satu sendok adonan, goreng di minyak panas.","Goreng sampai kuning keemasan, angkat."]}
+];
+const PICS=[[/goreng/,"🍳","#fbe6c4"],[/ulek|blender|cincang/,"🥣","#ecdfcd"],[/iris|potong|petik|pipil/,"🔪","#dcecd5"],[/didih|rebus/,"🍲","#d3e7f1"],[/kocok|pecah/,"🥚","#f8eec6"],[/siram|panaskan minyak/,"🫗","#f6d8cd"],[/tumis|harum/,"🧄","#f1e4cf"],[/cuci/,"💧","#d6e9f1"],[/campur|aduk|masuk/,"🥄","#e2eadb"],[/garam|gula|bumbu|kecap|merica/,"🧂","#eee7da"]];
+const pic=t=>{t=t.toLowerCase();for(const p of PICS)if(p[0].test(t))return p;return [0,"👩‍🍳","#e3ebe0"]};
+const img=r=>`https://i.ytimg.com/vi/${r.v}/hqdefault.jpg`;
+const ph=r=>`<img class="photo" src="${img(r)}" alt="${r.n}" loading="lazy" onerror="this.parentNode.classList.remove('has');this.remove()">`;
+const GRP={"Protein":["telur","ayam","ikan","ikan teri","tahu","tempe","bakso","sosis"],"Sayur":["kangkung","bayam","sawi","kol","toge","jamur","wortel","kentang","buncis","kacang panjang","labu siam","terong","jagung","tomat","daun bawang"],"Bumbu & lainnya":["cabai","cabai hijau","kecap manis","saus tiram","terasi","serai","jeruk nipis","asam jawa","tepung terigu","nasi","mie","mie instan"]};
+let have=new Set(),draft=new Set();
+try{have=new Set(JSON.parse(localStorage.getItem("ds-have")||"[]"))}catch(e){}
+const saveHave=()=>{try{localStorage.setItem("ds-have",JSON.stringify([...have]))}catch(e){}};
+const miss=r=>r.i.filter(x=>!have.has(x));
+function drawF(){
+  $("fBody").innerHTML=Object.entries(GRP).map(([g,l])=>`<div class="fg"><b>${g}</b><div class="chips2">${l.map(x=>`<button class="ing2" aria-pressed="${draft.has(x)}" data-x="${x}">${x}</button>`).join("")}</div></div>`).join("");
+  $("fBody").querySelectorAll(".ing2").forEach(b=>b.onclick=()=>{const x=b.dataset.x;draft.has(x)?draft.delete(x):draft.add(x);b.setAttribute("aria-pressed",draft.has(x));cnt()});
+  cnt();
+}
+function cnt(){const n=draft.size?R.filter(r=>r.i.some(x=>draft.has(x))).length:R.length;$("fApply").textContent=`Tampilkan ${n} menu`}
+$("fOpen").onclick=()=>{draft=new Set(have);drawF();$("fs").classList.add("on");document.body.classList.add("lock")};
+const fClose=()=>{$("fs").classList.remove("on");document.body.classList.remove("lock")};
+$("fClose").onclick=fClose;$("fs").onclick=e=>{if(e.target.id==="fs")fClose()};
+$("fReset").onclick=()=>{draft.clear();drawF()};
+$("fApply").onclick=()=>{have=new Set(draft);saveHave();fClose();drawGrid();window.scrollTo({top:0,behavior:"smooth"})};
+const CATS=[["Semua","🍽️"],["Tumis","🥬"],["Sop","🍲"],["Sambal","🌶️"],["Lauk","🍳"]];
+const $=id=>document.getElementById(id);
+let cat="Semua",view="home",favs=new Set();
+try{favs=new Set(JSON.parse(localStorage.getItem("ds-fav")||"[]"))}catch(e){}
+const saveFav=()=>{try{localStorage.setItem("ds-fav",JSON.stringify([...favs]))}catch(e){}};
+const h=new Date().getHours();
+$("greet").textContent=h<11?"Selamat pagi 👋":h<15?"Selamat siang 👋":h<18?"Selamat sore 👋":"Selamat malam 👋";
+
+function drawCats(){
+  $("cats").innerHTML=CATS.map(([c,e])=>`<button class="cat" aria-pressed="${c===cat}" data-c="${c}"><span class="ic">${e}</span>${c}</button>`).join("");
+  $("cats").querySelectorAll(".cat").forEach(b=>b.onclick=()=>{cat=b.dataset.c;drawCats();drawGrid()});
+}
+function drawRail(){
+  $("rail").innerHTML=R.filter(r=>r.t<=10).map(r=>`<button class="fcard has" style="background:${r.c}" data-i="${R.indexOf(r)}">${ph(r)}
+    <span class="badge">⚡ ${r.t} MENIT</span><div><div class="t">${r.n}</div><div class="m">${r.k} · ${r.s.length} langkah</div></div></button>`).join("");
+  $("rail").querySelectorAll(".fcard").forEach(c=>c.onclick=()=>openR(R[c.dataset.i]));
+}
+function drawGrid(){
+  const words=$("q").value.toLowerCase().split(/[,\s]+/).filter(Boolean);
+  $("clr").hidden=!words.length;
+  const searching=words.length>0;
+  const byIng=have.size>0;
+  $("fDot").hidden=!byIng;$("fDot").textContent=have.size;
+  $("fastBlk").hidden=searching||byIng||view==="fav";
+  let list=R.filter(r=>(cat==="Semua"||r.k===cat)&&words.every(w=>(r.n+" "+r.b.join(" ")).toLowerCase().includes(w)));
+  if(view==="fav")list=list.filter(r=>favs.has(r.n));
+  if(byIng)list=list.filter(r=>r.i.some(x=>have.has(x))).sort((a,b)=>miss(a).length-miss(b).length);
+  $("ttl").textContent=view==="fav"?"Favoritku":byIng?"Cocok dengan bahanmu":searching?"Hasil pencarian":cat==="Semua"?"Semua menu":"Menu "+cat;
+  $("count").textContent=list.length+" menu";
+  $("grid").innerHTML=list.length?list.map(r=>`<div class="card" tabindex="0" role="button" data-i="${R.indexOf(r)}">
+      <button class="fav" data-f="${r.n}" aria-label="Favorit">${favs.has(r.n)?"❤️":"🤍"}</button>
+      <div class="art has" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}<span class="time">⏱ ${r.t} mnt</span></div>
+      <div class="cbody"><span class="k">${r.k}</span><h3>${r.n}</h3><span class="sub">${r.b.length} bahan · ▶ video</span>${byIng?(miss(r).length?`<span class="match no">Kurang: ${miss(r).join(", ")}</span>`:`<span class="match ok">✓ Bahan lengkap</span>`):""}</div></div>`).join("")
+    :`<div class="empty"><b>${view==="fav"?"🤍":"🥄"}</b>${view==="fav"?"Belum ada favorit. Ketuk 🤍 di menu yang kamu suka.":"Belum ada menu yang cocok.<br>Coba kata lain, misalnya “telur” atau “sop”."}</div>`;
+  $("grid").querySelectorAll(".card").forEach(c=>{c.onclick=()=>openR(R[c.dataset.i]);c.onkeydown=e=>{if(e.key==="Enter")openR(R[c.dataset.i])}});
+  $("grid").querySelectorAll(".fav").forEach(b=>b.onclick=e=>{e.stopPropagation();const n=b.dataset.f;favs.has(n)?favs.delete(n):favs.add(n);saveFav();drawGrid()});
+}
+function setView(v){view=v;$("nHome").setAttribute("aria-pressed",v==="home");$("nFav").setAttribute("aria-pressed",v==="fav");drawGrid();window.scrollTo({top:0})}
+$("nHome").onclick=()=>setView("home");$("nFav").onclick=()=>setView("fav");
+
+function openR(r){
+  const isF=favs.has(r.n);
+  $("sheet").innerHTML=`<div class="shero has" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}
+    <button class="sbtn" id="back" style="left:16px" aria-label="Kembali">←</button>
+    <button class="sbtn" id="sfav" style="right:16px" aria-label="Favorit">${isF?"❤️":"🤍"}</button></div>
+  <div class="sbody"><div class="in">
+    <div><span style="font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--tang)">${r.k}</span>
+      <h2>${r.n}</h2>
+      <div class="stats"><div><b>${r.t}</b><span>menit</span></div><div><b>${r.b.length}</b><span>bahan</span></div><div><b>${r.s.length}</b><span>langkah</span></div></div></div>
+    <section class="sec"><h4>Bahan <small id="ready">0/${r.b.length} siap</small></h4>
+      <div class="ings">${r.b.map((x,i)=>`<label><input type="checkbox" id="b${i}"><span>${x}</span></label>`).join("")}</div></section>
+    <section class="sec"><h4>Cara memasak</h4><div class="steps">${r.s.map((x,i)=>{const p=pic(x);
+      return `<div class="st"><div class="n">${i+1}</div><div class="box"><div class="tx">${x}</div><div class="pic" style="background:${p[2]}"><span class="emo">${p[1]}</span></div></div></div>`}).join("")}</div></section>
+    ${r.tip?`<div class="tip"><b>💡</b><div><strong>Tips</strong><br>${r.tip}</div></div>`:""}
+    <section class="sec"><h4>Tonton videonya</h4>
+      <div class="video"><iframe src="https://www.youtube.com/embed/${r.v}" title="Video ${r.n}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+      <a class="ytlink" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener">Video tidak muncul? Buka di YouTube ↗</a></section>
+  </div></div>`;
+  const upd=()=>$("ready").textContent=$("sheet").querySelectorAll(".ings input:checked").length+"/"+r.b.length+" siap";
+  $("sheet").querySelectorAll(".ings input").forEach(i=>i.onchange=upd);
+  $("sfav").onclick=()=>{favs.has(r.n)?favs.delete(r.n):favs.add(r.n);saveFav();$("sfav").textContent=favs.has(r.n)?"❤️":"🤍";drawGrid()};
+  $("sheet").scrollTop=0;
+  $("sheet").classList.add("on");document.body.classList.add("lock");
+  $("back").onclick=closeR;
+  history.pushState({r:1},"");
+}
+function closeR(fromPop){
+  if(!$("sheet").classList.contains("on"))return;
+  $("sheet").classList.remove("on");document.body.classList.remove("lock");
+  setTimeout(()=>{if(!$("sheet").classList.contains("on"))$("sheet").innerHTML=""},380);
+  if(fromPop!==true)history.back();
+}
+window.addEventListener("popstate",()=>closeR(true));
+$("q").addEventListener("input",drawGrid);
+$("clr").onclick=e=>{e.preventDefault();$("q").value="";drawGrid();$("q").focus()};
+drawCats();drawRail();drawGrid();
+</script>
+</body>
+</html>
