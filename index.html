@@ -4,13 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0f3b26">
+<meta name="description" content="Resep masakan rumahan simpel dengan bahan dapur biasa, lengkap dengan video.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Masak Simpel">
 <title>Masak Simpel</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
 <style>
-/* Layout: app HP — header hijau melengkung, carousel "paling cepat", kategori ikon bulat, grid kartu, nav bawah */
+/* Layout: app HP — 4 tampilan (Beranda, Mingguan, Belanja, Koleksi) dengan nav bawah; resep & mode masak sebagai lembar layar penuh */
 :root{
   --bg:#f5f7f2;--surface:#ffffff;--fg:#12241a;--muted:#6b7a70;--line:#e4ebe2;
-  --deep:#0f3b26;--deep2:#17573a;--accent:#1f8a52;--accent-soft:#e3f3e8;--tang:#ff7a1a;--tang-soft:#fff0e3;--sun:#ffc53d;
+  --deep:#0f3b26;--deep2:#17573a;--accent:#1f8a52;--accent-soft:#e3f3e8;--tang:#ff7a1a;--tang-soft:#fff0e3;--sun:#ffc53d;--red:#e5484d;
   --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
   --body:"Plus Jakarta Sans",ui-sans-serif,system-ui,sans-serif;
   --sh:0 2px 4px rgba(15,59,38,.05),0 12px 28px rgba(15,59,38,.10);
@@ -21,27 +27,28 @@
   --sh:0 2px 4px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.4);color-scheme:dark}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scrollbar-gutter:stable;overflow-y:scroll}
-body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;overscroll-behavior-y:none;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 84px)}
-button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;overscroll-behavior-y:none;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
+button,input,textarea{font:inherit;color:inherit}
+button{border:0;background:none;padding:0;cursor:pointer}
+[hidden]{display:none!important}
 .in{max-width:980px;margin:0 auto;padding:0 16px}
 .emo{filter:drop-shadow(0 8px 10px rgba(0,0,0,.18));display:inline-block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
-/* Header */
-.hero{padding-bottom:84px!important;background:radial-gradient(120% 90% at 100% 0%,var(--deep2) 0%,var(--deep) 60%);color:#fff;padding-top:calc(env(safe-area-inset-top,0px) + 22px);padding-bottom:84px;border-radius:0 0 32px 32px;position:relative;overflow:hidden}
+/* Hero */
+.hero{background:radial-gradient(120% 90% at 100% 0%,var(--deep2) 0%,var(--deep) 60%);color:#fff;padding-top:calc(env(safe-area-inset-top,0px) + 22px);padding-bottom:84px;border-radius:0 0 32px 32px;position:relative;overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.08) 1.2px,transparent 1.2px);background-size:18px 18px;pointer-events:none}
-.top{display:flex;justify-content:space-between;align-items:center;position:relative}
-.greet{font-size:.85rem;opacity:.8;font-weight:600}
-.logo{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.12);display:grid;place-items:center;font-size:1.3rem}
-.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,8.5vw,3.4rem);line-height:1;letter-spacing:-.025em;margin:14px 0 0;max-width:12ch;position:relative;text-wrap:balance}
-.hero h1 em{font-style:normal;color:var(--sun)}
-.float{position:absolute;right:14px;bottom:62px;font-size:4.6rem;transform:rotate(-12deg);animation:bob 4s ease-in-out infinite}
-@keyframes bob{50%{transform:rotate(-6deg) translateY(-6px)}}
-
 .hgrid{display:grid;gap:22px;position:relative}
 @media (min-width:760px){.hgrid{grid-template-columns:1.1fr .9fr;align-items:center}}
-.brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.1rem;letter-spacing:-.01em}
-.htext .greet{display:block;margin-top:22px}
+.brand{display:inline-flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:1.1rem}
+.greet{display:block;margin-top:22px;font-size:.85rem;opacity:.8;font-weight:600}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,8.5vw,3.4rem);line-height:1;letter-spacing:-.025em;margin:10px 0 0;max-width:12ch;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--sun)}
 .lead{margin:14px 0 0;max-width:38ch;opacity:.82;font-size:1rem}
+.hbtns{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.dice{display:inline-flex;align-items:center;gap:10px;background:var(--sun);color:#12241a;font-weight:800;padding:13px 18px;border-radius:16px;box-shadow:0 10px 24px rgba(0,0,0,.25);transition:transform .2s}
+.dice:active{transform:scale(.96)}
+.ghost{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);color:#fff;font-weight:700;padding:13px 16px;border-radius:16px}
 .collage{position:relative;height:170px}
 @media (min-width:760px){.collage{height:270px}}
 .pc{position:absolute;border-radius:22px;overflow:hidden;border:4px solid rgba(255,255,255,.92);box-shadow:0 18px 40px rgba(0,0,0,.35);background:#1b3a29}
@@ -51,176 +58,297 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .pc2{width:46%;height:82%;left:27%;top:0;transform:rotate(3deg);z-index:3}
 .pc3{width:46%;height:82%;right:0;top:12%;transform:rotate(-2deg);z-index:1}
 @media (min-width:760px){.pc1{width:52%;height:62%;left:0;top:4%}.pc2{width:54%;height:66%;left:40%;top:18%}.pc3{width:46%;height:54%;left:14%;top:56%;right:auto}}
-@media (prefers-reduced-motion:no-preference){.pc{transition:transform .4s}.collage:hover .pc1{transform:rotate(-9deg) translateY(-4px)}.collage:hover .pc2{transform:rotate(5deg) translateY(-6px)}}
+
+/* Page header (other views) */
+.phead{background:var(--deep);color:#fff;padding-top:calc(env(safe-area-inset-top,0px) + 24px);padding-bottom:28px;border-radius:0 0 28px 28px}
+.phead h1{font-family:var(--display);font-weight:800;font-size:2rem;margin:0;letter-spacing:-.02em}
+.phead p{margin:6px 0 0;opacity:.8;max-width:44ch}
+
 /* Search */
 .bar{position:sticky;top:0;z-index:5;margin-top:-34px}
-.search{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:20px;padding:0 8px 0 18px;height:60px;box-shadow:var(--sh)}
+.sw{display:flex;gap:10px;align-items:center}
+.search{flex:1;min-width:0;display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:20px;padding:0 8px 0 18px;height:60px;box-shadow:var(--sh)}
 .search svg{flex:none;color:var(--accent)}
-.search input{flex:1;min-width:0;border:0;background:none;outline:0;font:inherit;font-size:16px;font-weight:500;color:var(--fg);height:100%}
+.search input{flex:1;min-width:0;border:0;background:none;outline:0;font-size:16px;font-weight:500;height:100%}
 .search input::placeholder{color:var(--muted)}
 .search input::-webkit-search-cancel-button{display:none}
-#clr{width:44px;height:44px;border-radius:14px;background:var(--bg);color:var(--muted);font-size:1rem}
+#clr{width:44px;height:44px;border-radius:14px;background:var(--bg);color:var(--muted)}
+.fbtn{flex:none;width:60px;height:60px;border-radius:20px;background:var(--tang);color:#fff;display:grid;place-items:center;box-shadow:var(--sh);position:relative}
+.fbtn .dot{position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--deep);color:#fff;font-size:.72rem;font-weight:800;display:grid;place-items:center;border:2px solid var(--bg)}
 
-h2.h{font-family:var(--display);font-weight:800;font-size:1.35rem;margin:0;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:baseline}
+h2.h{font-family:var(--display);font-weight:800;font-size:1.35rem;margin:0;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 h2.h small{font-family:var(--body);font-size:.8rem;font-weight:700;color:var(--muted)}
 section.blk{margin-top:26px;display:grid;gap:14px}
 
 /* Categories */
 .cats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
 .cat{display:grid;justify-items:center;gap:7px;font-size:.78rem;font-weight:700;color:var(--muted)}
-.cat .ic{width:100%;max-width:64px;aspect-ratio:1;border-radius:22px;background:var(--surface);box-shadow:var(--sh);display:grid;place-items:center;font-size:1.7rem;transition:transform .2s,background .2s}
-.cat[aria-pressed="true"]{color:var(--fg)}
-.cat .ic{overflow:hidden;border-radius:50%;max-width:72px;padding:0;background:var(--line)}
+.cat .ic{width:100%;max-width:72px;aspect-ratio:1;border-radius:50%;overflow:hidden;background:var(--line);box-shadow:var(--sh);transition:transform .2s}
 .cat .ic img{width:100%;height:100%;object-fit:cover;transform:scale(1.36);display:block}
+.cat[aria-pressed="true"]{color:var(--fg)}
 .cat[aria-pressed="true"] .ic{box-shadow:0 0 0 3px var(--bg),0 0 0 6px var(--tang);transform:translateY(-3px)}
+.lchips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
+.lchips::-webkit-scrollbar{display:none}
+.lchip{flex:none;height:36px;padding:0 14px;border-radius:999px;background:var(--surface);border:1.5px solid var(--line);font-weight:700;font-size:.84rem;white-space:nowrap}
+.lchip[aria-pressed="true"]{background:var(--fg);border-color:var(--fg);color:var(--bg)}
 
 /* Carousel */
 .rail{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin:0 -16px;padding:4px 16px 14px}
 .rail::-webkit-scrollbar{display:none}
-.fcard{flex:none;width:min(78vw,300px);scroll-snap-align:start;border-radius:26px;padding:18px;color:#12241a;display:grid;grid-template-columns:1fr auto;align-items:end;min-height:150px;position:relative;overflow:hidden;text-align:left;box-shadow:var(--sh)}
+.fcard{flex:none;width:min(78vw,300px);scroll-snap-align:start;border-radius:26px;padding:18px;color:#fff;display:grid;align-items:end;min-height:160px;position:relative;overflow:hidden;text-align:left;box-shadow:var(--sh);background:var(--deep)}
+.fcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.72))}
+.fcard>*{position:relative;z-index:1}
+.fcard .photo{position:absolute;z-index:0}
 .fcard .t{font-family:var(--display);font-weight:800;font-size:1.3rem;line-height:1.1}
-.fcard .m{font-size:.78rem;font-weight:700;margin-top:6px;opacity:.75}
+.fcard .m{font-size:.78rem;font-weight:700;margin-top:6px;opacity:.85}
 .fcard .badge{position:absolute;top:14px;left:14px;background:#12241a;color:#fff;font-size:.7rem;font-weight:800;padding:4px 10px;border-radius:999px;letter-spacing:.04em}
-.fcard .emo{font-size:4.2rem;transform:rotate(8deg) translate(6px,6px)}
 
-/* Grid */
+/* Grid & cards */
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 @media (min-width:640px){.grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
 @media (min-width:900px){.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.card{background:var(--surface);border-radius:24px;box-shadow:var(--sh);display:flex;flex-direction:column;text-align:left;padding:8px;position:relative;transition:transform .2s}
+.card{background:var(--surface);border-radius:24px;box-shadow:var(--sh);display:flex;flex-direction:column;text-align:left;padding:8px;position:relative;transition:transform .2s;cursor:pointer}
 .card:active{transform:scale(.97)}
 @media (hover:hover){.card:hover{transform:translateY(-4px)}}
 .art{aspect-ratio:1/0.85;border-radius:18px;display:grid;place-items:center;font-size:3.6rem;position:relative;overflow:hidden}
 .art::before{content:"";position:absolute;width:70%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.45)}
 .art .emo{position:relative}
-.time{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,.95);color:#12241a;font-size:.7rem;font-weight:800;padding:4px 9px;border-radius:999px}
-.fav{position:absolute;right:16px;top:16px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;font-size:.95rem;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.36)}
+.has::before{display:none}
+.art.has::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.35))}
+.time{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,.95);color:#12241a;font-size:.7rem;font-weight:800;padding:4px 9px;border-radius:999px;z-index:1}
+.donebadge{position:absolute;left:8px;top:8px;background:var(--accent);color:#fff;font-size:.68rem;font-weight:800;padding:4px 9px;border-radius:999px;z-index:1}
+.fav{position:absolute;right:16px;top:16px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.1)}
 .cbody{padding:10px 6px 6px;display:grid;gap:2px}
 .cbody .k{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--tang)}
 .cbody h3{font-family:var(--display);font-weight:600;font-size:1.04rem;line-height:1.2;margin:0}
 .cbody .sub{font-size:.75rem;color:var(--muted);font-weight:600}
+.match{font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:999px;justify-self:start;margin-top:4px}
+.match.ok{background:var(--accent-soft);color:var(--accent)}
+.match.no{background:var(--tang-soft);color:var(--tang)}
 .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 10px;font-weight:500}
-.empty b{display:block;font-size:2.8rem}
-.card:focus-visible,.cat:focus-visible,.fcard:focus-visible,.nav button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.empty b{display:block;font-family:var(--display);font-size:1.2rem;color:var(--fg);margin-bottom:4px}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:48px;padding:0 18px;border-radius:16px;font-weight:800;font-size:.92rem;text-decoration:none;white-space:nowrap}
+.btn.pri{background:var(--deep);color:#fff}
+.btn.org{background:var(--tang);color:#fff}
+.btn.sec{background:var(--surface);border:1.5px solid var(--line);color:var(--fg)}
+.btn.wa{background:#25d366;color:#08331a}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row .btn{flex:1 1 auto}
 
 /* Bottom nav */
-.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:8;background:var(--deep);border-radius:24px;padding:6px;display:flex;gap:4px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-.nav button{color:rgba(255,255,255,.7);font-weight:700;font-size:.85rem;padding:12px 22px;border-radius:18px;display:flex;gap:8px;align-items:center;white-space:nowrap}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 12px);z-index:8;background:var(--deep);border-radius:24px;padding:6px;display:flex;gap:2px;box-shadow:0 10px 30px rgba(0,0,0,.25);width:min(calc(100% - 24px),440px)}
+.nav button{flex:1;color:rgba(255,255,255,.7);font-weight:700;font-size:.7rem;padding:8px 4px;border-radius:18px;display:grid;justify-items:center;gap:3px;position:relative}
 .nav button[aria-pressed="true"]{background:var(--tang);color:#fff}
+.nav .nb{position:absolute;top:2px;right:calc(50% - 22px);min-width:18px;height:18px;border-radius:9px;background:var(--sun);color:#12241a;font-size:.65rem;font-weight:800;display:grid;place-items:center;padding:0 4px}
 
-/* Sheet */
+/* Sheet (recipe) */
 .sheet{position:fixed;inset:0;z-index:20;background:var(--bg);overflow-y:auto;overscroll-behavior:contain;transform:translateY(100%);transition:transform .35s cubic-bezier(.2,.8,.2,1);visibility:hidden}
 .sheet.on{transform:none;visibility:visible}
 .shero{height:280px;display:grid;place-items:center;font-size:7.5rem;position:relative;overflow:hidden}
-.shero::before{content:"";position:absolute;width:260px;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.45)}
-.shero .emo{position:relative;animation:bob 4s ease-in-out infinite}
+.shero.has::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.25),transparent 40%)}
 .sbtn{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);width:44px;height:44px;border-radius:15px;background:rgba(255,255,255,.95);color:#12241a;font-size:1.15rem;box-shadow:var(--sh);display:grid;place-items:center;z-index:2}
 .sbody{background:var(--bg);border-radius:30px 30px 0 0;margin-top:-30px;position:relative;padding:26px 0 calc(env(safe-area-inset-bottom,0px) + 40px)}
-.sbody .in{max-width:660px;display:grid;gap:26px}
+.sbody .in{max-width:660px;display:grid;gap:24px}
 .sbody h2{font-family:var(--display);font-weight:800;font-size:2.1rem;line-height:1.02;margin:6px 0 0;letter-spacing:-.02em;text-wrap:balance}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tags span{font-size:.72rem;font-weight:800;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
 .stats div{background:var(--surface);border-radius:18px;padding:12px;text-align:center;box-shadow:var(--sh)}
 .stats b{display:block;font-family:var(--display);font-size:1.3rem}
 .stats span{font-size:.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.sec h4{font-family:var(--display);font-size:1.25rem;margin:0 0 12px;display:flex;justify-content:space-between;align-items:baseline}
+.sec h4{font-family:var(--display);font-size:1.25rem;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
 .sec h4 small{font-family:var(--body);font-size:.78rem;color:var(--accent);font-weight:700}
+.porsi{display:flex;background:var(--surface);border-radius:14px;padding:4px;box-shadow:var(--sh)}
+.porsi button{font-family:var(--body);font-size:.8rem;font-weight:800;padding:6px 12px;border-radius:10px;color:var(--muted)}
+.porsi button[aria-pressed="true"]{background:var(--deep);color:#fff}
 .ings{background:var(--surface);border-radius:22px;padding:6px 16px;box-shadow:var(--sh)}
 .ings label{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px dashed var(--line);cursor:pointer;font-weight:500}
 .ings label:last-child{border:0}
-.ings input{appearance:none;width:24px;height:24px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;flex:none;margin:0;transition:.15s}
-.ings input:checked{background:var(--accent);border-color:var(--accent)}
-.ings input:checked::after{content:"✓";color:#fff;font-size:.8rem;font-weight:800}
-.ings input:checked+span{text-decoration:line-through;color:var(--muted)}
-.steps{display:grid;gap:0;position:relative}
+.ck{appearance:none;width:24px;height:24px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;flex:none;margin:0;transition:.15s;background:var(--surface)}
+.ck:checked{background:var(--accent);border-color:var(--accent)}
+.ck:checked::after{content:"✓";color:#fff;font-size:.8rem;font-weight:800}
+.ck:checked+span{text-decoration:line-through;color:var(--muted)}
+.steps{display:grid}
 .st{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;position:relative;padding-bottom:16px}
 .st::before{content:"";position:absolute;left:21px;top:44px;bottom:0;width:2px;background:var(--line)}
 .st:last-child::before{display:none}
-.st .n{width:44px;height:44px;border-radius:15px;background:var(--deep);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:1.05rem}
-.st .box{background:var(--surface);border-radius:20px;box-shadow:var(--sh);overflow:hidden;display:grid;min-height:56px}
-.st .tx{padding:14px 14px 14px 16px;font-weight:500;align-self:center}
-.st .pic{display:grid;place-items:center;font-size:2.4rem}
+.st .n{width:44px;height:44px;border-radius:15px;background:var(--deep);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800}
+.st .tx{background:var(--surface);border-radius:20px;box-shadow:var(--sh);padding:14px 16px;font-weight:500;min-height:44px}
+.st .tm{display:inline-block;margin-top:6px;font-size:.75rem;font-weight:800;color:var(--tang)}
 .tip{background:var(--tang-soft);border-radius:20px;padding:16px 18px;font-size:.93rem;display:flex;gap:12px;align-items:flex-start}
 .tip b{font-size:.7rem;letter-spacing:.1em;background:var(--tang);color:#fff;padding:4px 9px;border-radius:999px;flex:none;margin-top:2px}
+.note{width:100%;min-height:90px;border-radius:18px;border:1.5px solid var(--line);background:var(--surface);padding:14px;font-size:16px;resize:vertical}
 .video{position:relative;aspect-ratio:16/9;border-radius:22px;overflow:hidden;background:#000;box-shadow:var(--sh)}
 .video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .ytlink{display:inline-block;margin-top:10px;color:var(--tang);font-weight:700;font-size:.88rem;text-decoration:none}
 body.lock{overflow:hidden}
-[hidden]{display:none!important}
-.sw{display:flex;gap:10px;align-items:center}
-.sw .search{flex:1;min-width:0}
-.fbtn{flex:none;width:60px;height:60px;border-radius:20px;background:var(--tang);color:#fff;display:grid;place-items:center;box-shadow:var(--sh);position:relative}
-.fbtn .dot{position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--deep);color:#fff;font-size:.72rem;font-weight:800;display:grid;place-items:center;border:2px solid var(--bg)}
-.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.36)}
-.art .photo{border-radius:18px}
-.art.has::before,.shero.has::before{display:none}
-.art.has::after,.shero.has::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.35))}
-.art .time{z-index:1}
-.fcard.has{color:#fff}
-.fcard.has::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.72))}
-.fcard>*{position:relative;z-index:1}
-.fcard .photo{z-index:0;position:absolute}
-.match{font-size:.72rem;font-weight:800;padding:3px 9px;border-radius:999px;justify-self:start;margin-top:4px}
-.match.ok{background:var(--accent-soft);color:var(--accent)}
-.match.no{background:var(--tang-soft);color:var(--tang)}
+
+/* Cook mode */
+.cook{position:fixed;inset:0;z-index:40;background:var(--deep);color:#fff;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px calc(env(safe-area-inset-bottom,0px) + 16px)}
+.ctop{display:flex;align-items:center;gap:12px;max-width:720px;width:100%;margin:0 auto}
+.ctop .x{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.12);color:#fff;font-size:1.1rem;flex:none}
+.ctop .nm{flex:1;min-width:0;font-weight:700;font-size:.9rem;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog{display:flex;gap:5px;max-width:720px;width:100%;margin:14px auto 0}
+.prog i{flex:1;height:5px;border-radius:5px;background:rgba(255,255,255,.18)}
+.prog i.d{background:var(--sun)}
+.cmain{flex:1;display:grid;align-content:center;gap:18px;max-width:720px;width:100%;margin:0 auto;padding:20px 0;overflow-y:auto}
+.cnum{font-family:var(--display);font-weight:800;font-size:1rem;color:var(--sun);letter-spacing:.04em}
+.ctext{font-family:var(--display);font-weight:600;font-size:clamp(1.6rem,6.5vw,2.6rem);line-height:1.18;letter-spacing:-.01em}
+.timer{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:rgba(255,255,255,.1);border-radius:20px;padding:14px 16px}
+.timer .clock{font-family:var(--display);font-weight:800;font-size:2.2rem;font-variant-numeric:tabular-nums;min-width:5ch}
+.timer .btn{height:44px}
+.timer.ring{background:var(--tang);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.02)}}
+.cnav{display:flex;gap:10px;max-width:720px;width:100%;margin:0 auto}
+.cnav button{flex:1;height:60px;border-radius:18px;font-weight:800;font-size:1rem}
+.cnav .prev{background:rgba(255,255,255,.12);color:#fff}
+.cnav .next{background:var(--sun);color:#12241a}
+.cnav button:disabled{opacity:.35}
+.wake{font-size:.75rem;opacity:.7;text-align:center}
+
+/* Filter sheet */
 .fs{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-end;justify-content:center;background:rgba(5,15,10,.5);opacity:0;visibility:hidden;transition:.25s}
 .fs.on{opacity:1;visibility:visible}
 .fpanel{background:var(--bg);width:100%;max-width:640px;max-height:86%;border-radius:28px 28px 0 0;display:flex;flex-direction:column;transform:translateY(40px);transition:transform .3s}
 .fs.on .fpanel{transform:none}
-.fhead{padding:20px 20px 10px;display:flex;justify-content:space-between;align-items:center}
+.fhead{padding:20px 20px 10px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .fhead h3{font-family:var(--display);font-size:1.4rem;margin:0}
 .fhead p{margin:2px 0 0;font-size:.82rem;color:var(--muted)}
+.fx{width:44px;height:44px;border-radius:15px;background:var(--surface);flex:none}
 .fbody{overflow-y:auto;padding:6px 20px 16px;display:grid;gap:18px}
 .fg b{display:block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
-.fg .chips2{display:flex;flex-wrap:wrap;gap:8px}
+.chips2{display:flex;flex-wrap:wrap;gap:8px}
 .ing2{height:40px;padding:0 14px;border-radius:999px;background:var(--surface);border:1.5px solid var(--line);font-weight:600;font-size:.88rem}
 .ing2[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
 .ffoot{display:flex;gap:10px;padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 16px);border-top:1px solid var(--line)}
-.ffoot button{height:52px;border-radius:16px;font-weight:800}
-#fReset{padding:0 20px;background:var(--surface);border:1px solid var(--line)}
-#fApply{flex:1;background:var(--deep);color:#fff}
-.credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px 0 0}
+.ffoot .btn{height:52px}
+#fApply{flex:1}
+
+/* Weekly plan */
+.days{display:grid;gap:14px}
+@media (min-width:700px){.days{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.day{background:var(--surface);border-radius:24px;box-shadow:var(--sh);padding:14px;display:grid;gap:10px}
+.day header{display:flex;justify-content:space-between;align-items:center}
+.day header b{font-family:var(--display);font-size:1.15rem}
+.day header button{font-size:.78rem;font-weight:800;color:var(--accent);padding:6px 10px;border-radius:10px;background:var(--accent-soft)}
+.mini{display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding:4px;border-radius:16px}
+.mini .th{width:64px;height:52px;border-radius:14px;overflow:hidden;position:relative;flex:none;display:grid;place-items:center;font-size:1.6rem}
+.mini .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.36)}
+.mini span{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--tang)}
+.mini strong{display:block;font-weight:700;line-height:1.25}
+.mini em{font-style:normal;font-size:.75rem;color:var(--muted)}
+
+/* Shopping */
+.addrow{display:flex;gap:10px}
+.addrow input{flex:1;min-width:0;height:52px;border-radius:16px;border:1.5px solid var(--line);background:var(--surface);padding:0 16px;font-size:16px}
+.slist{background:var(--surface);border-radius:22px;box-shadow:var(--sh);padding:4px 16px}
+.sgrp{padding:10px 0 4px;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--tang)}
+.sitem{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--line);font-weight:500}
+.sitem label{display:flex;gap:12px;align-items:center;flex:1;min-width:0;cursor:pointer}
+.sitem .del{color:var(--muted);width:32px;height:32px;border-radius:10px;flex:none}
+.prog2{font-size:.85rem;color:var(--muted);font-weight:700}
+
+/* Collection tabs */
+.seg{display:flex;background:var(--surface);border-radius:16px;padding:5px;box-shadow:var(--sh)}
+.seg button{flex:1;height:42px;border-radius:12px;font-weight:800;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--deep);color:#fff}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 100px);transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:700;font-size:.9rem;z-index:60;opacity:0;transition:.25s;pointer-events:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 
+<!-- ===== BERANDA ===== -->
+<div id="vHome">
 <header class="hero"><div class="in hgrid">
-  <div class="htext">
+  <div>
     <span class="brand"><svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="10" fill="#ffc53d"/><path d="M7 16h18a9 9 0 0 1-18 0z" fill="#0f3b26"/><path d="M5 16h22" stroke="#0f3b26" stroke-width="2.4" stroke-linecap="round"/><path d="M12 7c-1 1.5 1 2.5 0 4M16 6c-1 1.5 1 2.5 0 4M20 7c-1 1.5 1 2.5 0 4" stroke="#0f3b26" stroke-width="1.8" stroke-linecap="round"/></svg>Masak Simpel</span>
     <span class="greet" id="greet">Halo!</span>
     <h1>Masak enak, <em>tanpa ribet.</em></h1>
     <p class="lead">40 resep rumahan dari bahan dapur biasa. Ikuti langkahnya, tonton videonya, langsung jadi.</p>
+    <div class="hbtns">
+      <button class="dice" id="dice"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>Masak apa hari ini?</button>
+      <button class="ghost" id="install" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>Pasang aplikasi</button>
+    </div>
   </div>
   <div class="collage" id="collage" aria-hidden="true"></div>
 </div></header>
 
-<div class="bar"><div class="in">
-  <div class="sw"><label class="search">
+<div class="bar"><div class="in"><div class="sw">
+  <label class="search">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="q" type="search" placeholder="Cari menu atau bahan…" autocomplete="off" aria-label="Cari menu atau bahan">
     <button id="clr" hidden aria-label="Hapus pencarian">✕</button>
   </label>
-  <button class="fbtn" id="fOpen" aria-label="Filter bahan"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="dot" id="fDot" hidden>0</span></button>
+  <button class="fbtn" id="fOpen" aria-label="Filter bahan dan label"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="dot" id="fDot" hidden>0</span></button>
 </div></div></div>
 
 <div class="in">
-  <section class="blk"><h2 class="h">Kategori</h2><div class="cats" id="cats"></div></section>
+  <section class="blk"><h2 class="h">Kategori</h2><div class="cats" id="cats"></div><div class="lchips" id="lchips"></div></section>
   <section class="blk" id="fastBlk"><h2 class="h">Paling cepat <small>≤ 10 menit</small></h2><div class="rail" id="rail"></div></section>
   <section class="blk"><h2 class="h"><span id="ttl">Semua menu</span><small id="count"></small></h2><div class="grid" id="grid"></div></section>
+  <p class="credit">Foto &amp; video dari YouTube milik masing-masing kreator.</p>
+</div>
 </div>
 
-<nav class="nav">
-  <button id="nHome" aria-pressed="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Beranda</button>
-  <button id="nFav" aria-pressed="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20.5s-7.6-4.6-9.4-9.3C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.4 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>Favorit</button>
+<!-- ===== MINGGUAN ===== -->
+<div id="vPlan" hidden>
+  <header class="phead"><div class="in"><h1>Menu Seminggu</h1><p>Satu sayur dan satu lauk untuk setiap hari. Tidak suka? Acak ulang per hari.</p></div></header>
+  <div class="in">
+    <section class="blk"><div class="row"><button class="btn sec" id="pShuffle">Acak ulang semua</button><button class="btn org" id="pShop">Masukkan ke daftar belanja</button></div></section>
+    <section class="blk"><div class="days" id="days"></div></section>
+  </div>
+</div>
+
+<!-- ===== BELANJA ===== -->
+<div id="vShop" hidden>
+  <header class="phead"><div class="in"><h1>Daftar Belanja</h1><p>Centang bahan yang sudah dibeli. Tersimpan di HP-mu.</p></div></header>
+  <div class="in">
+    <section class="blk">
+      <form class="addrow" id="addForm"><input id="addIn" placeholder="Tambah barang, mis. beras 1 kg" autocomplete="off" aria-label="Tambah barang"><button class="btn pri" type="submit">Tambah</button></form>
+      <div class="prog2" id="sProg"></div>
+      <div id="sList"></div>
+      <div class="row" id="sActs">
+        <a class="btn wa" id="sWa" target="_blank" rel="noopener">Kirim ke WhatsApp</a>
+        <button class="btn sec" id="sClean">Hapus yang sudah dibeli</button>
+        <button class="btn sec" id="sAll">Kosongkan</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ===== KOLEKSI ===== -->
+<div id="vSaved" hidden>
+  <header class="phead"><div class="in"><h1>Koleksiku</h1><p>Resep favorit dan riwayat masakan yang sudah pernah kamu buat.</p></div></header>
+  <div class="in">
+    <section class="blk"><div class="seg"><button id="segF" aria-pressed="true">Favorit</button><button id="segD" aria-pressed="false">Pernah dimasak</button></div></section>
+    <section class="blk"><div class="grid" id="sgrid"></div></section>
+  </div>
+</div>
+
+<nav class="nav" id="nav">
+  <button data-v="vHome" aria-pressed="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Beranda</button>
+  <button data-v="vPlan" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Mingguan</button>
+  <button data-v="vShop" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Belanja<span class="nb" id="nb" hidden>0</span></button>
+  <button data-v="vSaved" aria-pressed="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20.5s-7.6-4.6-9.4-9.3C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.4 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>Koleksi</button>
 </nav>
 
-<p class="credit in">Foto & video dari YouTube milik masing-masing kreator.</p>
 <div class="fs" id="fs"><div class="fpanel">
-  <div class="fhead"><div><h3>Bahan yang kamu punya</h3><p>Bawang, garam, gula, dan minyak dianggap sudah ada.</p></div><button class="sbtn" id="fClose" style="position:static;box-shadow:none;background:var(--surface);color:var(--fg)" aria-label="Tutup">✕</button></div>
+  <div class="fhead"><div><h3>Filter</h3><p>Bawang, garam, gula, dan minyak dianggap sudah ada.</p></div><button class="fx" id="fClose" aria-label="Tutup">✕</button></div>
   <div class="fbody" id="fBody"></div>
-  <div class="ffoot"><button id="fReset">Reset</button><button id="fApply">Tampilkan menu</button></div>
+  <div class="ffoot"><button class="btn sec" id="fReset">Reset</button><button class="btn pri" id="fApply">Tampilkan menu</button></div>
 </div></div>
+
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+<div class="cook" id="cook" role="dialog" aria-modal="true" hidden></div>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
 const $=id=>document.getElementById(id);
@@ -306,103 +434,229 @@ const R=[
  {n:"Bakwan Sayur",k:"Lauk",t:20,e:"🥕",c:"#f6dcbf",v:"-fbcJZbic64",i:["kol","wortel","toge","tepung terigu","daun bawang"],b:["¼ buah kol","1 buah wortel","segenggam toge","1 batang daun bawang","10 sdm tepung terigu","2 siung bawang putih","garam dan merica","air secukupnya","minyak untuk menggoreng"],
   s:["Iris tipis kol, wortel, dan daun bawang.","Haluskan bawang putih dengan garam dan merica.","Campur sayur, bumbu, tepung, dan air sampai kental.","Ambil satu sendok adonan, goreng di minyak panas.","Goreng sampai kuning keemasan, angkat."]}
 ];
-const PICS=[[/goreng/,"🍳","#fbe6c4"],[/ulek|blender|cincang/,"🥣","#ecdfcd"],[/iris|potong|petik|pipil/,"🔪","#dcecd5"],[/didih|rebus/,"🍲","#d3e7f1"],[/kocok|pecah/,"🥚","#f8eec6"],[/siram|panaskan minyak/,"🫗","#f6d8cd"],[/tumis|harum/,"🧄","#f1e4cf"],[/cuci/,"💧","#d6e9f1"],[/campur|aduk|masuk/,"🥄","#e2eadb"],[/garam|gula|bumbu|kecap|merica/,"🧂","#eee7da"]];
-const pic=t=>{t=t.toLowerCase();for(const p of PICS)if(p[0].test(t))return p;return [0,"👩‍🍳","#e3ebe0"]};
+const store={get(k,d){try{const v=localStorage.getItem("ms-"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("ms-"+k,JSON.stringify(v))}catch(e){}}};
+let favs=new Set(store.get("fav",[])),have=new Set(store.get("have",[])),labels=new Set(store.get("labels",[])),done=store.get("done",{}),notes=store.get("notes",{}),shop=store.get("shop",[]),plan=store.get("plan",null);
+let cat="Semua",seg="fav",cur=null,por=2;
+const SITE="https://amonkshark.github.io/masak-simpel/";
+const ANAK=new Set(["Telur Dadar Daun Bawang","Sop Telur Sosis","Nasi Goreng Kecap","Perkedel Kentang","Ayam Kecap","Tahu Goreng Crispy","Sop Jagung Telur","Mie Goreng Sederhana","Ayam Goreng Bawang","Sop Bakso","Bakwan Sayur","Telur Ceplok Kecap","Tumis Telur Tomat","Sop Ayam Sederhana","Mie Rebus Telur Sawi","Sop Sayur Bening","Tempe Goreng","Orek Tempe"]);
+const LABELS=["Pedas","Tanpa daging","Hemat","Anak suka"];
+R.forEach(r=>{const meat=r.i.some(x=>["ayam","ikan","ikan teri","bakso","sosis"].includes(x));r.L=[];
+  if(r.k==="Sambal"||/rawit|cabai merah|10 buah cabai|15 buah cabai/.test(r.b.join(" ")))r.L.push("Pedas");
+  if(!meat)r.L.push("Tanpa daging");
+  if(!r.i.includes("ayam")&&!r.i.includes("ikan"))r.L.push("Hemat");
+  if(ANAK.has(r.n))r.L.push("Anak suka")});
+const byName=n=>R.find(r=>r.n===n);
 const img=r=>`https://i.ytimg.com/vi/${r.v}/hqdefault.jpg`;
-const ph=r=>`<img class="photo" src="${img(r)}" alt="${r.n}" loading="lazy" onload="if(this.naturalWidth<=120){this.parentNode.classList.remove('has');this.remove()}" onerror="this.parentNode.classList.remove('has');this.remove()">`;
-const GRP={"Protein":["telur","ayam","ikan","ikan teri","tahu","tempe","bakso","sosis"],"Sayur":["kangkung","bayam","sawi","kol","toge","jamur","wortel","kentang","buncis","kacang panjang","labu siam","terong","jagung","tomat","daun bawang"],"Bumbu & lainnya":["cabai","cabai hijau","kecap manis","saus tiram","terasi","serai","jeruk nipis","asam jawa","tepung terigu","nasi","mie","mie instan"]};
-let have=new Set(),draft=new Set();
-try{have=new Set(JSON.parse(localStorage.getItem("ds-have")||"[]"))}catch(e){}
-const saveHave=()=>{try{localStorage.setItem("ds-have",JSON.stringify([...have]))}catch(e){}};
-const miss=r=>r.i.filter(x=>!have.has(x));
-function drawF(){
-  $("fBody").innerHTML=Object.entries(GRP).map(([g,l])=>`<div class="fg"><b>${g}</b><div class="chips2">${l.map(x=>`<button class="ing2" aria-pressed="${draft.has(x)}" data-x="${x}">${x}</button>`).join("")}</div></div>`).join("");
-  $("fBody").querySelectorAll(".ing2").forEach(b=>b.onclick=()=>{const x=b.dataset.x;draft.has(x)?draft.delete(x):draft.add(x);b.setAttribute("aria-pressed",draft.has(x));cnt()});
-  cnt();
-}
-function cnt(){const n=draft.size?R.filter(r=>r.i.some(x=>draft.has(x))).length:R.length;$("fApply").textContent=`Tampilkan ${n} menu`}
-$("fOpen").onclick=()=>{draft=new Set(have);drawF();$("fs").classList.add("on");document.body.classList.add("lock")};
-const fClose=()=>{$("fs").classList.remove("on");document.body.classList.remove("lock")};
-$("fClose").onclick=fClose;$("fs").onclick=e=>{if(e.target.id==="fs")fClose()};
-$("fReset").onclick=()=>{draft.clear();drawF()};
-$("fApply").onclick=()=>{have=new Set(draft);saveHave();fClose();drawGrid();window.scrollTo({top:0,behavior:"smooth"})};
+const ph=r=>`<img class="photo" src="${img(r)}" alt="" loading="lazy" onload="if(this.naturalWidth<=120){this.parentNode.classList.remove('has');this.remove()}" onerror="this.parentNode.classList.remove('has');this.remove()">`;
 const HEART=f=>`<svg width="18" height="18" viewBox="0 0 24 24" fill="${f?"#e5484d":"none"}" stroke="${f?"#e5484d":"#12241a"}" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20.5s-7.6-4.6-9.4-9.3C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.4 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>`;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const GRP={"Protein":["telur","ayam","ikan","ikan teri","tahu","tempe","bakso","sosis"],"Sayur":["kangkung","bayam","sawi","kol","toge","jamur","wortel","kentang","buncis","kacang panjang","labu siam","terong","jagung","tomat","daun bawang"],"Bumbu & lainnya":["cabai","cabai hijau","kecap manis","saus tiram","terasi","serai","jeruk nipis","asam jawa","tepung terigu","nasi","mie","mie instan"]};
 const CATS=[["Semua","Nasi Goreng Kecap"],["Tumis","Tumis Kangkung"],["Sop","Sop Ayam Sederhana"],["Sambal","Sambal Tomat"],["Lauk","Ayam Goreng Bawang"]];
-let cat="Semua",view="home",favs=new Set();
-try{favs=new Set(JSON.parse(localStorage.getItem("ds-fav")||"[]"))}catch(e){}
-const saveFav=()=>{try{localStorage.setItem("ds-fav",JSON.stringify([...favs]))}catch(e){}};
+const miss=r=>r.i.filter(x=>!have.has(x));
+let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2400)}
+
+/* ---------- Beranda ---------- */
 const h=new Date().getHours();
 $("greet").textContent=h<11?"Selamat pagi 👋":h<15?"Selamat siang 👋":h<18?"Selamat sore 👋":"Selamat malam 👋";
-
+$("collage").innerHTML=[["Nasi Goreng Kecap","pc1"],["Tumis Kangkung","pc2"],["Telur Balado","pc3"]].map(([n,c])=>{const r=byName(n);return `<div class="pc ${c}"><img src="${img(r)}" alt=""><span>${r.t} menit</span></div>`}).join("");
 function drawCats(){
-  $("cats").innerHTML=CATS.map(([c,n])=>`<button class="cat" aria-pressed="${c===cat}" data-c="${c}"><span class="ic"><img src="${img(R.find(r=>r.n===n))}" alt="" loading="lazy"></span>${c}</button>`).join("");
+  $("cats").innerHTML=CATS.map(([c,n])=>`<button class="cat" aria-pressed="${c===cat}" data-c="${c}"><span class="ic"><img src="${img(byName(n))}" alt="" loading="lazy"></span>${c}</button>`).join("");
   $("cats").querySelectorAll(".cat").forEach(b=>b.onclick=()=>{cat=b.dataset.c;drawCats();drawGrid()});
+  $("lchips").innerHTML=LABELS.map(l=>`<button class="lchip" aria-pressed="${labels.has(l)}" data-l="${l}">${l}</button>`).join("");
+  $("lchips").querySelectorAll(".lchip").forEach(b=>b.onclick=()=>{const l=b.dataset.l;labels.has(l)?labels.delete(l):labels.add(l);store.set("labels",[...labels]);drawCats();drawGrid()});
 }
 function drawRail(){
-  $("rail").innerHTML=R.filter(r=>r.t<=10).map(r=>`<button class="fcard has" style="background:${r.c}" data-i="${R.indexOf(r)}">${ph(r)}
-    <span class="badge">⚡ ${r.t} MENIT</span><div><div class="t">${r.n}</div><div class="m">${r.k} · ${r.s.length} langkah</div></div></button>`).join("");
-  $("rail").querySelectorAll(".fcard").forEach(c=>c.onclick=()=>openR(R[c.dataset.i]));
+  $("rail").innerHTML=R.filter(r=>r.t<=10).map(r=>`<button class="fcard has" data-n="${esc(r.n)}">${ph(r)}<span class="badge">⚡ ${r.t} MENIT</span><div><div class="t">${r.n}</div><div class="m">${r.k} · ${r.s.length} langkah</div></div></button>`).join("");
+  $("rail").querySelectorAll(".fcard").forEach(c=>c.onclick=()=>openR(byName(c.dataset.n)));
 }
-function drawGrid(){
+function filtered(){
   const words=$("q").value.toLowerCase().split(/[,\s]+/).filter(Boolean);
-  $("clr").hidden=!words.length;
-  const searching=words.length>0;
-  const byIng=have.size>0;
-  $("fDot").hidden=!byIng;$("fDot").textContent=have.size;
-  $("fastBlk").hidden=searching||byIng||view==="fav";
-  let list=R.filter(r=>(cat==="Semua"||r.k===cat)&&words.every(w=>(r.n+" "+r.b.join(" ")).toLowerCase().includes(w)));
-  if(view==="fav")list=list.filter(r=>favs.has(r.n));
-  if(byIng)list=list.filter(r=>r.i.some(x=>have.has(x))).sort((a,b)=>miss(a).length-miss(b).length);
-  $("ttl").textContent=view==="fav"?"Favoritku":byIng?"Cocok dengan bahanmu":searching?"Hasil pencarian":cat==="Semua"?"Semua menu":"Menu "+cat;
-  $("count").textContent=list.length+" menu";
-  $("grid").innerHTML=list.length?list.map(r=>`<div class="card" tabindex="0" role="button" data-i="${R.indexOf(r)}">
-      <button class="fav" data-f="${r.n}" aria-label="Favorit">${HEART(favs.has(r.n))}</button>
-      <div class="art has" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}<span class="time">⏱ ${r.t} mnt</span></div>
-      <div class="cbody"><span class="k">${r.k}</span><h3>${r.n}</h3><span class="sub">${r.b.length} bahan · ▶ video</span>${byIng?(miss(r).length?`<span class="match no">Kurang: ${miss(r).join(", ")}</span>`:`<span class="match ok">✓ Bahan lengkap</span>`):""}</div></div>`).join("")
-    :`<div class="empty"><b>${view==="fav"?"🤍":"🥄"}</b>${view==="fav"?"Belum ada favorit. Ketuk 🤍 di menu yang kamu suka.":"Belum ada menu yang cocok.<br>Coba kata lain, misalnya “telur” atau “sop”."}</div>`;
-  $("grid").querySelectorAll(".card").forEach(c=>{c.onclick=()=>openR(R[c.dataset.i]);c.onkeydown=e=>{if(e.key==="Enter")openR(R[c.dataset.i])}});
-  $("grid").querySelectorAll(".fav").forEach(b=>b.onclick=e=>{e.stopPropagation();const n=b.dataset.f;favs.has(n)?favs.delete(n):favs.add(n);saveFav();drawGrid()});
+  let l=R.filter(r=>(cat==="Semua"||r.k===cat)&&words.every(w=>(r.n+" "+r.b.join(" ")).toLowerCase().includes(w))&&[...labels].every(x=>r.L.includes(x)));
+  if(have.size)l=l.filter(r=>r.i.some(x=>have.has(x))).sort((a,b)=>miss(a).length-miss(b).length);
+  return l;
 }
-function setView(v){view=v;$("nHome").setAttribute("aria-pressed",v==="home");$("nFav").setAttribute("aria-pressed",v==="fav");drawGrid();window.scrollTo({top:0})}
-$("nHome").onclick=()=>setView("home");$("nFav").onclick=()=>setView("fav");
+function card(r,showMatch){
+  return `<div class="card" tabindex="0" role="button" data-n="${esc(r.n)}">
+    <button class="fav" data-f="${esc(r.n)}" aria-label="Favorit">${HEART(favs.has(r.n))}</button>
+    <div class="art has" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}<span class="time">⏱ ${r.t} mnt</span>${done[r.n]?`<span class="donebadge">✓ Pernah dimasak</span>`:""}</div>
+    <div class="cbody"><span class="k">${r.k}</span><h3>${r.n}</h3><span class="sub">${r.L.slice(0,2).join(" · ")||r.b.length+" bahan"}</span>
+    ${showMatch?(miss(r).length?`<span class="match no">Kurang: ${miss(r).join(", ")}</span>`:`<span class="match ok">✓ Bahan lengkap</span>`):""}</div></div>`;
+}
+function bindCards(box){
+  box.querySelectorAll(".card").forEach(c=>{c.onclick=()=>openR(byName(c.dataset.n));c.onkeydown=e=>{if(e.key==="Enter")openR(byName(c.dataset.n))}});
+  box.querySelectorAll(".fav").forEach(b=>b.onclick=e=>{e.stopPropagation();toggleFav(b.dataset.f)});
+}
+function toggleFav(n){favs.has(n)?favs.delete(n):favs.add(n);store.set("fav",[...favs]);drawGrid();drawSaved();toast(favs.has(n)?"Disimpan ke favorit":"Dihapus dari favorit")}
+function drawGrid(){
+  const searching=$("q").value.trim().length>0,byIng=have.size>0,nf=have.size+labels.size;
+  $("clr").hidden=!searching;$("fDot").hidden=!nf;$("fDot").textContent=nf;
+  $("fastBlk").hidden=searching||byIng||labels.size>0;
+  const list=filtered();
+  $("ttl").textContent=byIng?"Cocok dengan bahanmu":searching?"Hasil pencarian":cat==="Semua"?"Semua menu":"Menu "+cat;
+  $("count").textContent=list.length+" menu";
+  $("grid").innerHTML=list.length?list.map(r=>card(r,byIng)).join(""):`<div class="empty"><b>Belum ada yang cocok</b>Coba kata lain, kurangi filter, atau tambah bahan.</div>`;
+  bindCards($("grid"));
+}
+$("dice").onclick=()=>{const pool=filtered().length?filtered():R;const r=pool[Math.floor(Math.random()*pool.length)];toast("Hari ini masak "+r.n+"!");openR(r)};
+$("q").addEventListener("input",drawGrid);
+$("clr").onclick=e=>{e.preventDefault();$("q").value="";drawGrid();$("q").focus()};
 
+/* ---------- Filter ---------- */
+let draft=new Set(),draftL=new Set();
+function drawF(){
+  $("fBody").innerHTML=`<div class="fg"><b>Label</b><div class="chips2">${LABELS.map(l=>`<button class="ing2" data-l="${l}" aria-pressed="${draftL.has(l)}">${l}</button>`).join("")}</div></div>`+
+    Object.entries(GRP).map(([g,l])=>`<div class="fg"><b>${g}</b><div class="chips2">${l.map(x=>`<button class="ing2" aria-pressed="${draft.has(x)}" data-x="${x}">${x}</button>`).join("")}</div></div>`).join("");
+  $("fBody").querySelectorAll(".ing2").forEach(b=>b.onclick=()=>{const s=b.dataset.l?draftL:draft,v=b.dataset.l||b.dataset.x;s.has(v)?s.delete(v):s.add(v);b.setAttribute("aria-pressed",s.has(v));cnt()});
+  cnt();
+}
+function cnt(){const n=R.filter(r=>(!draft.size||r.i.some(x=>draft.has(x)))&&[...draftL].every(x=>r.L.includes(x))).length;$("fApply").textContent=`Tampilkan ${n} menu`}
+$("fOpen").onclick=()=>{draft=new Set(have);draftL=new Set(labels);drawF();$("fs").classList.add("on");document.body.classList.add("lock")};
+const fClose=()=>{$("fs").classList.remove("on");if(!$("sheet").classList.contains("on"))document.body.classList.remove("lock")};
+$("fClose").onclick=fClose;$("fs").onclick=e=>{if(e.target.id==="fs")fClose()};
+$("fReset").onclick=()=>{draft.clear();draftL.clear();drawF()};
+$("fApply").onclick=()=>{have=new Set(draft);labels=new Set(draftL);store.set("have",[...have]);store.set("labels",[...labels]);fClose();drawCats();drawGrid();window.scrollTo({top:0,behavior:"smooth"})};
+
+/* ---------- Porsi ---------- */
+const FR={"½":.5,"¼":.25,"¾":.75};
+function fmt(x){const w=Math.floor(x+1e-9),f=Math.round((x-w)*100)/100;const fs=f===.5?"½":f===.25?"¼":f===.75?"¾":f===.13?"⅛":f?String(Math.round(x*10)/10).replace(".",","):"";return f&&fs.length===1?(w?w+fs:fs):(fs||String(w))}
+function scale(s,k){if(k===1)return s;const m=s.match(/^(\d+(?:,\d+)?|½|¼|¾)(\s)/);if(!m)return s;const q=FR[m[1]]??parseFloat(m[1].replace(",","."));return fmt(q*k)+m[2]+s.slice(m[0].length)}
+
+/* ---------- Resep ---------- */
 function openR(r){
-  const isF=favs.has(r.n);
+  cur=r;por=2;
   $("sheet").innerHTML=`<div class="shero has" style="background:${r.c}"><span class="emo">${r.e}</span>${ph(r)}
     <button class="sbtn" id="back" style="left:16px" aria-label="Kembali">←</button>
-    <button class="sbtn" id="sfav" style="right:16px" aria-label="Favorit">${HEART(isF)}</button></div>
+    <button class="sbtn" id="sfav" style="right:16px" aria-label="Favorit">${HEART(favs.has(r.n))}</button></div>
   <div class="sbody"><div class="in">
     <div><span style="font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--tang)">${r.k}</span>
       <h2>${r.n}</h2>
+      <div class="tags">${r.L.map(l=>`<span>${l}</span>`).join("")}${done[r.n]?`<span style="background:var(--accent);color:#fff">✓ Dimasak ${done[r.n]}</span>`:""}</div>
       <div class="stats"><div><b>${r.t}</b><span>menit</span></div><div><b>${r.b.length}</b><span>bahan</span></div><div><b>${r.s.length}</b><span>langkah</span></div></div></div>
-    <section class="sec"><h4>Bahan <small id="ready">0/${r.b.length} siap</small></h4>
-      <div class="ings">${r.b.map((x,i)=>`<label><input type="checkbox" id="b${i}"><span>${x}</span></label>`).join("")}</div></section>
-    <section class="sec"><h4>Cara memasak</h4><div class="steps">${r.s.map((x,i)=>{const p=pic(x);
-      return `<div class="st"><div class="n">${i+1}</div><div class="box"><div class="tx">${x}</div></div></div>`}).join("")}</div></section>
+    <div class="row"><button class="btn org" id="go"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.9l12-7.5a1 1 0 0 0 0-1.8l-12-7.5A1 1 0 0 0 7 4.5z"/></svg>Mulai masak</button></div>
+    <section class="sec"><h4>Bahan <span class="porsi" id="porsi">${[1,2,4].map(p=>`<button data-p="${p}" aria-pressed="${p===por}">${p} porsi</button>`).join("")}</span></h4>
+      <div class="ings" id="ings"></div>
+      <div class="row" style="margin-top:12px"><button class="btn sec" id="toShop"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>Tambah ke daftar belanja</button></div></section>
+    <section class="sec"><h4>Cara memasak</h4><div class="steps">${r.s.map((x,i)=>{const m=mins(x);return `<div class="st"><div class="n">${i+1}</div><div class="tx">${x}${m?`<span class="tm">⏱ Timer ${m} menit tersedia di mode masak</span>`:""}</div></div>`}).join("")}</div></section>
     ${r.tip?`<div class="tip"><b>TIPS</b><div>${r.tip}</div></div>`:""}
+    <section class="sec"><h4>Catatanku</h4><textarea class="note" id="note" placeholder="Mis. garamnya kurangi sedikit, cabai tambah 2…">${esc(notes[r.n]||"")}</textarea></section>
     <section class="sec"><h4>Tonton videonya</h4>
-      <div class="video"><iframe src="https://www.youtube.com/embed/${r.v}" title="Video ${r.n}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+      <div class="video"><iframe src="https://www.youtube.com/embed/${r.v}" title="Video ${esc(r.n)}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
       <a class="ytlink" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener">Video tidak muncul? Buka di YouTube ↗</a></section>
+    <div class="row"><button class="btn ${done[r.n]?"sec":"pri"}" id="mark">${done[r.n]?"✓ Sudah pernah dimasak":"Tandai sudah dimasak"}</button>
+      <a class="btn wa" id="share" target="_blank" rel="noopener" href="${waLink(recipeText(r))}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.3.5-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.6 2.1 1.1 1 2 1.3 2.3 1.4.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.3z"/></svg>Bagikan ke WhatsApp</a></div>
   </div></div>`;
-  const upd=()=>$("ready").textContent=$("sheet").querySelectorAll(".ings input:checked").length+"/"+r.b.length+" siap";
-  $("sheet").querySelectorAll(".ings input").forEach(i=>i.onchange=upd);
-  $("sfav").onclick=()=>{favs.has(r.n)?favs.delete(r.n):favs.add(r.n);saveFav();$("sfav").innerHTML=HEART(favs.has(r.n));drawGrid()};
-  $("sheet").scrollTop=0;
-  $("sheet").classList.add("on");document.body.classList.add("lock");
+  drawIngs();
+  $("porsi").querySelectorAll("button").forEach(b=>b.onclick=()=>{por=+b.dataset.p;$("porsi").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",+x.dataset.p===por));drawIngs()});
+  $("sfav").onclick=()=>{toggleFav(r.n);$("sfav").innerHTML=HEART(favs.has(r.n))};
+  $("toShop").onclick=()=>addShop(r,por);
+  $("go").onclick=()=>cook(r);
+  $("note").oninput=e=>{notes[r.n]=e.target.value;store.set("notes",notes)};
+  $("mark").onclick=()=>{if(done[r.n]){delete done[r.n];toast("Tanda dihapus")}else{done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});toast("Mantap! Tercatat di Koleksi")}store.set("done",done);drawGrid();drawSaved();const y=$("sheet").scrollTop;openR(r);$("sheet").scrollTop=y};
   $("back").onclick=closeR;
-  history.pushState({r:1},"");
+  if(!$("sheet").classList.contains("on")){$("sheet").scrollTop=0;$("sheet").classList.add("on");document.body.classList.add("lock");history.pushState({s:1},"")}
 }
+function drawIngs(){const k=por/2;$("ings").innerHTML=cur.b.map((x,i)=>`<label><input class="ck" type="checkbox" id="b${i}"><span>${scale(x,k)}</span></label>`).join("")}
 function closeR(fromPop){
   if(!$("sheet").classList.contains("on"))return;
   $("sheet").classList.remove("on");document.body.classList.remove("lock");
   setTimeout(()=>{if(!$("sheet").classList.contains("on"))$("sheet").innerHTML=""},380);
   if(fromPop!==true)history.back();
 }
-window.addEventListener("popstate",()=>closeR(true));
-$("q").addEventListener("input",drawGrid);
-$("clr").onclick=e=>{e.preventDefault();$("q").value="";drawGrid();$("q").focus()};
-$("collage").innerHTML=[["Nasi Goreng Kecap","pc1"],["Tumis Kangkung","pc2"],["Telur Balado","pc3"]].map(([n,c])=>{const r=R.find(x=>x.n===n);return `<div class="pc ${c}"><img src="${img(r)}" alt=""><span>${r.t} menit</span></div>`}).join("");
-drawCats();drawRail();drawGrid();
+function recipeText(r){return `*${r.n}* (${r.t} menit)\n\n*Bahan:*\n${r.b.map(x=>"• "+x).join("\n")}\n\n*Cara:*\n${r.s.map((x,i)=>(i+1)+". "+x).join("\n")}\n\nVideo: https://youtu.be/${r.v}\nResep lain: ${SITE}`}
+const waLink=t=>"https://wa.me/?text="+encodeURIComponent(t);
+
+/* ---------- Mode masak ---------- */
+const mins=s=>{const m=s.match(/(\d+)\s*menit/);return m?+m[1]:0};
+let ck={r:null,i:0},timer={end:0,left:0,run:false,tick:null},wl=null;
+async function wake(){try{if("wakeLock" in navigator){wl=await navigator.wakeLock.request("screen")}}catch(e){wl=null}}
+document.addEventListener("visibilitychange",()=>{if(!$("cook").hidden&&document.visibilityState==="visible")wake()});
+function cook(r){ck={r,i:0};$("cook").hidden=false;wake();history.pushState({c:1},"");drawCook()}
+function closeCook(fromPop){if($("cook").hidden)return;$("cook").hidden=true;stopTimer();try{wl&&wl.release()}catch(e){}wl=null;if(fromPop!==true)history.back()}
+function drawCook(){
+  const {r,i}=ck,n=r.s.length,fin=i>=n,m=fin?0:mins(r.s[i]);
+  $("cook").innerHTML=`<div class="ctop"><button class="x" id="cx" aria-label="Keluar">✕</button><div class="nm">${r.n}</div></div>
+  <div class="prog">${r.s.map((_,j)=>`<i class="${j<=i&&!fin||fin?"d":""}"></i>`).join("")}</div>
+  <div class="cmain">${fin?`<div class="cnum">SELESAI</div><div class="ctext">Masakanmu sudah jadi. Selamat makan! 🎉</div>
+     <div class="row"><button class="btn org" id="cdone">${done[r.n]?"✓ Sudah tercatat":"Tandai sudah dimasak"}</button></div>`
+   :`<div class="cnum">LANGKAH ${i+1} DARI ${n}</div><div class="ctext">${r.s[i]}</div>
+     ${m||timer.run||timer.left?`<div class="timer" id="tbox"><div class="clock" id="clock">${clk(timer.run||timer.left?timer.left:m*60)}</div>
+       <button class="btn org" id="tgo">${timer.run?"Jeda":timer.left?"Lanjut":"Mulai timer "+m+" menit"}</button>${timer.run||timer.left?`<button class="btn sec" id="treset">Ulang</button>`:""}</div>`:""}`}
+   <div class="wake">${wl?"Layar tetap menyala selama mode masak":"Ketuk layar sesekali agar HP tidak terkunci"}</div></div>
+  <div class="cnav"><button class="prev" id="cp" ${i===0?"disabled":""}>← Sebelumnya</button>${fin?`<button class="next" id="cend">Tutup</button>`:`<button class="next" id="cn">${i===n-1?"Selesai ✓":"Berikutnya →"}</button>`}</div>`;
+  $("cx").onclick=closeCook;
+  $("cp").onclick=()=>{ck.i--;drawCook()};
+  if($("cn"))$("cn").onclick=()=>{ck.i++;drawCook()};
+  if($("cend"))$("cend").onclick=closeCook;
+  if($("cdone"))$("cdone").onclick=()=>{if(!done[r.n]){done[r.n]=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});store.set("done",done);drawGrid();drawSaved();toast("Tercatat di Koleksi")}drawCook()};
+  if($("tgo"))$("tgo").onclick=()=>{if(timer.run){pauseTimer()}else{startTimer(timer.left||m*60)}drawCook()};
+  if($("treset"))$("treset").onclick=()=>{stopTimer();drawCook()};
+}
+const clk=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(Math.max(0,s%60)).padStart(2,"0");
+function startTimer(sec){timer.end=Date.now()+sec*1000;timer.run=true;timer.left=sec;clearInterval(timer.tick);timer.tick=setInterval(tickT,250);unlockAudio()}
+function pauseTimer(){timer.run=false;clearInterval(timer.tick)}
+function stopTimer(){timer={end:0,left:0,run:false,tick:clearInterval(timer.tick)}}
+function tickT(){timer.left=Math.max(0,Math.ceil((timer.end-Date.now())/1000));const c=$("clock");if(c)c.textContent=clk(timer.left);
+  if(timer.left<=0){clearInterval(timer.tick);timer.run=false;timer.left=0;beep();try{navigator.vibrate&&navigator.vibrate([400,200,400,200,400])}catch(e){}toast("⏰ Waktunya habis! Lanjut ke langkah berikutnya");const b=$("tbox");if(b)b.classList.add("ring");setTimeout(()=>{if(!$("cook").hidden){stopTimer();drawCook()}},6000)}}
+let actx=null;function unlockAudio(){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();actx.resume()}catch(e){}}
+function beep(){try{unlockAudio();[0,.45,.9].forEach(t=>{const o=actx.createOscillator(),g=actx.createGain();o.frequency.value=880;o.connect(g);g.connect(actx.destination);g.gain.setValueAtTime(.001,actx.currentTime+t);g.gain.exponentialRampToValueAtTime(.4,actx.currentTime+t+.02);g.gain.exponentialRampToValueAtTime(.001,actx.currentTime+t+.35);o.start(actx.currentTime+t);o.stop(actx.currentTime+t+.4)})}catch(e){}}
+
+/* ---------- Belanja ---------- */
+const BASIC=/^(garam|gula|minyak|air|\d.*\bair\b|.*secukupnya)/;
+function addShop(r,p){const k=(p||2)/2;let n=0;r.b.forEach(x=>{const t=scale(x,k);if(!shop.some(s=>s.t===t&&s.f===r.n)){shop.push({id:Date.now()+Math.random(),t,f:r.n,d:false});n++}});saveShop();toast(n?`${n} bahan masuk daftar belanja`:"Bahan resep ini sudah ada di daftar")}
+function saveShop(){store.set("shop",shop);const left=shop.filter(s=>!s.d).length;$("nb").hidden=!left;$("nb").textContent=left;if(!$("vShop").hidden)drawShop()}
+function drawShop(){
+  const groups={};shop.forEach(s=>(groups[s.f||"Lainnya"]=groups[s.f||"Lainnya"]||[]).push(s));
+  const dn=shop.filter(s=>s.d).length;
+  $("sProg").textContent=shop.length?`${dn} dari ${shop.length} sudah dibeli`:"";
+  $("sList").innerHTML=shop.length?`<div class="slist">${Object.entries(groups).map(([g,l])=>`<div class="sgrp">${esc(g)}</div>${l.map(s=>`<div class="sitem"><label><input class="ck" type="checkbox" data-id="${s.id}" ${s.d?"checked":""}><span>${esc(s.t)}</span></label><button class="del" data-del="${s.id}" aria-label="Hapus">✕</button></div>`).join("")}`).join("")}</div>`
+    :`<div class="empty" style="background:var(--surface);border-radius:22px;box-shadow:var(--sh)"><b>Daftar belanja masih kosong</b>Buka resep, lalu ketuk "Tambah ke daftar belanja". Bisa juga dari Menu Seminggu.</div>`;
+  $("sActs").hidden=!shop.length;
+  $("sList").querySelectorAll("input[data-id]").forEach(c=>c.onchange=()=>{const s=shop.find(x=>String(x.id)===c.dataset.id);s.d=c.checked;saveShop()});
+  $("sList").querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{shop=shop.filter(x=>String(x.id)!==b.dataset.del);saveShop()});
+  $("sWa").href=waLink("*Daftar belanja*\n"+shop.filter(s=>!s.d).map(s=>"☐ "+s.t).join("\n"));
+}
+$("addForm").onsubmit=e=>{e.preventDefault();const v=$("addIn").value.trim();if(!v)return;shop.push({id:Date.now(),t:v,f:"Lainnya",d:false});$("addIn").value="";saveShop()};
+$("sClean").onclick=()=>{shop=shop.filter(s=>!s.d);saveShop();toast("Barang yang sudah dibeli dihapus")};
+let sure=0;$("sAll").onclick=()=>{if(Date.now()-sure>3000){sure=Date.now();$("sAll").textContent="Ketuk lagi untuk mengosongkan";setTimeout(()=>$("sAll").textContent="Kosongkan",3000);return}shop=[];saveShop();$("sAll").textContent="Kosongkan";toast("Daftar belanja dikosongkan")};
+
+/* ---------- Mingguan ---------- */
+const DAYS=["Senin","Selasa","Rabu","Kamis","Jumat","Sabtu","Minggu"];
+const VEG=R.filter(r=>r.k==="Tumis"||r.k==="Sop"),LAUK=R.filter(r=>r.k==="Lauk"||r.n.includes("Balado"));
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function makePlan(){const v=shuf(VEG),l=shuf(LAUK);plan=DAYS.map((d,i)=>({d,a:v[i%v.length].n,b:l[i%l.length].n}));store.set("plan",plan)}
+function reroll(i){const used=new Set(plan.flatMap(p=>[p.a,p.b]));const v=shuf(VEG).find(r=>!used.has(r.n))||shuf(VEG)[0],l=shuf(LAUK).find(r=>!used.has(r.n))||shuf(LAUK)[0];plan[i]={...plan[i],a:v.n,b:l.n};store.set("plan",plan);drawPlan()}
+function mini(r,lab){return `<button class="mini" data-n="${esc(r.n)}"><span class="th has" style="background:${r.c}">${r.e}${`<img src="${img(r)}" alt="" loading="lazy" onerror="this.remove()">`}</span><span style="min-width:0"><span>${lab}</span><strong>${r.n}</strong><em>${r.t} menit</em></span></button>`}
+function drawPlan(){
+  if(!plan||plan.some(p=>!byName(p.a)||!byName(p.b)))makePlan();
+  const today=(new Date().getDay()+6)%7;
+  $("days").innerHTML=plan.map((p,i)=>`<div class="day" ${i===today?'style="box-shadow:0 0 0 2px var(--tang),var(--sh)"':""}><header><b>${p.d}${i===today?' <small style="font-family:var(--body);font-size:.72rem;color:var(--tang);font-weight:800">HARI INI</small>':""}</b><button data-rr="${i}">↻ Acak</button></header>${mini(byName(p.a),"Sayur")}${mini(byName(p.b),"Lauk")}</div>`).join("");
+  $("days").querySelectorAll(".mini").forEach(b=>b.onclick=()=>openR(byName(b.dataset.n)));
+  $("days").querySelectorAll("[data-rr]").forEach(b=>b.onclick=()=>reroll(+b.dataset.rr));
+}
+$("pShuffle").onclick=()=>{makePlan();drawPlan();toast("Menu seminggu sudah diacak ulang")};
+$("pShop").onclick=()=>{const before=shop.length;plan.forEach(p=>[p.a,p.b].forEach(n=>{const r=byName(n);r.b.forEach(x=>{if(!shop.some(s=>s.t===x&&s.f===r.n))shop.push({id:Date.now()+Math.random(),t:x,f:r.n,d:false})})}));saveShop();toast(`${shop.length-before} bahan masuk daftar belanja`)};
+
+/* ---------- Koleksi ---------- */
+function drawSaved(){
+  const l=seg==="fav"?R.filter(r=>favs.has(r.n)):R.filter(r=>done[r.n]);
+  $("sgrid").innerHTML=l.length?l.map(r=>card(r,false)).join(""):`<div class="empty"><b>${seg==="fav"?"Belum ada favorit":"Belum ada riwayat"}</b>${seg==="fav"?"Ketuk ikon hati di resep yang kamu suka.":"Setelah memasak, ketuk \"Tandai sudah dimasak\" di halaman resep."}</div>`;
+  bindCards($("sgrid"));
+}
+$("segF").onclick=()=>{seg="fav";$("segF").setAttribute("aria-pressed",true);$("segD").setAttribute("aria-pressed",false);drawSaved()};
+$("segD").onclick=()=>{seg="done";$("segD").setAttribute("aria-pressed",true);$("segF").setAttribute("aria-pressed",false);drawSaved()};
+
+/* ---------- Navigasi ---------- */
+function show(v){["vHome","vPlan","vShop","vSaved"].forEach(x=>$(x).hidden=x!==v);$("nav").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===v));
+  if(v==="vPlan")drawPlan();if(v==="vShop")drawShop();if(v==="vSaved")drawSaved();window.scrollTo({top:0})}
+$("nav").querySelectorAll("button").forEach(b=>b.onclick=()=>show(b.dataset.v));
+window.addEventListener("popstate",()=>{if(!$("cook").hidden)closeCook(true);else closeR(true)});
+
+/* ---------- Pasang aplikasi ---------- */
+let dp=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;$("install").hidden=false});
+$("install").onclick=async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice}catch(e){}dp=null;$("install").hidden=true};
+if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
+
+drawCats();drawRail();drawGrid();saveShop();
 </script>
 </body>
 </html>
