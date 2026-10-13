@@ -53,6 +53,9 @@ button{border:0;background:none;padding:0;cursor:pointer}
 .hbtns{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
 .dice{display:inline-flex;align-items:center;gap:10px;background:var(--sun);color:#12241a;font-weight:800;padding:13px 18px;border-radius:16px;box-shadow:0 10px 24px rgba(0,0,0,.25);transition:transform .2s}
 .dice:active{transform:scale(.96)}
+.hero{position:relative}
+.fbtop{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px;z-index:5;display:inline-flex;align-items:center;gap:7px;background:#ffc53d;color:#0f3b26;border:0;font:800 .85rem inherit;padding:10px 14px;border-radius:999px;box-shadow:0 6px 16px rgba(0,0,0,.25);cursor:pointer}
+@media(max-width:420px){.fbtop{padding:9px 12px;font-size:.8rem}}
 .ghost{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);color:#fff;font-weight:700;padding:13px 16px;border-radius:16px}
 .collage{position:relative;height:170px}
 @media (min-width:760px){.collage{height:270px}}
@@ -330,7 +333,7 @@ input,select,textarea{font-size:16px}
 
 <!-- ===== BERANDA ===== -->
 <div id="vHome">
-<header class="hero"><div class="in hgrid">
+<header class="hero"><button class="fbtop" data-fb="Saran" aria-label="Saran dan masukan"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>Saran & Masukan</button><div class="in hgrid">
   <div>
     <span class="brand"><svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect width="32" height="32" rx="10" fill="#ffc53d"/><path d="M7 16h18a9 9 0 0 1-18 0z" fill="#0f3b26"/><path d="M5 16h22" stroke="#0f3b26" stroke-width="2.4" stroke-linecap="round"/><path d="M12 7c-1 1.5 1 2.5 0 4M16 6c-1 1.5 1 2.5 0 4M20 7c-1 1.5 1 2.5 0 4" stroke="#0f3b26" stroke-width="1.8" stroke-linecap="round"/></svg>Masak Simpel</span>
     <span class="greet" id="greet">Halo!</span>
