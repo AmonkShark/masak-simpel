@@ -81,7 +81,10 @@ h2.h small{font-family:var(--body);font-size:.8rem;font-weight:700;color:var(--m
 section.blk{margin-top:26px;display:grid;gap:14px}
 
 /* Categories */
-.cats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.cats{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:4px 16px 6px}
+.cats::-webkit-scrollbar{display:none}
+.cats .cat{flex:none;width:68px}
+.cat .ice{display:grid;place-items:center;width:100%;height:100%;font-size:1.8rem;background:var(--surface)}
 .cat{text-align:center;line-height:1.2}
 .cat{display:grid;justify-items:center;gap:7px;font-size:.78rem;font-weight:700;color:var(--muted)}
 .cat .ic{width:100%;max-width:72px;aspect-ratio:1;border-radius:50%;overflow:hidden;background:var(--line);box-shadow:var(--sh);transition:transform .2s}
@@ -461,15 +464,15 @@ const R=[
   s:["Goreng ayam sebentar sampai kulitnya kecokelatan.","Iris bawang dan tomat.","Tumis bawang sampai harum.","Masukkan ayam, kecap, garam, merica, dan air.","Masak sampai kuah mengental (±20 menit).","Masukkan tomat, aduk sebentar, angkat."]},
  {n:"Ikan Goreng",k:"Lauk",t:25,e:"🐟",c:"#d9e6ef",v:"-B1Rj0qbOM0",i:["ikan","jeruk nipis"],b:["2 ekor ikan (nila atau kembung)","4 siung bawang putih","1 sdt garam","½ sdt kunyit bubuk (opsional)","1 buah jeruk nipis","minyak untuk menggoreng"],
   s:["Bersihkan ikan, kerat badannya, lumuri jeruk nipis.","Haluskan bawang putih dengan garam dan kunyit.","Lumuri ikan dengan bumbu, diamkan 10 menit.","Goreng di minyak panas sampai kering, jangan sering dibalik.","Angkat, tiriskan."],tip:"Tunggu minyak benar-benar panas supaya ikan tidak lengket."},
- {n:"Tahu Goreng Crispy",k:"Lauk",t:15,e:"🧈",c:"#f7ebc5",v:"nC6E1oFJutU",i:["tahu","tepung terigu"],b:["5 potong tahu","5 sdm tepung terigu","2 sdm tepung beras (opsional)","2 siung bawang putih","garam dan merica","air secukupnya","minyak untuk menggoreng"],
+ {n:"Tahu Goreng Crispy",k:"Gorengan",t:15,e:"🧈",c:"#f7ebc5",v:"nC6E1oFJutU",i:["tahu","tepung terigu"],b:["5 potong tahu","5 sdm tepung terigu","2 sdm tepung beras (opsional)","2 siung bawang putih","garam dan merica","air secukupnya","minyak untuk menggoreng"],
   s:["Potong tahu sesuai selera.","Haluskan bawang putih dengan garam dan merica.","Campur bumbu dengan tepung dan sedikit air jadi adonan kental.","Celup tahu ke adonan.","Goreng sampai kuning keemasan dan renyah, angkat."]},
- {n:"Tempe Mendoan",k:"Lauk",t:15,e:"🟫",c:"#eadfc2",v:"CyjWpZunID8",i:["tempe","tepung terigu","daun bawang"],b:["1 papan tempe (iris tipis)","8 sdm tepung terigu","2 siung bawang putih","1 batang daun bawang","garam secukupnya","air secukupnya","minyak untuk menggoreng"],
+ {n:"Tempe Mendoan",k:"Gorengan",t:15,e:"🟫",c:"#eadfc2",v:"CyjWpZunID8",i:["tempe","tepung terigu","daun bawang"],b:["1 papan tempe (iris tipis)","8 sdm tepung terigu","2 siung bawang putih","1 batang daun bawang","garam secukupnya","air secukupnya","minyak untuk menggoreng"],
   s:["Iris tipis tempe.","Haluskan bawang putih dan garam, campur dengan tepung dan air.","Masukkan irisan daun bawang ke adonan.","Celup tempe ke adonan.","Goreng sebentar saja sampai setengah kering, angkat."],tip:"Mendoan enak dimakan dengan sambal kecap."},
  {n:"Tempe Goreng",k:"Lauk",t:12,e:"🟫",c:"#efe0c4",v:"0eKDCgctqZA",i:["tempe"],b:["1 papan tempe","3 siung bawang putih","1 sdt garam","100 ml air","minyak untuk menggoreng"],
   s:["Potong tempe sesuai selera.","Haluskan bawang putih dengan garam, campur dengan air.","Rendam tempe di air bumbu selama 5 menit.","Goreng sampai kuning kecokelatan, angkat."]},
  {n:"Perkedel Kentang",k:"Lauk",t:30,e:"🥔",c:"#f3e4c6",v:"hEEMYwcNSow",i:["kentang","telur","daun bawang"],b:["4 buah kentang","1 butir telur","1 batang daun bawang","bawang goreng secukupnya","garam dan merica","minyak untuk menggoreng"],
   s:["Kupas dan potong kentang, goreng sampai matang.","Haluskan kentang selagi hangat.","Campur dengan daun bawang, bawang goreng, garam, dan merica.","Bentuk bulat pipih.","Celup ke kocokan telur, goreng sampai kuning, angkat."]},
- {n:"Bakwan Sayur",k:"Lauk",t:20,e:"🥕",c:"#f6dcbf",v:"-fbcJZbic64",i:["kol","wortel","toge","tepung terigu","daun bawang"],b:["¼ buah kol","1 buah wortel","segenggam toge","1 batang daun bawang","10 sdm tepung terigu","2 siung bawang putih","garam dan merica","air secukupnya","minyak untuk menggoreng"],
+ {n:"Bakwan Sayur",k:"Gorengan",t:20,e:"🥕",c:"#f6dcbf",v:"-fbcJZbic64",i:["kol","wortel","toge","tepung terigu","daun bawang"],b:["¼ buah kol","1 buah wortel","segenggam toge","1 batang daun bawang","10 sdm tepung terigu","2 siung bawang putih","garam dan merica","air secukupnya","minyak untuk menggoreng"],
   s:["Iris tipis kol, wortel, dan daun bawang.","Haluskan bawang putih dengan garam dan merica.","Campur sayur, bumbu, tepung, dan air sampai kental.","Ambil satu sendok adonan, goreng di minyak panas.","Goreng sampai kuning keemasan, angkat."]},
  {n:"Tumis Kacang Panjang",k:"Tumis",t:12,e:"🫛",c:"#dcecd2",v:"u7HQMxAI-TY",i:["kacang panjang","cabai"],b:["1 ikat kacang panjang","3 siung bawang merah","2 siung bawang putih","3 buah cabai","garam dan gula","2 sdm minyak"],
   s:["Potong kacang panjang sepanjang 3 cm, cuci.","Iris bawang dan cabai.","Tumis bumbu sampai harum.","Masukkan kacang panjang dan 3 sdm air.","Beri garam dan gula, masak 5 menit sampai layu, angkat."]},
@@ -523,7 +526,7 @@ const R=[
   s:["Rebus telur 10 menit, kupas.","Haluskan bawang dan merica.","Tumis bumbu dengan daun salam sampai harum.","Masukkan air, kecap, telur, dan kentang.","Masak sampai kuah mengental (±10 menit), angkat."]},
  {n:"Tahu Tempe Bacem",k:"Lauk",t:40,e:"🟫",c:"#e4cfb2",v:"QN923TflOqs",i:["tahu","tempe","kecap manis"],b:["5 potong tahu","1 papan tempe","5 siung bawang merah","3 siung bawang putih","1 sdt ketumbar bubuk","3 sdm gula merah","2 sdm kecap manis","2 lembar daun salam","1 sdt garam","400 ml air","minyak untuk menggoreng"],
   s:["Potong tahu dan tempe.","Haluskan bawang merah, bawang putih, dan ketumbar.","Rebus tahu dan tempe dengan bumbu, gula merah, kecap, daun salam, garam, dan air.","Masak sampai air habis (±25 menit).","Goreng sebentar sampai kecokelatan, angkat."],tip:"Bacem yang sudah diungkep bisa disimpan di kulkas dan digoreng kapan saja."},
- {n:"Tahu Isi Sayur",k:"Lauk",t:30,e:"🧈",c:"#f4e7c2",v:"PjSO00QtkMw",i:["tahu","wortel","kol","toge","tepung terigu"],b:["10 buah tahu pong (tahu kopong)","1 buah wortel","¼ buah kol","segenggam toge","2 siung bawang putih","garam dan merica","8 sdm tepung terigu","air secukupnya","minyak untuk menggoreng"],
+ {n:"Tahu Isi Sayur",k:"Gorengan",t:30,e:"🧈",c:"#f4e7c2",v:"PjSO00QtkMw",i:["tahu","wortel","kol","toge","tepung terigu"],b:["10 buah tahu pong (tahu kopong)","1 buah wortel","¼ buah kol","segenggam toge","2 siung bawang putih","garam dan merica","8 sdm tepung terigu","air secukupnya","minyak untuk menggoreng"],
   s:["Iris tipis wortel dan kol.","Tumis bawang putih, masukkan sayur, beri garam dan merica, masak sampai layu.","Belah sisi tahu, isi dengan tumisan sayur.","Celup tahu ke adonan tepung yang diberi garam dan air.","Goreng sampai kuning keemasan, angkat."]},
  {n:"Pepes Tahu",k:"Lauk",t:40,e:"🍃",c:"#d5e7cc",v:"5PBa6IHqej0",i:["tahu","telur","daun pisang","cabai"],b:["5 potong tahu","1 butir telur","4 siung bawang merah","2 siung bawang putih","3 buah cabai","1 batang daun bawang","garam dan gula","daun pisang secukupnya"],
   s:["Hancurkan tahu dengan garpu.","Haluskan bawang dan cabai, campur ke tahu bersama telur, daun bawang, garam, dan gula.","Bungkus adonan dengan daun pisang, semat dengan lidi.","Kukus selama 25 menit.","Angkat. Bisa dibakar sebentar di wajan supaya lebih wangi."]},
@@ -533,7 +536,7 @@ const R=[
   s:["Kocok telur dengan garam dan irisan daun bawang.","Panaskan sedikit minyak di wajan dengan api kecil.","Tuang tipis adonan telur, tunggu setengah matang.","Gulung pelan ke satu sisi, lalu tuang adonan lagi di sisi kosong.","Ulangi sampai adonan habis, angkat dan potong-potong."],tip:"Pakai api kecil supaya telur tidak gosong."},
  {n:"Ikan Kecap",k:"Lauk",t:30,e:"🐟",c:"#dbe2ea",v:"nGHNhQhbNx0",i:["ikan","kecap manis","cabai","tomat","jeruk nipis"],b:["2 ekor ikan (nila atau kembung)","1 buah jeruk nipis","4 siung bawang merah","3 siung bawang putih","4 buah cabai","1 buah tomat","4 sdm kecap manis","garam secukupnya","minyak untuk menggoreng"],
   s:["Lumuri ikan dengan jeruk nipis dan garam, goreng sampai kering.","Iris bawang, cabai, dan tomat.","Tumis bumbu sampai harum.","Tambah kecap, garam, dan 100 ml air, masak sampai sedikit kental.","Masukkan ikan, siram dengan kuah, masak 2 menit, angkat."]},
- {n:"Martabak Mie",k:"Nasi & Mie",t:15,e:"🍳",c:"#f7e2b8",v:"JtFHH9h_4UE",i:["mie instan","telur","daun bawang"],b:["1 bungkus mie instan","2 butir telur","1 batang daun bawang","½ buah wortel (opsional)","2 sdm minyak"],
+ {n:"Martabak Mie",k:"Gorengan",t:15,e:"🍳",c:"#f7e2b8",v:"JtFHH9h_4UE",i:["mie instan","telur","daun bawang"],b:["1 bungkus mie instan","2 butir telur","1 batang daun bawang","½ buah wortel (opsional)","2 sdm minyak"],
   s:["Rebus mie sampai matang, tiriskan.","Kocok telur dengan bumbu mie, daun bawang, dan parutan wortel.","Campur mie ke kocokan telur.","Tuang ke wajan berminyak, ratakan.","Masak sampai bagian bawah kering, balik, masak sampai matang, angkat."]},
  {n:"Nasi Goreng Kampung",k:"Nasi & Mie",t:15,e:"🍛",c:"#f0d4b4",v:"xBZeOw681vk",i:["nasi","telur","cabai","terasi","ikan teri"],b:["2 piring nasi","1 butir telur","5 siung bawang merah","2 siung bawang putih","5 buah cabai rawit","½ sdt terasi","1 sdm ikan teri goreng (opsional)","garam secukupnya","2 sdm minyak"],
   s:["Ulek bawang, cabai, terasi, dan garam.","Tumis bumbu sampai harum.","Masukkan telur, orak-arik.","Masukkan nasi, aduk rata dengan api besar.","Tambah teri, aduk 2 menit, angkat."],tip:"Pakai nasi dingin atau nasi sisa supaya tidak lembek."},
@@ -570,7 +573,8 @@ const ph=r=>!img(r)?"":`<img class="photo${r.p?" own":""}" src="${img(r)}" alt="
 const HEART=f=>`<svg width="18" height="18" viewBox="0 0 24 24" fill="${f?"#e5484d":"none"}" stroke="${f?"#e5484d":"#12241a"}" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20.5s-7.6-4.6-9.4-9.3C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.4 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>`;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const GRP={"Protein":["telur","ayam","ikan","ikan teri","udang","tahu","tempe","bakso","sosis"],"Sayur":["kangkung","bayam","sawi","sawi putih","kol","toge","jamur","brokoli","wortel","kentang","buncis","kacang panjang","labu siam","oyong","pare","terong","jagung","tomat","daun bawang"],"Bumbu":["cabai","cabai hijau","kecap manis","saus tiram","terasi","serai","kunyit","jeruk nipis","asam jawa","santan","daun pisang"],"Nasi, mie & tepung":["beras","nasi","mie","mie instan","bihun","kwetiau","makaroni","tepung terigu"]};
-const CATS=[["Semua","Nasi Goreng Kecap"],["Tumis","Tumis Kangkung"],["Sop","Sop Ayam Sederhana"],["Sambal","Sambal Tomat"],["Lauk","Ayam Goreng Bawang"],["Nasi & Mie","Nasi Goreng Kampung"]];
+const CATS=[["Semua","Nasi Goreng Kecap"],["Tumis","Tumis Kangkung"],["Sop","Sop Ayam Sederhana"],["Sambal","Sambal Tomat"],["Lauk","Ayam Goreng Bawang"],["Nasi & Mie","Nasi Goreng Kampung"],["Gorengan","Tempe Mendoan"],["Kue & Camilan","","🍰"],["Minuman","","🥤"],["Lainnya","","🍽️"]];
+const KATS=CATS.slice(1).map(c=>c[0]);
 const miss=r=>r.i.filter(x=>!have.has(x));
 let tt;function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("on"),2400)}
 
@@ -579,7 +583,8 @@ const h=new Date().getHours();
 $("greet").textContent=h<11?"Selamat pagi 👋":h<15?"Selamat siang 👋":h<18?"Selamat sore 👋":"Selamat malam 👋";
 $("collage").innerHTML=[["Nasi Goreng Kecap","pc1"],["Tumis Kangkung","pc2"],["Telur Balado","pc3"]].map(([n,c])=>{const r=byName(n);return `<div class="pc ${c}"><img src="${img(r)}" alt=""><span>${r.t} menit</span></div>`}).join("");
 function drawCats(){
-  $("cats").innerHTML=CATS.map(([c,n])=>`<button class="cat" aria-pressed="${c===cat}" data-c="${c}"><span class="ic"><img src="${img(byName(n))}" alt="" loading="lazy"></span>${c}</button>`).join("");
+  if(cat!=="Semua"&&!R.some(r=>r.k===cat))cat="Semua";
+  $("cats").innerHTML=CATS.filter(([c])=>c==="Semua"||R.some(r=>r.k===c)).map(([c,n,e])=>{const r=n&&byName(n);return `<button class="cat" aria-pressed="${c===cat}" data-c="${c}"><span class="ic">${r?`<img src="${img(r)}" alt="" loading="lazy">`:`<b class="ice">${e}</b>`}</span>${c}</button>`}).join("");
   $("cats").querySelectorAll(".cat").forEach(b=>b.onclick=()=>{cat=b.dataset.c;drawCats();drawGrid()});
   $("lchips").innerHTML=LABELS.map(l=>`<button class="lchip" aria-pressed="${labels.has(l)}" data-l="${l}">${l}</button>`).join("");
   $("lchips").querySelectorAll(".lchip").forEach(b=>b.onclick=()=>{const l=b.dataset.l;labels.has(l)?labels.delete(l):labels.add(l);store.set("labels",[...labels]);drawCats();drawGrid()});
@@ -777,8 +782,8 @@ let mine=store.get("mine",[]);
 const tagsOf=b=>{const t=b.join(" ").toLowerCase();return [...new Set(Object.values(GRP).flat().filter(x=>t.includes(x)))]};
 function saveMine(){try{localStorage.setItem("ms-mine",JSON.stringify(mine));return true}catch(e){return false}}
 function loadMine(){for(let k=R.length-1;k>=0;k--)if(R[k].own)R.splice(k,1);
-  mine.forEach(m=>R.push(lab({...m,own:true,e:"🍳",c:"#efe6d6",i:tagsOf(m.b)})));
-  pools();$("nres").textContent=R.length;drawRail();drawGrid();drawSaved()}
+  mine.forEach(m=>R.push(lab({...m,k:KATS.includes(m.k)?m.k:"Lainnya",own:true,e:"🍳",c:"#efe6d6",i:tagsOf(m.b)})));
+  pools();$("nres").textContent=R.length;drawCats();drawRail();drawGrid();drawSaved()}
 let edPhoto=null,edId=null;
 function editor(r){
   edId=r?r.id:null;edPhoto=r&&r.p?r.p:null;
@@ -786,7 +791,7 @@ function editor(r){
   <form class="in form" id="edF" novalidate>
     <label class="photoIn" id="phBox">${edPhoto?`<img src="${edPhoto}" alt="">`:`<span>📷 Ketuk untuk menambah foto masakan<br><small style="font-weight:600">opsional</small></span>`}<input type="file" id="edP" accept="image/*" hidden></label>
     <div class="fld"><label for="edN">Nama masakan</label><input id="edN" maxlength="60" value="${r?esc(r.n):""}" placeholder="Mis. Tumis Jamur Pedas" autocomplete="off"></div>
-    <div class="two"><div class="fld"><label for="edK">Kategori</label><select id="edK">${["Tumis","Sop","Sambal","Lauk","Nasi & Mie"].map(k=>`<option ${r&&r.k===k?"selected":""}>${k}</option>`).join("")}</select></div>
+    <div class="two"><div class="fld"><label for="edK">Kategori</label><select id="edK">${KATS.map(k=>`<option ${r&&r.k===k?"selected":""}>${k}</option>`).join("")}</select></div>
     <div class="fld"><label for="edT">Lama masak (menit)</label><input id="edT" type="number" inputmode="numeric" min="1" max="600" value="${r?r.t:15}"></div></div>
     <div class="fld"><label for="edB">Bahan <small>satu bahan per baris</small></label><textarea id="edB" rows="6" placeholder="2 butir telur&#10;3 siung bawang merah&#10;garam secukupnya">${r?esc(r.b.join("\n")):""}</textarea></div>
     <div class="fld"><label for="edS">Langkah <small>satu langkah per baris</small></label><textarea id="edS" rows="6" placeholder="Kocok telur dengan garam.&#10;Goreng di minyak panas sampai matang.">${r?esc(r.s.join("\n")):""}</textarea></div>
