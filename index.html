@@ -1095,7 +1095,7 @@ async function api(path,opt={}){const t=await token();const r=await fetch(SB.u+"
   const txt=await r.text();if(!r.ok){let m="";try{m=JSON.parse(txt).message||""}catch(e){}throw new Error(r.status===409?"409 duplicate":m||"HTTP "+r.status)}return txt?JSON.parse(txt):null}
 const clean=x=>String(x==null?"":x).replace(/[<>"]/g,"");
 const fromRemote=x=>lab({n:clean(x.name),k:clean(x.category),t:x.minutes,b:(x.ingredients||[]).map(clean),s:(x.steps||[]).map(clean),tip:clean(x.tip),
-  v:/^[\w-]{11}$/.test(x.video||"")?x.video:"",p:/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(x.photo||"")?x.photo:"",e:"🍳",c:"#efe6d6",i:tagsOf(x.ingredients||[]),
+  v:/^[\w-]{11}$/.test(x.video||"")?x.video:"",p:/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(x.photo||"")||/^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/[A-Za-z0-9\/._%()+-]+$/.test(x.photo||"")?x.photo:"",e:"🍳",c:"#efe6d6",i:tagsOf(x.ingredients||[]),
   comm:{id:x.id,likes:x.likes,author:clean(x.author),mine:!!sess&&x.user_id===sess.uid}});
 let cCat="";let C={mode:"new",list:[],end:false,busy:false,loaded:false,err:""};
 async function loadComm(reset){if(C.busy)return;C.busy=true;if(reset){C.list=[];C.end=false}C.err="";drawComm();
