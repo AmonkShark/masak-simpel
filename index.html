@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#0f3b26">
 <meta name="description" content="Resep masakan rumahan simpel dengan bahan dapur biasa, lengkap dengan video.">
 <link rel="manifest" href="manifest.json">
@@ -26,7 +26,7 @@
   --deep:#0a2a1a;--deep2:#103a25;--accent:#5fd393;--accent-soft:#183324;--tang:#ff9447;--tang-soft:#3a2414;
   --sh:0 2px 4px rgba(0,0,0,.3),0 12px 28px rgba(0,0,0,.4);color-scheme:dark}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scrollbar-gutter:stable;overflow-y:scroll}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;touch-action:manipulation;scrollbar-gutter:stable;overflow-y:scroll}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;overscroll-behavior-y:none;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
 button,input,textarea{font:inherit;color:inherit}
 button{border:0;background:none;padding:0;cursor:pointer}
@@ -52,7 +52,7 @@ button{border:0;background:none;padding:0;cursor:pointer}
 .collage{position:relative;height:170px}
 @media (min-width:760px){.collage{height:270px}}
 .pc{position:absolute;border-radius:22px;overflow:hidden;border:4px solid rgba(255,255,255,.92);box-shadow:0 18px 40px rgba(0,0,0,.35);background:#1b3a29}
-.pc img{width:100%;height:100%;object-fit:cover;transform:scale(1.36);display:block}
+.pc img{width:100%;height:100%;object-fit:cover;display:block}
 .pc span{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.95);color:#12241a;font-size:.72rem;font-weight:800;padding:4px 10px;border-radius:999px;z-index:1}
 .pc1{width:46%;height:82%;left:0;top:8%;transform:rotate(-6deg);z-index:2}
 .pc2{width:46%;height:82%;left:27%;top:0;transform:rotate(3deg);z-index:3}
@@ -88,7 +88,7 @@ section.blk{margin-top:26px;display:grid;gap:14px}
 .cat{text-align:center;line-height:1.2}
 .cat{display:grid;justify-items:center;gap:7px;font-size:.78rem;font-weight:700;color:var(--muted)}
 .cat .ic{width:100%;max-width:72px;aspect-ratio:1;border-radius:50%;overflow:hidden;background:var(--line);box-shadow:var(--sh);transition:transform .2s}
-.cat .ic img{width:100%;height:100%;object-fit:cover;transform:scale(1.36);display:block}
+.cat .ic img{width:100%;height:100%;object-fit:cover;display:block}
 .cat[aria-pressed="true"]{color:var(--fg)}
 .cat[aria-pressed="true"] .ic{box-shadow:0 0 0 3px var(--bg),0 0 0 6px var(--tang);transform:translateY(-3px)}
 .lchips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
@@ -117,7 +117,7 @@ section.blk{margin-top:26px;display:grid;gap:14px}
 .art{aspect-ratio:1/0.85;border-radius:18px;display:grid;place-items:center;font-size:3.6rem;position:relative;overflow:hidden}
 .art::before{content:"";position:absolute;width:70%;aspect-ratio:1;border-radius:50%;background:rgba(255,255,255,.45)}
 .art .emo{position:relative}
-.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.36)}
+.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .has::before{display:none}
 .art.has::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.35))}
 .time{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,.95);color:#12241a;font-size:.7rem;font-weight:800;padding:4px 9px;border-radius:999px;z-index:1}
@@ -240,7 +240,7 @@ body.lock{overflow:hidden}
 .day header button{font-size:.78rem;font-weight:800;color:var(--accent);padding:6px 10px;border-radius:10px;background:var(--accent-soft)}
 .mini{display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding:4px;border-radius:16px}
 .mini .th{width:64px;height:52px;border-radius:14px;overflow:hidden;position:relative;flex:none;display:grid;place-items:center;font-size:1.6rem}
-.mini .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.36)}
+.mini .th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .mini span{display:block;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--tang)}
 .mini strong{display:block;font-weight:700;line-height:1.25}
 .mini em{font-style:normal;font-size:.75rem;color:var(--muted)}
@@ -295,7 +295,8 @@ body.lock{overflow:hidden}
 .fbi small{color:var(--muted);overflow-wrap:anywhere}
 .fbh{display:flex;justify-content:space-between;gap:10px;align-items:center}
 .tagk{font-size:.72rem;font-weight:800;color:var(--tang);text-transform:uppercase;letter-spacing:.06em}
-.fbi select{justify-self:start;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);border-radius:10px;padding:6px 10px;font:inherit;font-size:.85rem}
+.fbi select{justify-self:start;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);border-radius:10px;padding:6px 10px;font:inherit;font-size:16px}
+input,select,textarea{font-size:16px}
 .fbi.selesai{opacity:.6}
 .credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -333,7 +334,7 @@ body.lock{overflow:hidden}
   <section class="blk"><h2 class="h">Kategori</h2><div class="cats" id="cats"></div><div class="lchips" id="lchips"></div></section>
   <section class="blk" id="fastBlk"><h2 class="h">Paling cepat <small>≤ 10 menit</small></h2><div class="rail" id="rail"></div></section>
   <section class="blk"><h2 class="h"><span id="ttl">Semua menu</span><small id="count"></small></h2><div class="grid" id="grid"></div></section>
-  <p class="credit">Foto &amp; video dari YouTube milik masing-masing kreator. · <a href="privacy.html" style="color:inherit">Kebijakan Privasi</a> · <a href="#" id="fbLink" style="color:inherit">Kirim masukan</a></p>
+  <p class="credit">Foto masakan dari <a href="kredit.html" style="color:inherit">Wikimedia Commons</a> · Video dari YouTube · <a href="privacy.html" style="color:inherit">Kebijakan Privasi</a> · <a href="#" id="fbLink" style="color:inherit">Kirim masukan</a></p>
 </div>
 </div>
 
@@ -593,7 +594,9 @@ function lab(r){const meat=r.i.some(x=>["ayam","ikan","ikan teri","bakso","sosis
   if(ANAK.has(r.n))r.L.push("Anak suka");return r}
 R.forEach(lab);
 const byName=n=>R.find(r=>r.n===n);
-const img=r=>r.p||(r.v?`https://i.ytimg.com/vi/${r.v}/hqdefault.jpg`:"");
+const PH={"Tumis Kangkung": ["0/0f/Tumis_kangkung_Makassar.JPG", "Midori", "CC BY 3.0"], "Tumis Telur Tomat": ["8/87/Hunan_cuisine%2C_stir-fried_tomato_with_eggs.jpg", "Huangdan2060", "CC BY 3.0"], "Tumis Tahu Tempe Kecap": ["f/fc/Orek_Tempe_Rumahan.jpg", "Aqilla Rahmi", "CC BY 4.0"], "Tumis Buncis Wortel": ["7/7b/Sayur_tumis.jpg", "Who'sisthis", "CC BY 4.0"], "Tumis Sawi Bakso": ["7/70/Meatball_in_Indonesia.jpg", "KyforWiki", "CC BY-SA 4.0"], "Tumis Toge": ["1/13/Rujak_lontong.jpg", "Astari28", "CC BY-SA 4.0"], "Tumis Jamur": ["b/b4/Tumis_Pokcoy_Jamur_Enoki.jpg", "Fanathings", "CC BY 4.0"], "Capcay Sederhana": ["ORIG:1/13/Cap_Cai.JPG", "Wikimedia Commons", "CC BY-SA 3.0"], "Tumis Labu Siam": ["1/1b/Tumis_labu_siam-sauteed_chayote.JPG", "Taman Renyah", "CC BY-SA 3.0"], "Orek Tempe": ["f/fc/Orek_Tempe_Rumahan.jpg", "Aqilla Rahmi", "CC BY 4.0"], "Sop Sayur Bening": ["7/71/Bakso_uleg_lontong_tahu_Jepara.JPG", "Midori", "CC BY 3.0"], "Sop Telur Sosis": ["4/42/Sup_ayam_sosis_jamur_ala_adi%27s_culinary.jpg", "Asti Mawasti", "CC BY-SA 4.0"], "Sayur Bening Bayam Jagung": ["f/fc/Sayur_bening_bayam_jagung.JPG", "Midori", "CC BY 3.0"], "Sop Ayam Sederhana": ["3/3b/Sop_Ayam_Klaten.jpg", "Titah Sawantah", "CC BY-SA 4.0"], "Sayur Asem": ["5/58/Sayur_asem_vegetable_soup.jpg", "Sakurai Midori", "CC BY-SA 3.0"], "Sop Bakso": ["2/21/Meat_ball_soup.JPG", "Biso", "CC BY-SA 3.0"], "Sop Jagung Telur": ["6/6a/Sup_matahari.jpg", "Wiwik P", "CC BY-SA 4.0"], "Sayur Labu Siam Bening": ["8/85/Sayur_Bening.jpg", "Fido Cahya", "CC BY-SA 4.0"], "Sambal Tomat": ["6/6c/SAMBAL_TOMAT.jpg", "Windi Utari", "CC BY-SA 4.0"], "Sambal Kecap": ["3/3d/SAMBAL_KECAP.jpg", "Windi Utari", "CC BY-SA 4.0"], "Sambal Bawang": ["6/63/Sambal_bawang_dayak_%28%F0%9D%98%8C%F0%9D%98%AD%F0%9D%98%A6%F0%9D%98%B6%F0%9D%98%B5%F0%9D%98%A9%F0%9D%98%A6%F0%9D%98%B3%F0%9D%98%AA%F0%9D%98%AF%F0%9D%98%A6_%F0%9D%98%A3%F0%9D%98%B6%F0%9D%98%AD%F0%9D%98%A3%F0%9D%98%B0%F0%9D%98%B4%F0%9D%98%A2%29.jpg", "Gabriel D. Aqui", "CC0"], "Sambal Teri": ["3/39/Sambal_goreng_teri_tempe.JPG", "Sakurai Midori", "CC BY-SA 3.0"], "Sambal Matah": ["1/11/Sambal_Matah_Bali.jpg", "Gunawan Kartapranata", "CC BY-SA 4.0"], "Sambal Ijo": ["f/f2/SAMBAL_IJO.jpg", "Windi Utari", "CC BY-SA 4.0"], "Sambal Terasi": ["b/bd/Sambal_belacan.jpg", "AyyanD", "CC0"], "Terong Balado": ["b/bb/Terong_Balado_2.jpg", "Gunawan Kartapranata", "CC BY-SA 4.0"], "Telur Balado": ["b/b8/Telur_Balado_101417.jpg", "Abdul Hanif Arromy", "CC BY 4.0"], "Telur Dadar Daun Bawang": ["a/a5/Telur_Dadar.jpg", "Fido Cahya", "CC BY-SA 4.0"], "Telur Ceplok Kecap": ["4/46/Nasi_Goreng_Kampung.jpg", "Supardisahabu", "CC BY-SA 4.0"], "Nasi Goreng Kecap": ["3/3b/Nasi_Goreng_Kecap.jpg", "Supardisahabu", "CC BY-SA 4.0"], "Mie Rebus Telur Sawi": ["c/ce/Mie_Rebus_Jawa.jpg", "Gunawan Kartapranata", "CC BY-SA 3.0"], "Mie Goreng Sederhana": ["f/f0/Mi_Goreng_GM.jpg", "Gunawan Kartapranata", "CC BY-SA 3.0"], "Ayam Goreng Bawang": ["8/82/Ayam_Goreng_Lalapan.jpg", "Supardisahabu", "CC BY-SA 4.0"], "Ayam Kecap": ["4/47/Ayam_Kecap_4.jpg", "Gunawan Kartapranata", "CC BY-SA 4.0"], "Ikan Goreng": ["2/2e/Fried_Fish_2.jpg", "Gaurav Dhwaj Khadka", "CC BY-SA 4.0"], "Tahu Goreng Crispy": ["8/82/Tahu_goreng_crispy.jpg", "RXerself", "CC BY-SA 4.0"], "Tempe Mendoan": ["ORIG:7/76/Tempe_Mendoan_Kebumen_Super_Nampol.jpg", "Mendoanblog", "CC BY-SA 4.0"], "Tempe Goreng": ["3/3f/Tempe_Goreng.jpg", "Fido Cahya", "CC BY-SA 4.0"], "Perkedel Kentang": ["b/b3/Perkedel_kentang.JPG", "Sakurai Midori", "CC BY-SA 3.0"], "Bakwan Sayur": ["a/a4/Bakwan_Sayur.jpg", "Supardisahabu", "CC BY-SA 4.0"], "Tumis Kacang Panjang": ["2/25/Tumis_Par%C3%A9_Teri_2.jpg", "Pitchrigi", "CC BY-SA 4.0"], "Tumis Kol": ["4/49/Stir-fried_cabbage_and_chicken_gizzard_%282206134344%29.jpg", "pelican from Tokyo, Japan", "CC BY-SA 2.0"], "Tumis Bayam Bawang Putih": ["1/19/Pak_boong_fai_daeng.jpg", "Takeaway", "CC BY-SA 3.0"], "Tumis Brokoli Bawang Putih": ["a/a3/Beef_and_Broccoli.jpg", "Laurel F", "CC BY-SA 2.0"], "Tumis Terong Kecap": ["9/93/Terong_Goreng.jpg", "Supardisahabu", "CC BY-SA 4.0"], "Tumis Udang Cabai": ["8/81/Udang_balado_masakan_Padang.jpg", "Midori", "CC BY 3.0"], "Cah Sawi Putih": ["e/e1/Napa_Cabbage_%26_Tofu_soup_%28%E7%99%BD%E8%8F%9C%E8%B1%86%E8%85%90%E6%B9%AF%29.jpg", "NeoBatfreak", "CC BY-SA 4.0"], "Tumis Pare Telur": ["c/cc/Tumis_Par%C3%A9_Teri_3.jpg", "Pitchrigi", "CC BY-SA 4.0"], "Tumis Tauge Tahu": ["1/13/Rujak_lontong.jpg", "Astari28", "CC BY-SA 4.0"], "Sayur Lodeh": ["1/1a/Sayur_lodeh.JPG", "Midori", "CC BY 3.0"], "Sup Makaroni": ["e/e3/Macaroni_soup_with_ham.jpeg", "ZhengZhou", "CC BY-SA 4.0"], "Soto Ayam Sederhana": ["0/05/Soto_ayam.JPG", "Sakurai Midori", "CC BY-SA 3.0"], "Sayur Oyong Bening": ["8/85/Sayur_Bening.jpg", "Fido Cahya", "CC BY-SA 4.0"], "Sup Tomat Telur": ["2/25/Tomato_and_egg_soup.jpg", "NNU-10-HanRongrong", "CC BY 3.0"], "Sayur Bobor Bayam": ["e/ed/Watercress_and_spinach_soup_1.jpg", "Amelia Crook", "CC BY 2.0"], "Sop Tahu Bakso": ["0/00/Tahu_Pong_Bakso_Ikan.jpg", "Gunawan Kartapranata", "CC BY-SA 3.0"], "Sambal Goreng Kentang": ["7/70/Sambal_Goreng_Kentang_Kering.jpg", "Supardisahabu", "CC BY-SA 4.0"], "Sambal Dabu-dabu": ["6/6b/Dabu-dabu_manta.JPG", "Midori", "CC BY-SA 3.0"], "Sambal Bajak": ["5/5a/SAMBAL_BAWANG.jpg", "Windi Utari", "CC BY-SA 4.0"], "Sambal Korek": ["4/4e/Sambal_bawang_dayak_%28%F0%9D%98%8C%F0%9D%98%AD%F0%9D%98%A6%F0%9D%98%B6%F0%9D%98%B5%F0%9D%98%A9%F0%9D%98%A6%F0%9D%98%B3%F0%9D%98%AA%F0%9D%98%AF%F0%9D%98%A6_%F0%9D%98%A3%F0%9D%98%B6%F0%9D%98%AD%F0%9D%98%A3%F0%9D%98%B0%F0%9D%98%B4%F0%9D%98%A2%29_%28cropped%29.jpg", "Gabriel D. Aqui", "CC0"], "Ayam Geprek": ["ORIG:2/24/Ayam_geprek.png", "raturecipe", "CC BY-SA 4.0"], "Ayam Goreng Kuning": ["a/aa/Nasi_Kuning_dengan_Telur_Asin%2C_Timun%2C_dan_Ayam_Goreng.jpg", "Fhikri Latifi", "CC0"], "Ayam Saus Tiram": ["5/52/Pollo_kung_Pao.jpg", "PapiPijuan", "CC BY-SA 4.0"], "Semur Ayam": ["e/ec/Semur_Ayam.jpg", "Icaaaaaaan", "CC BY-SA 3.0"], "Semur Telur": ["3/3e/Ketupat_dengan_sayur_pepaya_dan_opor_ayam.JPG", "Midori", "CC BY 3.0"], "Tahu Tempe Bacem": ["8/88/42._Tahu_bacem_2.jpg", "Danangtrihartanto", "CC BY-SA 4.0"], "Tahu Isi Sayur": ["2/28/Tahu_isi_goreng_plus_cabe_rawit.jpg", "Gunawan Kartapranata", "CC BY-SA 3.0"], "Pepes Tahu": ["b/b6/P%C3%A8p%C3%A8s_tahu_4.jpg", "Affandy Murad", "CC BY-SA 4.0"], "Udang Goreng Tepung": ["d/d8/Nasi_Bakar_Udang.JPG", "Gunawan Kartapranata", "CC BY-SA 3.0"], "Telur Gulung": ["a/a5/Telur_Dadar.jpg", "Fido Cahya", "CC BY-SA 4.0"], "Ikan Kecap": ["5/5b/Goreng_ikan_merah_Palopo.JPG", "Midori", "CC BY 3.0"], "Martabak Mie": ["2/29/Bala-bala_%28bakwan_sayur%29_05.jpg", "Pijri Paijar", "CC BY-SA 4.0"], "Nasi Goreng Kampung": ["e/ee/Nasi_goreng_kampung_ala_resto_populer.jpg", "Arudina", "CC BY-SA 4.0"], "Nasi Uduk Rice Cooker": ["a/a6/Nasi_uduk_netherlands.jpg", "Takeaway", "CC BY-SA 3.0"], "Nasi Liwet Rice Cooker": ["8/84/Nasi_Liwet.jpg", "Atkhun08", "CC BY-SA 4.0"], "Nasi Kuning Rice Cooker": ["a/a7/Nasi_Kuning_Telur.jpg", "Supardisahabu", "CC BY-SA 4.0"], "Bihun Goreng": ["7/70/Bihun_goreng.JPG", "Midori", "CC BY-SA 3.0"], "Kwetiau Goreng": ["1/11/Kwetiau_Goreng_Kepiting.jpg", "Gunawan Kartapranata", "CC BY-SA 3.0"], "Mie Nyemek": ["e/ef/Mie_Nyemek_Indomie.jpg", "Ohleonur", "CC BY-SA 4.0"], "Nasi Gila": ["ORIG:c/c6/Nasi_gila.jpg", "Wiwik P", "CC BY-SA 4.0"]};
+const phUrl=p=>p.startsWith("ORIG:")?"https://upload.wikimedia.org/wikipedia/commons/"+p.slice(5):"https://upload.wikimedia.org/wikipedia/commons/thumb/"+p+"/500px-"+p.split("/").pop();
+const img=r=>r.p||(PH[r.n]&&!r.comm&&!r.own?phUrl(PH[r.n][0]):"");
 const ph=r=>!img(r)?"":`<img class="photo${r.p?" own":""}" src="${img(r)}" alt="" loading="lazy" onload="if(this.naturalWidth<=120){this.parentNode.classList.remove('has');this.remove()}" onerror="this.parentNode.classList.remove('has');this.remove()">`;
 const HEART=f=>`<svg width="18" height="18" viewBox="0 0 24 24" fill="${f?"#e5484d":"none"}" stroke="${f?"#e5484d":"#12241a"}" stroke-width="2.2" stroke-linejoin="round"><path d="M12 20.5s-7.6-4.6-9.4-9.3C1.4 7.9 3.6 4.5 7 4.5c2 0 3.6 1.2 5 3 1.4-1.8 3-3 5-3 3.4 0 5.6 3.4 4.4 6.7-1.8 4.7-9.4 9.3-9.4 9.3z"/></svg>`;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -970,6 +973,7 @@ $("install").onclick=async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice
 if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
 
 loadMine();drawCats();saveShop();handleAuthReturn();
+["gesturestart","gesturechange"].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
 </script>
 </body>
 </html>
