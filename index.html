@@ -1241,7 +1241,7 @@ async function uploadR(r,author){const m=mine.find(x=>x.id===r.id);if(!m)return;
 
 /* ---------- Masukan & admin ---------- */
 function drawAcct2(){const a=$("acct2");if(!a)return;a.innerHTML=isGoogle()?"":`<div class="acct"><div class="who"><b>Masuk dengan Google</b><span>Untuk membagikan resep ke Komunitas.</span></div><button class="btn gbtn" id="lgIn2">${GICON}Masuk</button></div>`;if($("lgIn2"))$("lgIn2").onclick=()=>login()}
-const ADMIN="amonkpubg@gmail.com",APPV="1.2";
+const ADMIN="amonkpubg@gmail.com",APPV="25";
 let fbKind="Masalah";
 function drawKind(){$("fbKind").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===fbKind));
   $("fbMsg").placeholder=fbKind==="Masalah"?"Mis. video di resep Sop Ayam tidak bisa diputar di HP Samsung saya.":fbKind==="Saran"?"Mis. tambahkan kategori minuman dan resep es teh manis.":"Tulis pertanyaanmu di sini."}
@@ -1319,7 +1319,12 @@ window.addEventListener("popstate",()=>{if(skipPop){skipPop=false;return}if(!$("
 /* ---------- Pasang aplikasi ---------- */
 let dp=null;window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;$("install").hidden=false});
 $("install").onclick=async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice}catch(e){}dp=null;$("install").hidden=true};
-if("serviceWorker" in navigator&&location.protocol==="https:")navigator.serviceWorker.register("sw.js").catch(()=>{});
+/* ---------- Pembaruan otomatis ---------- */
+if("serviceWorker" in navigator&&location.protocol==="https:"){let rl=false;
+  navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(reg=>{const up=()=>reg.update().catch(()=>{});setInterval(up,30*60*1000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")up()})}).catch(()=>{});
+  navigator.serviceWorker.addEventListener("controllerchange",()=>{if(rl)return;rl=true;if(!$("cook").hidden||$("ed").classList.contains("on"))return;location.reload()})}
+async function cekVersi(){try{const j=await (await fetch("version.json?t="+Date.now(),{cache:"no-store"})).json();if(j.v&&String(j.v)!==APPV){if(!$("cook").hidden||$("ed").classList.contains("on"))return;if(sessionStorage.getItem("ms-upd")===String(j.v))return;sessionStorage.setItem("ms-upd",String(j.v));toast("✨ Versi baru tersedia, memperbarui…");setTimeout(()=>location.reload(),1200)}}catch(e){}}
+setTimeout(cekVersi,3000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")cekVersi()});
 
 
 /* ---------- Tema ---------- */
