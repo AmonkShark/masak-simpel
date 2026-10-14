@@ -937,7 +937,7 @@ function openR(r){
     ${r.tip?`<div class="tip"><b>TIPS</b><div>${r.tip}</div></div>`:""}
     ${rkey(r)?`<section class="sec" id="revSec"><h4>Ulasan & hasil masakan <span id="revAvg" class="ravg"></span></h4><div id="revSnap" class="snaps"></div><div id="revForm"></div><div id="revList" class="revs"><div class="skel">Memuat ulasan…</div></div></section>`:""}
     <section class="sec"><h4>Catatanku</h4><textarea class="note" id="note" placeholder="Mis. garamnya kurangi sedikit, cabai tambah 2…">${esc(notes[r.n]||"")}</textarea></section>
-    ${r.tt?`<section class="sec"><h4>Video TikTok</h4><div class="ttbox"><button class="ttplay" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.tiktok.com/embed/v2/${r.tt}?autoplay=1&quot; allow=&quot;autoplay; encrypted-media; fullscreen; clipboard-write&quot; allowfullscreen></iframe>'" style="background-image:url(${img(r)||""})" aria-label="Putar video TikTok"><span>♪ ▶</span></button></div><a class="ytbtn" style="margin-top:10px" href="https://www.tiktok.com/video/${r.tt}" target="_blank" rel="noopener"><span class="yplay" style="background:#111">♪</span><span><b>Buka di aplikasi TikTok</b><small>Kalau video tidak bisa diputar di sini</small></span><span aria-hidden="true">↗</span></a></section>`:""}
+    ${r.tt?`<section class="sec"><h4>Video TikTok</h4>${/^\d+$/.test(r.tt)?`<div class="ttbox"><button class="ttplay" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.tiktok.com/embed/v2/${r.tt}?autoplay=1&quot; allow=&quot;autoplay; encrypted-media; fullscreen; clipboard-write&quot; allowfullscreen></iframe>'" style="background-image:url(${img(r)||""})" aria-label="Putar video TikTok"><span>♪ ▶</span></button></div>`:""}<a class="ytbtn" style="margin-top:10px" href="${/^\d+$/.test(r.tt)?"https://www.tiktok.com/video/"+r.tt:r.tt}" target="_blank" rel="noopener"><span class="yplay" style="background:#111">♪</span><span><b>${/^\d+$/.test(r.tt)?"Buka di aplikasi TikTok":"Tonton di TikTok"}</b><small>${/^\d+$/.test(r.tt)?"Kalau video tidak bisa diputar di sini":"Video dibuka di aplikasi TikTok"}</small></span><span aria-hidden="true">↗</span></a></section>`:""}
     ${!r.v&&!r.tt&&!r.own?`<section class="sec"><h4>Cari videonya</h4><a class="ytbtn" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=${encodeURIComponent("resep "+r.n)}"><span class="yplay">▶</span><span><b>Video di YouTube</b><small>Cari video resep ini di YouTube</small></span><span aria-hidden="true">↗</span></a><a class="ytbtn" style="margin-top:10px" target="_blank" rel="noopener" href="https://www.tiktok.com/search?q=${encodeURIComponent("resep "+r.n)}"><span class="yplay" style="background:#111">♪</span><span><b>Video di TikTok</b><small>Cari video resep ini di TikTok</small></span><span aria-hidden="true">↗</span></a></section>`:""}
     ${r.v?`<section class="sec"><h4>Tonton videonya</h4><div class="vbox"><button class="vplay" onclick="this.parentNode.innerHTML='<iframe src=&quot;https://www.youtube-nocookie.com/embed/${r.v}?autoplay=1&amp;rel=0&amp;playsinline=1&quot; allow=&quot;autoplay; encrypted-media; picture-in-picture; fullscreen&quot; allowfullscreen></iframe>'" style="background-image:url(${img(r)||""})" aria-label="Putar video"><span>▶</span></button></div><a class="ytbtn" style="margin-top:10px" href="https://www.youtube.com/watch?v=${r.v}" target="_blank" rel="noopener"><span class="yplay"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5z"/></svg></span><span><b>Video tidak bisa diputar?</b><small>Buka di aplikasi YouTube</small></span><span aria-hidden="true">↗</span></a><a class="ytbtn" style="margin-top:10px" target="_blank" rel="noopener" href="https://www.tiktok.com/search?q=${encodeURIComponent("resep "+r.n)}"><span class="yplay" style="background:#111">♪</span><span><b>Video versi TikTok</b><small>Cari video resep ini di TikTok</small></span><span aria-hidden="true">↗</span></a></section>`:""}
     <div class="row"><button class="btn ${done[r.n]?"sec":"pri"}" id="mark">${done[r.n]?"✓ Sudah pernah dimasak":"Tandai sudah dimasak"}</button>
@@ -1132,7 +1132,7 @@ function editor(r){
     <div class="fld"><label for="edS">Langkah <small>satu langkah per baris</small></label><textarea id="edS" rows="6" placeholder="Kocok telur dengan garam.&#10;Goreng di minyak panas sampai matang.">${r?esc(r.s.join("\n")):""}</textarea></div>
     <div class="fld"><label for="edTip">Tips <small>opsional</small></label><input id="edTip" value="${r&&r.tip?esc(r.tip):""}" placeholder="Mis. pakai api kecil supaya tidak gosong" autocomplete="off"></div>
     <div class="fld"><label for="edV">Link video YouTube <small>opsional</small></label><input id="edV" inputmode="url" value="${r&&r.v?"https://youtu.be/"+r.v:""}" placeholder="https://youtu.be/…" autocomplete="off"></div>
-    <div class="fld"><label for="edTT">Link video TikTok <small>opsional</small></label><input id="edTT" inputmode="url" value="${r&&r.tt?"https://www.tiktok.com/video/"+r.tt:""}" placeholder="https://www.tiktok.com/@akun/video/…" autocomplete="off"><small style="color:var(--muted)">Buka video di TikTok → Bagikan → Salin tautan. Video akan diputar langsung di aplikasi.</small></div>
+    <div class="fld"><label for="edTT">Link video TikTok <small>opsional</small></label><input id="edTT" inputmode="url" value="${r&&r.tt?(/^\d+$/.test(r.tt)?"https://www.tiktok.com/video/"+r.tt:r.tt):""}" placeholder="https://www.tiktok.com/@akun/video/…" autocomplete="off"><small style="color:var(--muted)">Buka video di TikTok → Bagikan → Salin tautan. Video akan diputar langsung di aplikasi.</small></div>
     <p class="err" id="edE" hidden></p>
     <div class="row"><button type="button" class="btn sec" id="edC">Batal</button><button type="submit" class="btn pri">Simpan resep</button></div>
   </form>`;
@@ -1140,15 +1140,17 @@ function editor(r){
   $("edP").onchange=e=>{const f=e.target.files[0];if(!f)return;const u=URL.createObjectURL(f),im=new Image();
     im.onload=()=>{const sc=Math.min(1,640/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*sc);c.height=Math.round(im.height*sc);c.getContext("2d").drawImage(im,0,0,c.width,c.height);edPhoto=c.toDataURL("image/jpeg",.78);URL.revokeObjectURL(u);const old=$("phBox").querySelector("img,span");if(old)old.outerHTML=`<img src="${edPhoto}" alt="">`};
     im.onerror=()=>{showErr("Foto tidak bisa dibaca. Coba foto lain.")};im.src=u};
-  $("edF").onsubmit=e=>{e.preventDefault();
+  $("edF").onsubmit=async e=>{e.preventDefault();
     const n=$("edN").value.trim(),b=$("edB").value.split("\n").map(x=>x.trim()).filter(Boolean),st=$("edS").value.split("\n").map(x=>x.trim().replace(/^\d+[.)]\s*/,"")).filter(Boolean),vr=$("edV").value.trim(),tr=$("edTT").value.trim();
-    const tm=tr.match(/\/(?:video|v|embed\/v2)\/(\d{15,25})/)||tr.match(/^(\d{15,25})$/);const tshort=tr&&!tm&&/(vm|vt)\.tiktok\.com|tiktok\.com\/t\//.test(tr);
+    const tlink=(tr.match(/https?:\/\/[^\s]*tiktok\.com\/[^\s]*/i)||[""])[0].replace(/^http:/i,"https:").replace(/[^A-Za-z0-9@._\/?=&%:-]/g,"");
+    let tm=tr.match(/\/(?:video|v|embed\/v2)\/(\d{15,25})/)||tr.match(/^(\d{15,25})$/);let tturl="";
+    if(tr&&!tm&&tlink){const sb=$("edF").querySelector("[type=submit]");if(sb)sb.disabled=true;toast("Memproses link TikTok…");const id=await ttResolve(tlink);if(sb)sb.disabled=false;if(id)tm=[0,id];else if(TTURL.test(tlink))tturl=tlink}
     const vm=vr.match(/(?:v=|youtu\.be\/|shorts\/|embed\/)([\w-]{11})/);
-    const er=!n?"Nama masakan belum diisi.":!b.length?"Tulis minimal satu bahan.":!st.length?"Tulis minimal satu langkah.":vr&&!vm?"Link YouTube tidak dikenali. Salin link dari tombol Bagikan di YouTube.":tshort?"Link TikTok pendek (vt.tiktok.com) belum bisa diputar. Buka link itu di browser, lalu salin alamat lengkapnya yang berisi /video/angka.":tr&&!tm?"Link TikTok tidak dikenali. Pastikan link berisi /video/ diikuti angka.":"";
+    const er=!n?"Nama masakan belum diisi.":!b.length?"Tulis minimal satu bahan.":!st.length?"Tulis minimal satu langkah.":vr&&!vm?"Link YouTube tidak dikenali. Salin link dari tombol Bagikan di YouTube.":tr&&!tm&&!tturl?"Link TikTok tidak dikenali. Salin dari TikTok: Bagikan → Salin tautan.":"";
     if(er)return showErr(er);
     let name=n;if(R.some(x=>x.n===name&&x.id!==edId))name=n+" (resepku)";
     const old=edId?mine.find(x=>x.id===edId):null;
-    const rec={id:edId||"m"+Date.now(),n:name,k:$("edK").value,t:Math.max(1,parseInt($("edT").value)||15),b,s:st,tip:$("edTip").value.trim(),v:vm?vm[1]:"",tt:tm?tm[1]:"",p:edPhoto||""};
+    const rec={id:edId||"m"+Date.now(),n:name,k:$("edK").value,t:Math.max(1,parseInt($("edT").value)||15),b,s:st,tip:$("edTip").value.trim(),v:vm?vm[1]:"",tt:tm?tm[1]:tturl,p:edPhoto||""};
     if(old&&old.cid)rec.cid=old.cid;const prev=mine.slice();mine=mine.filter(x=>x.id!==rec.id);mine.push(rec);
     if(!saveMine()){mine=prev;return showErr("Memori aplikasi di HP ini penuh. Coba simpan tanpa foto.")}
     if(old&&old.n!==rec.n){if(favs.delete(old.n)){favs.add(rec.n);store.set("fav",[...favs])}if(done[old.n]){done[rec.n]=done[old.n];delete done[old.n];store.set("done",done)}if(notes[old.n]){notes[rec.n]=notes[old.n];delete notes[old.n];store.set("notes",notes)}}
@@ -1163,6 +1165,8 @@ $("newR").onclick=()=>editor(null);$("newR2").onclick=()=>editor(null);
 
 /* ---------- Komunitas (Supabase) ---------- */
 const SB={u:"https://hijnnseuqcxochnrzfrw.supabase.co",k:"sb_publishable_CS19oZ9zaidkA3RaByJL3w_G8znM7cs"};
+const TTURL=/^https:\/\/(?:vt|vm|www|m)\.tiktok\.com\/[A-Za-z0-9@._\/?=&%-]{1,200}$/;
+async function ttResolve(u){try{const c=new AbortController();const t=setTimeout(()=>c.abort(),9000);const r=await fetch(SB.u+"/functions/v1/tiktok",{method:"POST",signal:c.signal,headers:{"Content-Type":"application/json",apikey:SB.k},body:JSON.stringify({url:u})});clearTimeout(t);const j=await r.json();return /^\d{15,25}$/.test(j.id||"")?j.id:null}catch(e){return null}}
 let sess=store.get("sess",null),liked=new Set(store.get("liked",[]));
 function setSess(j){const u=j.user||{},md=u.user_metadata||{};sess={at:j.access_token,rt:j.refresh_token,exp:j.expires_at||Math.floor(Date.now()/1000)+(j.expires_in||3600),uid:u.id||(sess&&sess.uid),email:u.email||(u.id?"":(sess&&sess.email))||"",name:clean(md.full_name||md.name||(sess&&sess.name)||""),pic:md.avatar_url||md.picture||(sess&&sess.pic)||""};store.set("sess",sess)}
 const SITE_URL=location.origin+location.pathname;
@@ -1198,7 +1202,7 @@ async function api(path,opt={}){const t=await token();const r=await fetch(SB.u+"
   const txt=await r.text();if(!r.ok){let m="";try{m=JSON.parse(txt).message||""}catch(e){}throw new Error(r.status===409?"409 duplicate":m||"HTTP "+r.status)}return txt?JSON.parse(txt):null}
 const clean=x=>String(x==null?"":x).replace(/[<>"]/g,"");
 const fromRemote=x=>lab({n:clean(x.name),k:clean(x.category),t:x.minutes,b:(x.ingredients||[]).map(clean),s:(x.steps||[]).map(clean),tip:clean(x.tip),
-  v:/^[\w-]{11}$/.test(x.video||"")?x.video:"",tt:/^\d{15,25}$/.test(x.tiktok||"")?x.tiktok:"",p:/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(x.photo||"")||/^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/[A-Za-z0-9\/._%()+-]+$/.test(x.photo||"")?x.photo:"",e:"🍳",c:"#efe6d6",i:tagsOf(x.ingredients||[]),
+  v:/^[\w-]{11}$/.test(x.video||"")?x.video:"",tt:/^\d{15,25}$/.test(x.tiktok||"")||TTURL.test(x.tiktok||"")?x.tiktok:"",p:/^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(x.photo||"")||/^https:\/\/upload\.wikimedia\.org\/wikipedia\/commons\/[A-Za-z0-9\/._%()+-]+$/.test(x.photo||"")?x.photo:"",e:"🍳",c:"#efe6d6",i:tagsOf(x.ingredients||[]),
   comm:{id:x.id,likes:x.likes,author:clean(x.author),mine:!!sess&&x.user_id===sess.uid}});
 let cCat="";let C={mode:"new",list:[],end:false,busy:false,loaded:false,err:""};
 async function loadComm(reset){if(C.busy)return;C.busy=true;if(reset){C.list=[];C.end=false}C.err="";drawComm();
@@ -1248,7 +1252,7 @@ async function uploadR(r,author){const m=mine.find(x=>x.id===r.id);if(!m)return;
 
 /* ---------- Masukan & admin ---------- */
 function drawAcct2(){const a=$("acct2");if(!a)return;a.innerHTML=isGoogle()?"":`<div class="acct"><div class="who"><b>Masuk dengan Google</b><span>Untuk membagikan resep ke Komunitas.</span></div><button class="btn gbtn" id="lgIn2">${GICON}Masuk</button></div>`;if($("lgIn2"))$("lgIn2").onclick=()=>login()}
-const ADMIN="amonkpubg@gmail.com",APPV="26";
+const ADMIN="amonkpubg@gmail.com",APPV="27";
 let fbKind="Masalah";
 function drawKind(){$("fbKind").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===fbKind));
   $("fbMsg").placeholder=fbKind==="Masalah"?"Mis. video di resep Sop Ayam tidak bisa diputar di HP Samsung saya.":fbKind==="Saran"?"Mis. tambahkan kategori minuman dan resep es teh manis.":"Tulis pertanyaanmu di sini."}
