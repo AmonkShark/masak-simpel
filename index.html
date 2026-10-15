@@ -449,7 +449,7 @@ input,select,textarea{font-size:16px}
   <section class="blk"><h2 class="h">Kategori</h2><div class="cats" id="cats"></div><div class="lchips" id="lchips"></div></section>
   <section class="blk" id="fastBlk"><h2 class="h">Paling cepat <small>≤ 10 menit</small></h2><div class="rail" id="rail"></div></section>
   <section class="blk"><h2 class="h"><span id="ttl">Semua menu</span><small id="count"></small></h2><div class="grid" id="grid"></div></section>
-  <p class="credit">Foto masakan dari <a href="kredit.html" style="color:inherit">Wikimedia Commons</a> · Video dari YouTube · <a href="privacy.html" style="color:inherit">Kebijakan Privasi</a> · <a href="resep/" style="color:inherit">Daftar semua resep</a> · <a href="#" id="fbLink" style="color:inherit">Kirim masukan</a></p>
+  <p class="credit"><a href="tentang.html" style="color:inherit"><b>Tentang</b></a> · Dibuat oleh <b>Moh Amin</b> · Foto masakan dari <a href="kredit.html" style="color:inherit">Wikimedia Commons</a> · Video dari YouTube · <a href="privacy.html" style="color:inherit">Kebijakan Privasi</a> · <a href="resep/" style="color:inherit">Daftar semua resep</a> · <a href="#" id="fbLink" style="color:inherit">Kirim masukan</a></p>
 </div>
 </div>
 
@@ -1252,7 +1252,7 @@ async function uploadR(r,author){const m=mine.find(x=>x.id===r.id);if(!m)return;
 
 /* ---------- Masukan & admin ---------- */
 function drawAcct2(){const a=$("acct2");if(!a)return;a.innerHTML=isGoogle()?"":`<div class="acct"><div class="who"><b>Masuk dengan Google</b><span>Untuk membagikan resep ke Komunitas.</span></div><button class="btn gbtn" id="lgIn2">${GICON}Masuk</button></div>`;if($("lgIn2"))$("lgIn2").onclick=()=>login()}
-const ADMIN="amonkpubg@gmail.com",APPV="27";
+const ADMIN="amonkpubg@gmail.com",APPV="28";
 let fbKind="Masalah";
 function drawKind(){$("fbKind").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===fbKind));
   $("fbMsg").placeholder=fbKind==="Masalah"?"Mis. video di resep Sop Ayam tidak bisa diputar di HP Samsung saya.":fbKind==="Saran"?"Mis. tambahkan kategori minuman dan resep es teh manis.":"Tulis pertanyaanmu di sini."}
