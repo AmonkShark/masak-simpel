@@ -411,6 +411,10 @@ input,select,textarea{font-size:16px}
 .tsbox{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 96px);transform:translateX(-50%);z-index:70}
 .credit{font-size:.75rem;color:var(--muted);text-align:center;margin:30px auto 0}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.instb{position:fixed;left:12px;right:12px;bottom:84px;z-index:60;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.18);padding:12px;display:flex;gap:12px;align-items:center;max-width:520px;margin:0 auto}
+.instb img{width:44px;height:44px;border-radius:12px;flex:none}.instb b{display:block;font-size:.98rem}.instb small{color:var(--muted)}.instb .go{background:#1f7a4a;color:#fff;border:0;border-radius:999px;padding:10px 14px;font-weight:700;flex:none}.instb .x{background:none;border:0;color:var(--muted);font-size:1.3rem;padding:4px;flex:none}
+.instm{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.5);display:flex;align-items:flex-end;justify-content:center}.instm>div{background:var(--surface);color:var(--fg);width:100%;max-width:520px;border-radius:22px 22px 0 0;padding:20px 18px 26px;max-height:88vh;overflow:auto}
+.instm h3{margin:0 0 4px}.instm ol{padding-left:22px;margin:8px 0 14px;line-height:1.65}.instm .opt{border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:12px}.instm .bt{display:block;text-align:center;background:#1f7a4a;color:#fff;text-decoration:none;border:0;border-radius:999px;padding:12px;font-weight:700;width:100%;font-size:1rem}.instm .cl{margin-top:14px;background:none;border:1px solid var(--line);color:var(--fg)}
 </style>
 </head>
 <body>
@@ -499,7 +503,7 @@ input,select,textarea{font-size:16px}
       <div style="display:flex;gap:14px;align-items:center;background:var(--surface);border-radius:16px;padding:14px;margin:6px 0 12px"><img src="icon-192.png" alt="" width="56" height="56" style="border-radius:14px;flex:none"><div><div style="font-weight:700;font-size:1.05rem">Dibuat oleh Moh Amin</div><div style="color:var(--muted);font-size:.9rem">Pembuat &amp; pengembang Masak Simpel</div></div></div>
       <p style="margin:0 0 10px;color:var(--muted)">Masak Simpel adalah aplikasi resep gratis untuk kamu yang tidak suka ribet di dapur: bahan mudah dicari, langkah singkat, semua resep halal.</p>
       <ul style="margin:0 0 12px;padding-left:20px;color:var(--muted);line-height:1.7"><li>125+ resep simpel dengan foto, biaya &amp; kalori</li><li>Masakan khas daerah se-Indonesia</li><li>Menu hari ini &amp; filter pintar</li><li>Daftar belanja otomatis</li><li>Video YouTube &amp; TikTok di aplikasi</li><li>Buat &amp; bagikan resep sendiri</li></ul>
-      <div class="help"><a class="btn sec" href="tentang.html" style="text-decoration:none">ℹ️ Selengkapnya</a><button class="btn sec" id="shareApp">📤 Bagikan aplikasi</button></div>
+      <div class="help"><a class="btn sec" href="tentang.html" style="text-decoration:none">ℹ️ Selengkapnya</a><button class="btn sec" id="shareApp">📤 Bagikan aplikasi</button><button class="btn sec" id="instAbout" hidden>📲 Pasang di Android</button></div>
       <p style="margin:10px 0 0;color:var(--muted);font-size:.8rem">Versi <span id="appVer"></span> · © 2026 Moh Amin</p></section>
   </div>
 </div>
@@ -542,6 +546,17 @@ input,select,textarea{font-size:16px}
 <div class="fs" id="adm"><div class="fpanel">
   <div class="fhead"><div><h3>Panel Admin</h3><p>Hanya terlihat oleh admin.</p></div><button class="fx" id="admClose" aria-label="Tutup">✕</button></div>
   <div class="fbody"><div id="admStats"></div><h4 style="margin:18px 0 8px">Kotak Masukan</h4><div id="admList"></div></div></div></div>
+<div class="instb" id="instB" hidden><img src="icon-192.png" alt=""><div style="flex:1;min-width:0"><b>Pasang Masak Simpel</b><small>Gratis · ringan · bisa offline</small></div><button class="go" id="instGo">Pasang</button><button class="x" id="instX" aria-label="Tutup">×</button></div>
+<div class="instm" id="instM" hidden><div>
+<h3>📲 Pasang aplikasi di Android</h3><p style="margin:0;color:var(--muted)">Pilih salah satu cara. Keduanya gratis dan aman.</p>
+<div class="opt"><b>Cara 1 – Langsung dari browser (paling mudah)</b>
+<ol><li>Ketuk tombol <b>Pasang sekarang</b> di bawah, lalu <b>Instal</b>.</li><li>Kalau tombolnya tidak muncul: ketuk menu <b>⋮</b> di pojok kanan atas Chrome.</li><li>Pilih <b>Instal aplikasi</b> atau <b>Tambahkan ke layar utama</b>.</li><li>Ikon Masak Simpel muncul di layar HP. Selesai!</li></ol>
+<button class="bt" id="instNow" hidden>Pasang sekarang</button></div>
+<div class="opt"><b>Cara 2 – Download file APK</b>
+<ol><li>Ketuk <b>Download APK</b>, tunggu sampai selesai.</li><li>Buka file <b>MasakSimpel.apk</b> dari notifikasi atau folder <b>Download</b>.</li><li>Kalau muncul peringatan, ketuk <b>Setelan</b> → aktifkan <b>Izinkan dari sumber ini</b>, lalu kembali.</li><li>Ketuk <b>Instal</b>, lalu <b>Buka</b>.</li></ol>
+<a class="bt" href="MasakSimpel.apk" download>⬇ Download APK (±1 MB)</a></div>
+<p style="color:var(--muted);font-size:.85rem;margin:12px 0 0">Aplikasi akan memperbarui dirinya sendiri, tidak perlu install ulang.</p>
+<button class="bt cl" id="instC">Tutup</button></div></div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -1258,7 +1273,7 @@ async function uploadR(r,author){const m=mine.find(x=>x.id===r.id);if(!m)return;
 
 /* ---------- Masukan & admin ---------- */
 function drawAcct2(){const a=$("acct2");if(!a)return;a.innerHTML=isGoogle()?"":`<div class="acct"><div class="who"><b>Masuk dengan Google</b><span>Untuk membagikan resep ke Komunitas.</span></div><button class="btn gbtn" id="lgIn2">${GICON}Masuk</button></div>`;if($("lgIn2"))$("lgIn2").onclick=()=>login()}
-const ADMIN="amonkpubg@gmail.com",APPV="29";
+const ADMIN="amonkpubg@gmail.com",APPV="30";
 let fbKind="Masalah";
 function drawKind(){$("fbKind").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.k===fbKind));
   $("fbMsg").placeholder=fbKind==="Masalah"?"Mis. video di resep Sop Ayam tidak bisa diputar di HP Samsung saya.":fbKind==="Saran"?"Mis. tambahkan kategori minuman dan resep es teh manis.":"Tulis pertanyaanmu di sini."}
@@ -1341,6 +1356,19 @@ if("serviceWorker" in navigator&&location.protocol==="https:"){let rl=false;
   navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(reg=>{const up=()=>reg.update().catch(()=>{});setInterval(up,30*60*1000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")up()})}).catch(()=>{});
   navigator.serviceWorker.addEventListener("controllerchange",()=>{if(rl)return;rl=true;if(!$("cook").hidden||$("ed").classList.contains("on"))return;location.reload()})}
 try{$("appVer").textContent=APPV;$("shareApp").onclick=async()=>{const t="🍳 Masak Simpel – resep simpel untuk setiap hari, gratis & halal. Dibuat oleh Moh Amin.",u="https://masaksimpel.my.id";try{if(navigator.share){await navigator.share({title:"Masak Simpel",text:t,url:u});return}await navigator.clipboard.writeText(t+"\n"+u);toast("Link aplikasi disalin")}catch(e){}}}catch(e){}
+(function(){try{
+const ua=navigator.userAgent,isAnd=/Android/i.test(ua),sa=matchMedia("(display-mode: standalone)").matches||document.referrer.startsWith("android-app://")||navigator.standalone;
+let dp=null;const B=$("instB"),M=$("instM");
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;$("instNow").hidden=false});
+window.addEventListener("appinstalled",()=>{B.hidden=true;M.hidden=true;try{localStorage.setItem("ms-inst","1")}catch(_){}});
+let off=false;try{off=localStorage.getItem("ms-inst")==="1"||Date.now()<+(localStorage.getItem("ms-instx")||0)}catch(_){}
+const openM=()=>{M.hidden=false};window.openInstall=openM;
+$("instGo").onclick=openM;$("instC").onclick=()=>M.hidden=true;M.onclick=e=>{if(e.target===M)M.hidden=true};
+$("instX").onclick=()=>{B.hidden=true;try{localStorage.setItem("ms-instx",String(Date.now()+3*864e5))}catch(_){}};
+$("instNow").onclick=async()=>{if(!dp)return;dp.prompt();const r=await dp.userChoice.catch(()=>null);dp=null;$("instNow").hidden=true;if(r&&r.outcome==="accepted"){M.hidden=true;B.hidden=true}};
+if(isAnd&&!sa&&!off)setTimeout(()=>{B.hidden=false},2500);
+const ib=$("instAbout");if(ib){ib.hidden=!(isAnd&&!sa);ib.onclick=openM}
+}catch(e){}})();
 async function cekVersi(){try{const j=await (await fetch("version.json?t="+Date.now(),{cache:"no-store"})).json();if(j.v&&String(j.v)!==APPV){if(!$("cook").hidden||$("ed").classList.contains("on"))return;if(sessionStorage.getItem("ms-upd")===String(j.v))return;sessionStorage.setItem("ms-upd",String(j.v));toast("✨ Versi baru tersedia, memperbarui…");setTimeout(()=>location.reload(),1200)}}catch(e){}}
 setTimeout(cekVersi,3000);document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible")cekVersi()});
 
